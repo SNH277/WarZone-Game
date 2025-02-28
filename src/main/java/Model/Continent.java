@@ -66,6 +66,17 @@ public class Continent {
         }
         d_countries.add(p_countryObject);
     }
+
+    public void removeCountry(Country p_countryObject){
+        if (d_countries == null) {
+            System.out.println("No countries exist in this continent.");
+            return;
+            if (!d_countries.remove(p_countryObject)) {
+                System.out.println("This country does not exist in this continent.");
+            }
+        }
+    }
+
 }
 
 
