@@ -50,8 +50,15 @@ public class Continent {
         this.d_countries = d_countries;
     }
 
-
-
+    @Override
+    public String toString() {
+        return "Continent{" +
+                "d_continentID=" + d_continentID +
+                ", d_continentName='" + d_continentName + '\'' +
+                ", d_continentValue=" + d_continentValue +
+                ", d_countries=" + d_countries +
+                '}';
+    }
 }
 
 
