@@ -77,6 +77,12 @@ public class Continent {
         }
     }
 
+    public void setCountry(Country p_eachCountry){
+        if(d_countries == null){
+            d_countries = new ArrayList<>();
+        }
+        d_countries.add(p_eachCountry);
+    }
 }
 
 
