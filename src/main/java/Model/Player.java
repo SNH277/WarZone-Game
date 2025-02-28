@@ -4,56 +4,56 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Player {
-    String playerName;
-    Integer unallocatedArmies;
-    List<Country> currentCountries;
-    List<Continent> currentContinents;
-    List<Orders> orders;
+    String d_playerName;
+    Integer d_unallocatedArmies;
+    List<Country> d_currentCountries;
+    List<Continent> d_currentContinents;
+    List<Orders> d_orders;
 
-    public Player(String playerName) {
-        this.playerName = playerName;
-        this.unallocatedArmies = 0;
-        this.orders = new ArrayList<Orders>();
+    public Player(String p_playerName) {
+        this.d_playerName = p_playerName;
+        this.d_unallocatedArmies = 0;
+        this.d_orders = new ArrayList<Orders>();
     }
 
-    public String getPlayerName() {
-        return playerName;
+    public String getD_playerName() {
+        return d_playerName;
     }
 
-    public void setPlayerName(String playerName) {
-        this.playerName = playerName;
+    public void setD_playerName(String p_playerName) {
+        this.d_playerName = p_playerName;
     }
 
-    public Integer getUnallocatedArmies() {
-        return unallocatedArmies;
+    public Integer getD_unallocatedArmies() {
+        return d_unallocatedArmies;
     }
 
-    public void setUnallocatedArmies(Integer unallocatedArmies) {
-        this.unallocatedArmies = unallocatedArmies;
+    public void setD_unallocatedArmies(Integer p_unallocatedArmies) {
+        this.d_unallocatedArmies = p_unallocatedArmies;
     }
 
-    public List<Country> getCurrentCountries() {
-        return currentCountries;
+    public List<Country> getD_currentCountries() {
+        return d_currentCountries;
     }
 
-    public void setCurrentCountries(List<Country> currentCountries) {
-        this.currentCountries = currentCountries;
+    public void setD_currentCountries(List<Country> p_currentCountries) {
+        this.d_currentCountries = p_currentCountries;
     }
 
-    public List<Continent> getCurrentContinents() {
-        return currentContinents;
+    public List<Continent> getD_currentContinents() {
+        return d_currentContinents;
     }
 
-    public void setCurrentContinents(List<Continent> currentContinents) {
-        this.currentContinents = currentContinents;
+    public void setD_currentContinents(List<Continent> p_currentContinents) {
+        this.d_currentContinents = p_currentContinents;
     }
 
-    public List<Orders> getOrders() {
-        return orders;
+    public List<Orders> getD_orders() {
+        return d_orders;
     }
 
-    public void setOrders(List<Orders> orders) {
-        this.orders = orders;
+    public void setD_orders(List<Orders> p_orders) {
+        this.d_orders = p_orders;
     }
 
 
