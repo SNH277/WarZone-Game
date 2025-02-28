@@ -1,5 +1,6 @@
 package Model;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Continent {
@@ -58,6 +59,12 @@ public class Continent {
                 ", d_continentValue=" + d_continentValue +
                 ", d_countries=" + d_countries +
                 '}';
+    }
+    public void addCountry(Country p_countryObject) {
+        if (d_countries == null) {
+            d_countries = new ArrayList<>();
+        }
+        d_countries.add(p_countryObject);
     }
 }
 
