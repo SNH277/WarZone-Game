@@ -1,11 +1,18 @@
 package Controller;
 
+import Model.CurrentState;
 import Utils.CommandHandler;
+import View.MapView;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
+import java.util.Set;
 
 public class MainGameEngine {
+
+    MapController d_mapController=new MapController();
+    PlayerController d_playerController=new PlayerController();
+    CurrentState d_currentGameState = new CurrentState();
 
     public static void main(String[] args) {
         MainGameEngine l_mainGameEngine = new MainGameEngine();
@@ -53,6 +60,75 @@ public class MainGameEngine {
         CommandHandler l_commandHandler =new CommandHandler(p_inputCommand);
         String l_mainCommand = l_commandHandler.getMainCommand();
         boolean l_isMapAvailable=false;
+//        boolean l_mapAvailable = (d_currentState.getD_map() != null);
+
+        Set<String> requiresMap = Set.of(
+                "editcountry", "editcontinent", "editneighbour",
+                "showmap", "gameplayer", "assigncountries",
+                "validatemap", "savemap"
+        );
+
+        switch (l_mainCommand) {
+            case "loadmap":
+                loadMap(l_commandHandler);
+                break;
+            case "editmap":
+                editMap(l_commandHandler);
+                break;
+            case "editcountry":
+                editCountry(l_commandHandler);
+                break;
+            case "editcontinent":
+                editContinent(l_commandHandler);
+                break;
+            case "editneighbour":
+                editNeighbourCountry(l_commandHandler);
+                break;
+            case "showmap":
+                new MapView(d_currentGameState).showMap();
+            case "gameplayer":
+                gamePlayer(l_commandHandler);
+                break;
+            case "assigncountries":
+                assignCountries(l_commandHandler);
+                break;
+            case "validatemap":
+                validateMap(l_commandHandler);
+                break;
+            case "savemap":
+                saveMap(l_commandHandler);
+                break;
+            default:
+                System.out.println("Invalid command. Please check the command menu and try again.");
+                break;
+        }
+    }
+
+    private void saveMap(CommandHandler lCommandHandler) {
+    }
+
+    private void validateMap(CommandHandler lCommandHandler) {
+    }
+
+    private void assignCountries(CommandHandler lCommandHandler) {
+    }
+
+    private void gamePlayer(CommandHandler lCommandHandler) {
+    }
+
+    private void editNeighbourCountry(CommandHandler lCommandHandler) {
+    }
+
+    private void editContinent(CommandHandler lCommandHandler) {
+    }
+
+    private void editCountry(CommandHandler lCommandHandler) {
+    }
+
+    private void editMap(CommandHandler lCommandHandler) {
+    }
+
+    private void loadMap(CommandHandler lCommandHandler) {
     }
 
 
