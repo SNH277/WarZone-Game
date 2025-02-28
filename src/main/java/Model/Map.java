@@ -7,6 +7,15 @@ public class Map {
     List<Country> d_mapCountries;
     List<Continent> d_mapContinents;
 
+    public Map() {
+    }
+
+    public Map(String p_mapName, List<Country> p_mapCountries, List<Continent> p_mapContinents) {
+        this.d_mapName = p_mapName;
+        this.d_mapCountries = p_mapCountries;
+        this.d_mapContinents = p_mapContinents;
+    }
+
     public String getD_mapName() {
         return d_mapName;
     }
