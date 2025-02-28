@@ -15,4 +15,8 @@ public class MapView {
         this.d_countries = p_currentState.getD_map().getD_mapCountries();
         this.d_continents = p_currentState.getD_map().getD_mapContinents();
     }
+
+    public void showMap() {
+        System.out.println("Show Map");
+    }
 }
