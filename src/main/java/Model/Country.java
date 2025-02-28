@@ -1,5 +1,6 @@
 package Model;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Country {
@@ -58,5 +59,28 @@ public class Country {
                 ", d_neighbouringCountriesId=" + d_neighbouringCountriesId +
                 ", d_armies=" + d_armies +
                 '}';
+    }
+
+    public void addCountryNeighbour(int p_neighbourID){
+        if (d_neighbouringCountriesId == null) {
+            d_neighbouringCountriesId = new ArrayList<>();
+        }
+        if (d_neighbouringCountriesId.contains(p_neighbourID)) {
+            System.out.println("Neighbour already exists.");
+        } else {
+            d_neighbouringCountriesId.add(p_neighbourID);
+        }
+    }
+
+    public void removeCountryNeighbourIfPresent(int p_removeCountryId){
+        if (d_neighbouringCountriesId == null || d_neighbouringCountriesId.isEmpty()) {
+            System.out.println("No neighbouring countries present.");
+            return;
+        }
+        // Remove all occurrences that match p_removeCountryId.
+        boolean removed = d_neighbouringCountriesId.removeIf(neighbour -> neighbour == p_removeCountryId);
+        if (!removed) {
+            System.out.println("Country ID: " + p_removeCountryId + " is not a neighbour in the first place.");
+        }
     }
 }
