@@ -48,4 +48,8 @@ public class Map {
                 ", d_mapContinents=" + d_mapContinents +
                 '}';
     }
+
+    public boolean validateMap() {
+        return true;
+    }
 }

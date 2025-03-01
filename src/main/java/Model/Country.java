@@ -83,4 +83,7 @@ public class Country {
             System.out.println("Country ID: " + p_removeCountryId + " is not a neighbour in the first place.");
         }
     }
+
+    public Integer getD_continentID() {
+    }
 }
