@@ -8,6 +8,7 @@ import Model.Map;
 import java.io.*;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -25,8 +26,59 @@ public class MapController {
             List<Continent> l_continents = modifyContinentData(l_continentData);
             List<Country> l_countries = modifyCountryData(l_countryData);
 
+            l_countries = updateCountryBorders(l_borderData,l_countries);
+            l_continents = updateContinentCountries(l_continents,l_countries);
+
+            l_map.setD_mapContinents(l_continents);
+            l_map.setD_mapCountries(l_countries);
+            l_map.setD_mapName(p_fileName);
+            p_currentState.setD_map(l_map);
         }
         return l_map;
+    }
+
+    private List<Continent> updateContinentCountries(List<Continent> p_continents, List<Country> p_countries) {
+        for(Country l_country : p_countries){
+            for(Continent l_continent:p_continents){
+                if(l_country.getD_continentId().equals(l_continent.getD_continentID())){
+                    l_continent.setCountry(l_country);
+                }
+            }
+        }
+        return p_continents;
+    }
+
+    private List<Country> updateCountryBorders(List<String> p_borderData, List<Country> p_countries) {
+        LinkedHashMap<Integer,List<Integer>> l_borderDataMap =new LinkedHashMap<>();
+
+        for (String l_eachCountryNeighbour : p_borderData) {
+            if (l_eachCountryNeighbour == null || l_eachCountryNeighbour.isEmpty())
+                continue;
+
+            String[] l_borderDataSplit = l_eachCountryNeighbour.split(" ");
+            if (l_borderDataSplit.length < 2)
+                continue;
+
+            int l_countryId;
+            List<Integer> l_neighbourCountries = new ArrayList<>();
+
+            try {
+                l_countryId = Integer.parseInt(l_borderDataSplit[0]);
+                for (int i = 1; i < l_borderDataSplit.length; i++) {
+                    l_neighbourCountries.add(Integer.parseInt(l_borderDataSplit[i]));
+                }
+            } catch (NumberFormatException e) {
+                continue;
+            }
+
+            l_borderDataMap.put(l_countryId, l_neighbourCountries);
+        }
+
+        for (Country l_eachCountry : p_countries) {
+            l_eachCountry.setD_neighbouringCountriesId(l_borderDataMap.getOrDefault(l_eachCountry.getD_countryID(), new ArrayList<>()));
+        }
+
+        return p_countries;
     }
 
     private List<Country> modifyCountryData(List<String> p_countryData) {
