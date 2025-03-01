@@ -93,6 +93,7 @@ public class MainGameEngine {
                 break;
             case "showmap":
                 new MapView(d_currentGameState).showMap();
+                break;
             case "gameplayer":
                 gamePlayer(l_commandHandler);
                 break;
@@ -111,16 +112,24 @@ public class MainGameEngine {
         }
     }
 
-    private void saveMap(CommandHandler lCommandHandler) {
+    private void saveMap(CommandHandler p_commandHandler) {
+        List<Map<String,String>> l_listOfOperations=p_commandHandler.getListOfOperations();
+        System.out.println(l_listOfOperations);
     }
 
-    private void validateMap(CommandHandler lCommandHandler) {
+    private void validateMap(CommandHandler p_commandHandler) {
+        List<Map<String,String>> l_listOfOperations=p_commandHandler.getListOfOperations();
+        System.out.println(l_listOfOperations);
     }
 
-    private void assignCountries(CommandHandler lCommandHandler) {
+    private void assignCountries(CommandHandler p_commandHandler) {
+        List<Map<String,String>> l_listOfOperations=p_commandHandler.getListOfOperations();
+        System.out.println(l_listOfOperations);
     }
 
-    private void gamePlayer(CommandHandler lCommandHandler) {
+    private void gamePlayer(CommandHandler p_commandHandler) {
+        List<Map<String,String>> l_listOfOperations=p_commandHandler.getListOfOperations();
+        System.out.println(l_listOfOperations);
     }
 
     private void editNeighbourCountry(CommandHandler p_commandHandler) {
@@ -128,13 +137,19 @@ public class MainGameEngine {
         System.out.println(l_listOfOperations);
     }
 
-    private void editContinent(CommandHandler lCommandHandler) {
+    private void editContinent(CommandHandler p_commandHandler) {
+        List<Map<String,String>> l_listOfOperations=p_commandHandler.getListOfOperations();
+        System.out.println(l_listOfOperations);
     }
 
-    private void editCountry(CommandHandler lCommandHandler) {
+    private void editCountry(CommandHandler p_commandHandler) {
+        List<Map<String,String>> l_listOfOperations=p_commandHandler.getListOfOperations();
+        System.out.println(l_listOfOperations);
     }
 
-    private void editMap(CommandHandler lCommandHandler) {
+    private void editMap(CommandHandler p_commandHandler) {
+        List<Map<String,String>> l_listOfOperations=p_commandHandler.getListOfOperations();
+        System.out.println(l_listOfOperations);
     }
 
     private void loadMap(CommandHandler p_commandHandler) {
