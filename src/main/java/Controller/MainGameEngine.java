@@ -58,7 +58,7 @@ public class MainGameEngine {
         System.out.println();
     }
 
-    private void commandHandler(String p_inputCommand) {
+    private void commandHandler(String p_inputCommand) throws Exception {
         CommandHandler l_commandHandler =new CommandHandler(p_inputCommand);
         String l_mainCommand = l_commandHandler.getMainCommand();
         boolean l_isMapAvailable=false;
@@ -152,9 +152,18 @@ public class MainGameEngine {
         System.out.println(l_listOfOperations);
     }
 
-    private void loadMap(CommandHandler p_commandHandler) {
+    private void loadMap(CommandHandler p_commandHandler) throws Exception{
         List<Map<String,String>> l_listOfOperations=p_commandHandler.getListOfOperations();
         System.out.println(l_listOfOperations);
+        if(l_listOfOperations == null || l_listOfOperations.isEmpty()){
+            throw new Exception("Invalid command for loadmap. Use 'loadmap file_name.map' command");
+        }
+        for(Map<String,String> l_singleOperation : l_listOfOperations){
+            if(l_singleOperation.containsKey("Arguments")&& l_singleOperation.get("Arguments")!=null){
+                Model.Map l_map =d_mapController.loadMap(d_currentGameState,l_singleOperation.get("Arguments"));
+                System.out.println(l_map);
+            }
+        }
     }
 
 
