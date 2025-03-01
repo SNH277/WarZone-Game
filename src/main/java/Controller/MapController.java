@@ -128,7 +128,7 @@ public class MapController {
     }
 
     private List<String> getBorderData(List<String> p_fileLines) {
-        int l_startIndex=p_fileLines.indexOf("[Borderss]")+1;
+        int l_startIndex=p_fileLines.indexOf("[Borders]")+1;
         int l_endIndex=p_fileLines.size();
 
         return (l_startIndex>0 && l_endIndex>l_startIndex) ? p_fileLines.subList(l_startIndex,l_endIndex) : new ArrayList<>();
