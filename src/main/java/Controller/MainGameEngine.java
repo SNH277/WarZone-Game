@@ -6,6 +6,8 @@ import View.MapView;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
+import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 public class MainGameEngine {
@@ -68,6 +70,11 @@ public class MainGameEngine {
                 "validatemap", "savemap"
         );
 
+        if (requiresMap.contains(l_mainCommand) && !l_isMapAvailable) {
+            System.out.println("Error: Map not available. Use 'loadmap' or 'editmap' first.");
+            return;
+        }
+
         switch (l_mainCommand) {
             case "loadmap":
                 loadMap(l_commandHandler);
@@ -116,7 +123,9 @@ public class MainGameEngine {
     private void gamePlayer(CommandHandler lCommandHandler) {
     }
 
-    private void editNeighbourCountry(CommandHandler lCommandHandler) {
+    private void editNeighbourCountry(CommandHandler p_commandHandler) {
+        List<Map<String,String>> l_listOfOperations=p_commandHandler.getListOfOperations();
+        System.out.println(l_listOfOperations);
     }
 
     private void editContinent(CommandHandler lCommandHandler) {
@@ -128,7 +137,9 @@ public class MainGameEngine {
     private void editMap(CommandHandler lCommandHandler) {
     }
 
-    private void loadMap(CommandHandler lCommandHandler) {
+    private void loadMap(CommandHandler p_commandHandler) {
+        List<Map<String,String>> l_listOfOperations=p_commandHandler.getListOfOperations();
+        System.out.println(l_listOfOperations);
     }
 
 
