@@ -16,7 +16,35 @@ public class MapController {
     public Map loadMap(CurrentState p_currentState, String p_fileName){
         Map l_map=new Map();
         List<String> l_fileLines=loadFile(p_fileName);
+
+        if(!l_fileLines.isEmpty()){
+            List<String> l_continentData=getContinentData(l_fileLines);
+            List<String> l_countryData=getCountryData(l_fileLines);
+            List<String> l_borderData=getBorderData(l_fileLines);
+
+        }
         return l_map;
+    }
+
+    private List<String> getBorderData(List<String> p_fileLines) {
+        int l_startIndex=p_fileLines.indexOf("[Borderss]")+1;
+        int l_endIndex=p_fileLines.size();
+
+        return (l_startIndex>0 && l_endIndex>l_startIndex) ? p_fileLines.subList(l_startIndex,l_endIndex) : new ArrayList<>();
+    }
+
+    private List<String> getCountryData(List<String> p_fileLines) {
+        int l_startIndex=p_fileLines.indexOf("[Countries]")+1;
+        int l_endIndex=p_fileLines.indexOf("[Borders]")-1;
+
+        return (l_startIndex>0 && l_endIndex>l_startIndex) ? p_fileLines.subList(l_startIndex,l_endIndex) : new ArrayList<>();
+    }
+
+    private List<String> getContinentData(List<String> p_fileLines) {
+        int l_startIndex=p_fileLines.indexOf("[Continents]")+1;
+        int l_endIndex=p_fileLines.indexOf("[Countries]")-1;
+
+        return (l_startIndex>0 && l_endIndex>l_startIndex) ? p_fileLines.subList(l_startIndex,l_endIndex) : new ArrayList<>();
     }
 
     private List<String> loadFile(String p_filename){
@@ -53,7 +81,6 @@ public class MapController {
                 return false;
             }
 
-            // File path validation
             String l_filePath = getFilePath(p_arguments);
             try (FileOutputStream l_writer = new FileOutputStream(l_filePath, false)) {
                 l_writer.write("".getBytes()); // Clear file
@@ -76,7 +103,7 @@ public class MapController {
             return false;
         }
 
-        p_writer.write(("[continents]" + System.lineSeparator()).getBytes());
+        p_writer.write(("[Continents]" + System.lineSeparator()).getBytes());
         for (Continent l_eachContinent : p_map.getD_mapContinents()) {
             String l_content = l_eachContinent.getD_continentName() + " " + l_eachContinent.getD_continentValue();
             p_writer.write((l_content + System.lineSeparator()).getBytes());
@@ -90,7 +117,7 @@ public class MapController {
             return false;
         }
 
-        p_writer.write(("[countries]" + System.lineSeparator()).getBytes());
+        p_writer.write(("[Countries]" + System.lineSeparator()).getBytes());
         for (Country l_eachCountry : p_map.getD_mapCountries()) {
             String l_content = l_eachCountry.getD_countryID() + " " + l_eachCountry.getD_countryName() + " " + l_eachCountry.getD_continentID();
             p_writer.write((l_content + System.lineSeparator()).getBytes());
@@ -104,7 +131,7 @@ public class MapController {
             return false;
         }
 
-        p_writer.write(("[borders]" + System.lineSeparator()).getBytes());
+        p_writer.write(("[Borders]" + System.lineSeparator()).getBytes());
         boolean hasBorders = false;
 
         for (Country l_eachCountry : p_map.getD_mapCountries()) {
