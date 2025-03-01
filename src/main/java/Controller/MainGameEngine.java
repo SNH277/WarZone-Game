@@ -115,6 +115,25 @@ public class MainGameEngine {
     private void saveMap(CommandHandler p_commandHandler) {
         List<Map<String,String>> l_listOfOperations=p_commandHandler.getListOfOperations();
         System.out.println(l_listOfOperations);
+
+        if (l_listOfOperations == null || l_listOfOperations.isEmpty()) {
+            System.out.println("Save map command is not correct. Use 'savemap filename' command.");
+        } else {
+            for(Map<String,String> l_singleOperation : l_listOfOperations){
+                if(l_singleOperation.containsKey("Arguments") && l_singleOperation.get("Arguments")!=null){
+                    boolean l_isMapSaved = d_mapController.saveMap(d_currentGameState, l_singleOperation.get("Arguments"));
+                    if(l_isMapSaved){
+                        System.out.println("Map : "+d_currentGameState.getD_map().getD_mapName()+" saved successfully.");
+                    }
+                    else{
+                        System.out.println("An error occured while saving the map.");
+                    }
+                }
+                else {
+                    System.out.println("Save map command is not correct. Use 'savemap filename' command.");
+                }
+            }
+        }
     }
 
     private void validateMap(CommandHandler p_commandHandler) {
