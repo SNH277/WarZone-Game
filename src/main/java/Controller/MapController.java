@@ -22,8 +22,57 @@ public class MapController {
             List<String> l_countryData=getCountryData(l_fileLines);
             List<String> l_borderData=getBorderData(l_fileLines);
 
+            List<Continent> l_continents = modifyContinentData(l_continentData);
+            List<Country> l_countries = modifyCountryData(l_countryData);
+
         }
         return l_map;
+    }
+
+    private List<Country> modifyCountryData(List<String> p_countryData) {
+        List<Country> l_countries =new ArrayList<>();
+
+        for(String l_country:p_countryData){
+            String[] l_splitCountryData= l_country.split(" ");
+            if(l_splitCountryData.length < 3)
+                continue;
+
+            String l_countryName = l_splitCountryData[1];
+            int l_countryId,l_continentId;
+
+            try{
+                l_countryId =Integer.parseInt(l_splitCountryData[0]);
+                l_continentId=Integer.parseInt(l_splitCountryData[2]);
+            } catch (NumberFormatException l_e) {
+                continue;
+            }
+            l_countries.add(new Country(l_countryId,l_countryName,l_continentId));
+        }
+        return l_countries;
+    }
+
+    private List<Continent> modifyContinentData(List<String> p_continentData) {
+        List<Continent> l_continents =new ArrayList<>();
+        int l_continentIds=1;
+
+        for(String l_continent:p_continentData){
+            String[] l_splitContinentData=l_continent.split(" ");
+            if(l_splitContinentData.length <2)
+                continue;
+
+            String l_continentName=l_splitContinentData[0];
+            int l_continentValue;
+            try{
+                l_continentValue=Integer.parseInt(l_splitContinentData[1]);
+            }
+            catch (NumberFormatException l_e){
+                continue;
+            }
+
+            l_continents.add(new Continent(l_continentIds,l_continentName,l_continentValue));
+            l_continentIds++;
+        }
+        return l_continents;
     }
 
     private List<String> getBorderData(List<String> p_fileLines) {

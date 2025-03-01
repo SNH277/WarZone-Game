@@ -6,17 +6,25 @@ import java.util.List;
 public class Country {
     Integer d_countryID;
     String d_countryName;
+    Integer d_continentId;
     List<Integer> d_neighbouringCountriesId;
     Integer d_armies = 0;
 
     public Country(){
     }
 
-    public Country(Integer p_countryID,String p_countryName,List<Integer> p_neighbouringCountriesId,Integer p_armies){
-        this.d_countryID= p_countryID;
-        this.d_countryName=p_countryName;
-        this.d_neighbouringCountriesId=p_neighbouringCountriesId;
-        this.d_armies=p_armies;
+    public Country(Integer p_countryID, String p_countryName, Integer p_continentId) {
+        this.d_countryID = p_countryID;
+        this.d_countryName = p_countryName;
+        this.d_continentId = p_continentId;
+    }
+
+    public Integer getD_continentId() {
+        return d_continentId;
+    }
+
+    public void setD_continentId(Integer d_continentId) {
+        this.d_continentId = d_continentId;
     }
 
     public Integer getD_countryID() {
@@ -85,5 +93,6 @@ public class Country {
     }
 
     public Integer getD_continentID() {
+        return -1;
     }
 }
