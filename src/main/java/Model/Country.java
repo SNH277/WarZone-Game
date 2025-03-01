@@ -95,4 +95,9 @@ public class Country {
     public Integer getD_continentID() {
         return -1;
     }
+
+    public void setD_continentID(Integer p_continentID) {
+        this.d_continentId = p_continentID;
+    }
+
 }
