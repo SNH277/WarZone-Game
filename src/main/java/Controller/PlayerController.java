@@ -3,6 +3,7 @@ package Controller;
 import Model.*;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Random;
 
@@ -35,6 +36,17 @@ public class PlayerController {
     }
 
     private void updatePlayerContinentOwnership(List<Player> p_Players, List<Continent> p_MapContinents) {
+        for(Player l_player : p_Players) {
+            List<Country> l_countriesOwnedByPlayer = l_player.getD_currentCountries();
+            if(l_countriesOwnedByPlayer == null || l_countriesOwnedByPlayer.isEmpty()) {
+                continue;
+            }
+            for(Continent l_continent : p_MapContinents) {
+                if(new HashSet<>(l_countriesOwnedByPlayer).containsAll(l_continent.getD_countries())) {
+                    l_player.setContinent(l_continent);
+                }
+            }
+        }
     }
 
     private void displayAssignedCountries(List<Player> p_Players) {
