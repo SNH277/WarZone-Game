@@ -151,9 +151,18 @@ public class MainGameEngine {
         System.out.println(l_listOfOperations);
     }
 
-    private void editNeighbourCountry(CommandHandler p_commandHandler) {
+    private void editNeighbourCountry(CommandHandler p_commandHandler) throws  Exception {
         List<Map<String,String>> l_listOfOperations=p_commandHandler.getListOfOperations();
         System.out.println(l_listOfOperations);
+        if(l_listOfOperations == null || l_listOfOperations.isEmpty()){
+            throw new Exception("Invalid command entered for editmap.");
+        }else {
+            for (Map<String ,String > l_singleOperation : l_listOfOperations){
+                if(l_singleOperation.containsKey("Operation") && l_singleOperation.get("Operation")!=null && l_singleOperation.containsKey("Arguments") && l_singleOperation.get("Arguments")!=null){
+                    d_mapController.editNeighbourCountry(d_currentGameState,l_singleOperation.get("Operation"),l_singleOperation.get("Arguments"));
+                }
+            }
+        }
     }
 
     private void editContinent(CommandHandler p_commandHandler) {

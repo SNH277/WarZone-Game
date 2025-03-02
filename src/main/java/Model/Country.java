@@ -80,7 +80,7 @@ public class Country {
         }
     }
 
-    public void removeCountryNeighbourIfPresent(int p_removeCountryId){
+    public void removeCountryNeighbour(int p_removeCountryId){
         if (d_neighbouringCountriesId == null || d_neighbouringCountriesId.isEmpty()) {
             System.out.println("No neighbouring countries present.");
             return;
