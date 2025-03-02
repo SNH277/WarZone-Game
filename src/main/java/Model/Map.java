@@ -244,5 +244,29 @@ public class Map {
         System.out.println("Country " + p_countryID + " added as a neighbor to " + p_neighbourID);
     }
 
+    public void removeNeighbour(int p_countryID, int p_neighbourID) {
+        if (d_mapCountries == null || d_mapCountries.isEmpty()) {
+            System.out.println("No country in Map.");
+            return;
+        }
 
-}
+        Country l_country = getCountryById(p_countryID);
+        Country l_neighbour = getCountryById(p_neighbourID);
+
+        if (l_country == null || l_neighbour == null) {
+            if (l_country == null) {
+                System.out.println("Country with ID: " + p_countryID + " does not exist in the Map.");
+            }
+            if (l_neighbour == null) {
+                System.out.println("Country with ID: " + p_neighbourID + " does not exist in the Map.");
+            }
+            return; // Stop execution if either country doesn't exist
+        }
+
+        l_country.removeCountryNeighbour(p_neighbourID);
+        l_neighbour.removeCountryNeighbour(p_countryID);
+
+        System.out.println("Country " + p_neighbourID + " removed as a neighbor from " + p_countryID);
+        System.out.println("Country " + p_countryID + " removed as a neighbor from " + p_neighbourID);
+    }
+    }
