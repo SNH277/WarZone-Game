@@ -252,4 +252,33 @@ public class MapController {
         return true;
     }
 
+    private Map addRemoveCountry(Map p_mapToUpdate, String p_operation, String p_arguments) {
+        String[] splitArgs = p_arguments.split(" ");
+
+        if (p_operation.equals("add")) {
+            if (splitArgs.length == 2) {
+                String countryName = splitArgs[0];
+                String continentName = splitArgs[1];
+
+                p_mapToUpdate.addCountry(countryName, continentName);
+            } else {
+                System.out.println("Error: Invalid format. Use 'add <country> <continent>'.");
+            }
+        } else if (p_operation.equals("remove")) {
+            if (splitArgs.length == 1) {
+                String countryName = splitArgs[0];
+
+                p_mapToUpdate.removeCountry(countryName);
+                System.out.println("Country " + countryName + " removed successfully!");
+            } else {
+                System.out.println("Error: Invalid format. Use 'remove <country>'.");
+            }
+        } else {
+            System.out.println("Error: Invalid operation. Use 'add' or 'remove'.");
+        }
+
+        return p_mapToUpdate;
+    }
+
+
 }

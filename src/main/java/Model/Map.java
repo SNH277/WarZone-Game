@@ -164,5 +164,58 @@ public class Map {
         return -1;
     }
 
+    public void removeCountry(String p_removeCountryName) {
+        if (d_mapCountries == null || d_mapCountries.isEmpty()) {
+            System.out.println("Country: " + p_removeCountryName + " does not exist.");
+            return;
+        }
+
+        Country l_countryToRemove = getCountryByName(p_removeCountryName);
+        if (l_countryToRemove == null) {
+            System.out.println("Country: " + p_removeCountryName + " does not exist.");
+            return;
+        }
+
+        if (d_mapContinents != null) {
+            for (Continent l_eachContinent : d_mapContinents) {
+                if (Objects.equals(l_eachContinent.getD_continentID(), l_countryToRemove.getD_continentID())) {
+                    l_eachContinent.removeCountry(l_countryToRemove);
+                    break;
+                }
+            }
+        }
+
+        removeCountryFromNeighbours(l_countryToRemove);
+        d_mapCountries.remove(l_countryToRemove);
+        System.out.println("Country: " + p_removeCountryName + " removed successfully.");
+    }
+
+    private void removeCountryFromNeighbours(Country p_country) {
+        List<Integer> neighbourIDs = p_country.getD_neighbouringCountriesId();
+
+        for (Integer neighbourID : neighbourIDs) {
+            Country neighbourCountry = getCountryById(neighbourID);
+
+            if (neighbourCountry != null) {
+                neighbourCountry.getD_neighbouringCountriesId().remove(p_country.getD_countryID());
+            }
+        }
+
+        p_country.getD_neighbouringCountriesId().clear();
+    }
+
+    private Country getCountryById(int p_countryID) {
+        if (d_mapCountries == null || d_mapCountries.isEmpty()) {
+            return null;
+        }
+
+        for (Country country : d_mapCountries) {
+            if (country.getD_countryID() == p_countryID) {
+                return country;
+            }
+        }
+
+        return null;
+    }
 
 }
