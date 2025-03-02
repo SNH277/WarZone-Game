@@ -281,4 +281,34 @@ public class MapController {
     }
 
 
+
+    private Map addRemoveNeighbour(Map p_mapToUpdate, String p_operation, String p_arguments) {
+        String[] l_args = p_arguments.split(" ");
+
+        if (l_args.length != 2) {
+            System.out.println("Invalid arguments. Please provide exactly two country IDs.");
+            return p_mapToUpdate;
+        }
+
+        int l_countryID, l_neighbourID;
+        try {
+            l_countryID = Integer.parseInt(l_args[0]);
+            l_neighbourID = Integer.parseInt(l_args[1]);
+        } catch (NumberFormatException e) {
+            System.out.println("Invalid input: Country IDs must be integers.");
+            return p_mapToUpdate;
+        }
+
+        if (p_operation.equals("add")) {
+            p_mapToUpdate.addNeighbour(l_countryID, l_neighbourID);
+        }
+        else if (p_operation.equals("remove")) {
+            p_mapToUpdate.removeNeighbour(l_countryID, l_neighbourID);
+        }
+        else {
+            System.out.println("Invalid operation. Please use 'add' or 'remove'.");
+        }
+
+        return p_mapToUpdate;
+    }
 }
