@@ -89,4 +89,80 @@ public class Map {
         }
         return l_max;
     }
+
+    public void addCountry(String p_countryName, String p_continentName) {
+        if (d_mapCountries == null) {
+            d_mapCountries = new ArrayList<>();
+        }
+
+        if (getCountryByName(p_countryName) != null) {
+            System.out.println("Country '" + p_countryName + "' already exists.");
+            return;
+        }
+
+        int l_continentID = getContinentIDByName(p_continentName);
+        if (l_continentID == -1) {
+            System.out.println("Continent '" + p_continentName + "' does not exist.");
+            return;
+        }
+
+        int l_countryID = getMaxCountryID() + 1;
+        Country l_newCountry = new Country(l_countryID, p_countryName, l_continentID);
+        d_mapCountries.add(l_newCountry);
+
+        if (d_mapContinents != null) {
+            for (Continent l_continent : d_mapContinents) {
+                if (l_continent.getD_continentID() == l_continentID) {
+                    l_continent.addCountry(l_newCountry);
+                    break;
+                }
+            }
+        }
+
+        System.out.println("Country '" + p_countryName + "' added successfully!");
+    }
+
+    public Country getCountryByName(String p_countryName) {
+        if (d_mapCountries == null || d_mapCountries.isEmpty()) {
+            return null;
+        }
+
+        for (Country l_country : d_mapCountries) {
+            if (l_country.getD_countryName().equalsIgnoreCase(p_countryName)) {
+                return l_country;
+            }
+        }
+
+        return null;
+    }
+
+    private int getMaxCountryID() {
+        if (d_mapCountries == null || d_mapCountries.isEmpty()) {
+            return 0;
+        }
+
+        int l_max = 0;
+        for (Country l_eachCountry : d_mapCountries) {
+            if (l_eachCountry.getD_countryID() > l_max) {
+                l_max = l_eachCountry.getD_countryID();
+            }
+        }
+        return l_max;
+    }
+
+    private int getContinentIDByName(String p_continentName) {
+        if (d_mapContinents == null || d_mapContinents.isEmpty()) {
+            return -1;
+        }
+
+        for (Continent l_eachContinent : d_mapContinents) {
+            if (l_eachContinent.getD_continentName().equals(p_continentName)) {
+                return l_eachContinent.getD_continentID();
+            }
+        }
+
+        return -1;
+    }
+
+
 }
