@@ -311,4 +311,17 @@ public class MapController {
 
         return p_mapToUpdate;
     }
+    public void editNeighbourCountry(CurrentState p_currentState, String p_operation, String p_arguments) {
+        String l_mapName = p_currentState.getD_map().getD_mapName();
+        Map l_map = p_currentState.getD_map();
+
+        if (l_map.getD_mapCountries() == null && l_map.getD_mapContinents() == null) {
+            l_map = this.loadMap(p_currentState, l_mapName);
+        }
+
+        if (l_map != null) {
+            Map l_updatedMap = addRemoveNeighbour(l_map, p_operation, p_arguments);
+            p_currentState.setD_map(l_updatedMap);
+        }
+    }
 }
