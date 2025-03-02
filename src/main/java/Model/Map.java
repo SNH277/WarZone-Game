@@ -1,5 +1,6 @@
 package Model;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Map {
@@ -51,5 +52,40 @@ public class Map {
 
     public boolean validateMap() {
         return true;
+    }
+
+    public void addContinent(String p_mapContinentName, Integer p_continentValue) {
+        if (d_mapContinents == null) {
+            d_mapContinents = new ArrayList<>();
+        }
+
+        for (Continent l_continent : d_mapContinents) {
+            if (l_continent.getD_continentName().equals(p_mapContinentName)) {
+                System.out.println("Continent: " + p_mapContinentName + " already exists.");
+                return;
+            }
+        }
+
+        int l_mapContinentId = (d_mapContinents.isEmpty()) ? 1 : getMaxContinentID() + 1;
+
+        Continent l_newContinent = new Continent(l_mapContinentId, p_mapContinentName, p_continentValue);
+        d_mapContinents.add(l_newContinent);
+        System.out.println(d_mapContinents);
+
+        System.out.println("Continent " + p_mapContinentName + " added successfully!");
+    }
+
+    private int getMaxContinentID() {
+        if (d_mapContinents == null || d_mapContinents.isEmpty()) {
+            return 0;
+        }
+
+        int l_max = 0;
+        for (Continent l_eachContinent : d_mapContinents) {
+            if (l_eachContinent.getD_continentID() > l_max) {
+                l_max = l_eachContinent.getD_continentID();  // Update max ID
+            }
+        }
+        return l_max;
     }
 }

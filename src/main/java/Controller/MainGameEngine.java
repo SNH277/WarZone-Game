@@ -181,6 +181,12 @@ public class MainGameEngine {
             if(l_singleOperation.containsKey("Arguments")&& l_singleOperation.get("Arguments")!=null){
                 Model.Map l_map =d_mapController.loadMap(d_currentGameState,l_singleOperation.get("Arguments"));
                 System.out.println(l_map);
+                if(l_map.validateMap()){
+                    System.out.println("Map is valid.");
+                }
+                else{
+                    System.out.println("Map is not valid.");
+                }
             }
         }
     }
