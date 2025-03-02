@@ -2,7 +2,9 @@ package Controller;
 
 import Model.*;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 public class PlayerController {
     public void assignCountry(CurrentState p_currentState) {
@@ -39,6 +41,28 @@ public class PlayerController {
     }
 
     private void randomCountryDistribution(List<Player> p_Players, List<Country> p_Countries, int p_CountriesPerPlayer) {
+        List<Country> l_unassignedCountries = new ArrayList<>(p_Countries);
+
+        if(l_unassignedCountries.isEmpty()) {
+            System.out.println("No Countries in the map.");
+            return;
+        }
+        Random rand = new Random();
+
+        for (Player l_Player : p_Players) {
+            if(l_Player.getD_currentCountries() == null) {
+                l_Player.setD_currentCountries(new ArrayList<>());
+            }
+            for (int i = 0; i <= p_CountriesPerPlayer && !l_unassignedCountries.isEmpty(); i++) {
+                int l_randomIndex = rand.nextInt(l_unassignedCountries.size());
+                l_Player.getD_currentCountries().add(l_unassignedCountries.get(l_randomIndex));
+                l_unassignedCountries.remove(l_randomIndex);
+            }
+        }
+
+        if(!l_unassignedCountries.isEmpty()) {
+            randomCountryDistribution(p_Players, l_unassignedCountries, 1);
+        }
     }
 
 
