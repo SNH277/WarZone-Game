@@ -269,4 +269,17 @@ public class Map {
         System.out.println("Country " + p_neighbourID + " removed as a neighbor from " + p_countryID);
         System.out.println("Country " + p_countryID + " removed as a neighbor from " + p_neighbourID);
     }
+
+    private Country getCountryById(Integer p_countryID) {
+        if (d_mapCountries == null || d_mapCountries.isEmpty()) {
+            return null;
+        }
+
+        for (Country l_country : d_mapCountries) {
+            if (Objects.equals(l_country.getD_countryID(), p_countryID)) {
+                return l_country;
+            }
+        }
+        return null;
+    }
     }
