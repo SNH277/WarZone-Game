@@ -218,4 +218,31 @@ public class Map {
         return null;
     }
 
+    public void addNeighbour(int p_countryID, int p_neighbourID) {
+        if (d_mapCountries == null || d_mapCountries.isEmpty()) {
+            System.out.println("No countries exist in the map.");
+            return;
+        }
+
+        Country l_country1 = getCountryById(p_countryID);
+        Country l_country2 = getCountryById(p_neighbourID);
+
+        if (l_country1 == null || l_country2 == null) {
+            if (l_country1 == null) {
+                System.out.println("Country with ID: " + p_countryID + " does not exist.");
+            }
+            if (l_country2 == null) {
+                System.out.println("Country with ID: " + p_neighbourID + " does not exist.");
+            }
+            return;
+        }
+
+        l_country1.addCountryNeighbour(p_neighbourID);
+        l_country2.addCountryNeighbour(p_countryID);
+
+        System.out.println("Country " + p_neighbourID + " added as a neighbor to " + p_countryID);
+        System.out.println("Country " + p_countryID + " added as a neighbor to " + p_neighbourID);
+    }
+
+
 }

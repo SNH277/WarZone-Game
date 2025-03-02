@@ -51,4 +51,11 @@ public class CommandHandler {
         l_operationMap.put("Arguments",l_argument);
         return l_operationMap;
     }
+
+    public boolean checkRequiredKey(String l_arguments, Map<String, String> l_singleOperation) {
+        if(l_singleOperation.containsKey((l_arguments)) && l_singleOperation.get(l_arguments) != null && !l_singleOperation.get(l_arguments).isEmpty()){
+            return true;
+        }
+        return false;
+    }
 }
