@@ -38,6 +38,19 @@ public class PlayerController {
     }
 
     private void displayAssignedCountries(List<Player> p_Players) {
+        for(Player l_currentPlayer : p_Players) {
+            StringBuilder l_output = new StringBuilder("Player " + l_currentPlayer.getD_playerName() + " has assigned countries: ");
+
+            List<Country> l_countries = l_currentPlayer.getD_currentCountries();
+            if(l_countries == null || l_countries.isEmpty()) {
+                l_output.append("No countries assigned.");
+            } else {
+                for(Country l_country : l_countries) {
+                    l_output.append(l_country.getD_countryName()).append(", ");
+                }
+            }
+            System.out.println(l_output.toString().trim());
+        }
     }
 
     private void randomCountryDistribution(List<Player> p_Players, List<Country> p_Countries, int p_CountriesPerPlayer) {
