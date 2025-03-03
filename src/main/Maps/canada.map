@@ -5,6 +5,7 @@ Western_Provinces-South 3
 Western_Provinces-North 2
 Nunavut 3
 Northwestern_Territories 2
+
 [Countries]
 1 New_Brunswick -1
 2 Prince_Edward_Island -1
@@ -37,6 +38,7 @@ Northwestern_Territories 2
 29 NT-Victoria_Island-West -1
 30 Northwest_Territories-Continental -1
 31 Yukon_Territory -1
+
 [Borders]
 1 8 2 3
 2 1 3

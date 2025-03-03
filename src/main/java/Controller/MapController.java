@@ -40,7 +40,7 @@ public class MapController {
     private List<Continent> updateContinentCountries(List<Continent> p_continents, List<Country> p_countries) {
         for(Country l_country : p_countries){
             for(Continent l_continent:p_continents){
-                if(l_country.getD_continentId().equals(l_continent.getD_continentID())){
+                if(l_country.getD_continentID().equals(l_continent.getD_continentID())){
                     l_continent.setCountry(l_country);
                 }
             }
@@ -204,7 +204,7 @@ public class MapController {
             return false;
         }
 
-        p_writer.write(("[Continents]" + System.lineSeparator()).getBytes());
+        p_writer.write((System.lineSeparator() + "[Continents]" + System.lineSeparator()).getBytes());
         for (Continent l_eachContinent : p_map.getD_mapContinents()) {
             String l_content = l_eachContinent.getD_continentName() + " " + l_eachContinent.getD_continentValue();
             p_writer.write((l_content + System.lineSeparator()).getBytes());
@@ -218,7 +218,7 @@ public class MapController {
             return false;
         }
 
-        p_writer.write(("[Countries]" + System.lineSeparator()).getBytes());
+        p_writer.write((System.lineSeparator() + "[Countries]" + System.lineSeparator()).getBytes());
         for (Country l_eachCountry : p_map.getD_mapCountries()) {
             String l_content = l_eachCountry.getD_countryID() + " " + l_eachCountry.getD_countryName() + " " + l_eachCountry.getD_continentID();
             p_writer.write((l_content + System.lineSeparator()).getBytes());
@@ -232,7 +232,7 @@ public class MapController {
             return false;
         }
 
-        p_writer.write(("[Borders]" + System.lineSeparator()).getBytes());
+        p_writer.write((System.lineSeparator() + "[Borders]" + System.lineSeparator()).getBytes());
         boolean hasBorders = false;
 
         for (Country l_eachCountry : p_map.getD_mapCountries()) {
@@ -251,6 +251,22 @@ public class MapController {
 
         return true;
     }
+
+    public void editCountry(CurrentState p_currentState, String p_operation, String p_argument) {
+        String l_filename = p_currentState.getD_map().getD_mapName();
+        Map l_mapToBeEdited = p_currentState.getD_map();
+
+        if (l_mapToBeEdited.getD_mapCountries() == null && l_mapToBeEdited.getD_mapContinents() == null) {
+            l_mapToBeEdited = this.loadMap(p_currentState, l_filename);
+        }
+
+        if (l_mapToBeEdited != null) {
+            Map l_updatedMap = addRemoveCountry(l_mapToBeEdited, p_operation, p_argument);
+            p_currentState.setD_map(l_updatedMap);
+            p_currentState.getD_map().setD_mapName(l_filename);
+        }
+    }
+
 
     private Map addRemoveCountry(Map p_mapToUpdate, String p_operation, String p_arguments) {
         String[] splitArgs = p_arguments.split(" ");
@@ -311,6 +327,7 @@ public class MapController {
 
         return p_mapToUpdate;
     }
+
     public void editNeighbourCountry(CurrentState p_currentState, String p_operation, String p_arguments) {
         String l_mapName = p_currentState.getD_map().getD_mapName();
         Map l_map = p_currentState.getD_map();

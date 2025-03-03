@@ -10,16 +10,13 @@ public class Country {
     List<Integer> d_neighbouringCountriesId;
     Integer d_armies = 0;
 
-    public Country(){
-    }
-
     public Country(Integer p_countryID, String p_countryName, Integer p_continentId) {
         this.d_countryID = p_countryID;
         this.d_countryName = p_countryName;
         this.d_continentId = p_continentId;
     }
 
-    public Integer getD_continentId() {
+    public Integer getD_continentID() {
         return d_continentId;
     }
 
@@ -64,6 +61,7 @@ public class Country {
         return "Country{" +
                 "d_countryID=" + d_countryID +
                 ", d_countryName='" + d_countryName + '\'' +
+                ", d_continentId=" + d_continentId +
                 ", d_neighbouringCountriesId=" + d_neighbouringCountriesId +
                 ", d_armies=" + d_armies +
                 '}';
@@ -90,14 +88,6 @@ public class Country {
         if (!removed) {
             System.out.println("Country ID: " + p_removeCountryId + " is not a neighbour in the first place.");
         }
-    }
-
-    public Integer getD_continentID() {
-        return -1;
-    }
-
-    public void setD_continentID(Integer p_continentID) {
-        this.d_continentId = p_continentID;
     }
 
 }

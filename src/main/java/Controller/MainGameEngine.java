@@ -61,8 +61,7 @@ public class MainGameEngine {
     private void commandHandler(String p_inputCommand) throws Exception {
         CommandHandler l_commandHandler =new CommandHandler(p_inputCommand);
         String l_mainCommand = l_commandHandler.getMainCommand();
-        boolean l_isMapAvailable=false;
-//        boolean l_mapAvailable = (d_currentState.getD_map() != null);
+        boolean l_isMapAvailable = (d_currentGameState.getD_map() != null);
 
         Set<String> requiresMap = Set.of(
                 "editcountry", "editcontinent", "editneighbour",
@@ -170,9 +169,24 @@ public class MainGameEngine {
         System.out.println(l_listOfOperations);
     }
 
-    private void editCountry(CommandHandler p_commandHandler) {
+    private void editCountry(CommandHandler p_commandHandler) throws Exception {
         List<Map<String,String>> l_listOfOperations=p_commandHandler.getListOfOperations();
         System.out.println(l_listOfOperations);
+        if (l_listOfOperations.isEmpty()) {
+            throw new Exception("Invalid Command for edit Country");
+        }
+
+        for (Map<String, String> l_singleOperation : l_listOfOperations) {
+            String l_operation = l_singleOperation.get("Operation");
+            String l_arguments = l_singleOperation.get("Arguments");
+
+            if (l_operation != null && !l_operation.isEmpty() && l_arguments != null && !l_arguments.isEmpty()) {
+                d_mapController.editCountry(d_currentGameState, l_operation, l_arguments);
+            } else {
+                throw new Exception("Missing or invalid 'Operation' or 'Arguments' in command.");
+            }
+        }
+
     }
 
     private void editMap(CommandHandler p_commandHandler) {
