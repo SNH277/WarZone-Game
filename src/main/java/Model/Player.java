@@ -1,5 +1,11 @@
 package Model;
 
+import Controller.PlayerController;
+import Utils.CommandHandler;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -61,8 +67,30 @@ public class Player {
     }
 
     public void setContinent(Continent p_continent) {
+        if(d_currentContinents == null) {
+            d_currentContinents = new HashSet<>();
+        }
         if(!d_currentContinents.add(p_continent)) {
             System.out.println("Continent : "+p_continent.getD_continentName()+" already assigned to Player : "+d_playerName);
+        }
+    }
+
+    public void issueOrder() throws IOException {
+        BufferedReader l_bufferedReader = new BufferedReader(new InputStreamReader(System.in));
+        System.out.println("Enter command to deploy armies on the map for Player: " + d_playerName + " | Armies left: " + d_unallocatedArmies);
+
+        String l_command = l_bufferedReader.readLine().trim();
+        CommandHandler l_commandHandler = new CommandHandler(l_command);
+
+        if("deploy".equals(l_commandHandler.getMainCommand())) {
+            String[] l_commandParts = l_command.split(" ");
+
+            if(l_commandParts.length == 3) {
+                PlayerController l_playerController = new PlayerController();
+                l_playerController.createDeployOrder(l_command, this);
+            } else {
+                System.out.println("Invalid command format. Please provide a valid command.");
+            }
         }
     }
 
