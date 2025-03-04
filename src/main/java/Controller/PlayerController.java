@@ -90,5 +90,33 @@ public class PlayerController {
         }
     }
 
+    public int getNumberOfArmies(Player p_Player) {
+        int l_currentArmySize = 0;
+        if (p_Player.getD_currentCountries() != null && !p_Player.getD_currentCountries().isEmpty()){
+            l_currentArmySize = Math.max(3, Math.round((float)(p_Player.getD_currentCountries().size() / 3)));
+        }
+        if (p_Player.getD_currentContinents() != null && !p_Player.getD_currentContinents().isEmpty()){
+            int l_ContinentValue = 0;
+            for (Continent l_continent : p_Player.getD_currentContinents()) {
+                l_ContinentValue = l_continent.getD_continentValue();
+            }
+            l_currentArmySize += l_ContinentValue;
+        }
+        return l_currentArmySize;
+    }
+
+    public void assignArmies(CurrentState p_CurrentState) {
+        List<Player> l_players = p_CurrentState.getD_players();
+        if(l_players == null || l_players.isEmpty()) {
+            System.out.println("No players found.");
+            return;
+        }
+        for (Player l_player : l_players) {
+            int l_NumberOfArmiesPerPlayer = getNumberOfArmies(l_player);
+            l_player.setD_unallocatedArmies(l_NumberOfArmiesPerPlayer);
+            System.out.println("Player" + l_player.getD_playerName() + " got assigned: " + l_NumberOfArmiesPerPlayer + " armies.");
+        }
+    }
+
 
 }
