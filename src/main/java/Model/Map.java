@@ -196,6 +196,19 @@ public class Map {
         }
         return l_max;
     }
+    public Continent getContinentByName(String p_mapContinentName) {
+        if (d_mapContinents == null || d_mapContinents.isEmpty()) {
+            return null;
+        }
+
+        for (Continent l_continent : d_mapContinents) {
+            if (l_continent.getD_continentName().equals(p_mapContinentName)) {
+                return l_continent;
+            }
+        }
+
+        return null; // Continent not found
+    }
 
     public void addCountry(String p_countryName, String p_continentName) {
         if (d_mapCountries == null) {
