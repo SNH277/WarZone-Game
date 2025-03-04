@@ -204,9 +204,19 @@ public class MainGameEngine {
 
     }
 
-    private void editMap(CommandHandler p_commandHandler) {
+    private void editMap(CommandHandler p_commandHandler) throws Exception {
         List<Map<String,String>> l_listOfOperations=p_commandHandler.getListOfOperations();
         System.out.println(l_listOfOperations);
+        if (l_listOfOperations == null || l_listOfOperations.isEmpty()) {
+            throw new Exception("Invalid Command for edit map");
+        }
+
+        for (Map<String, String> l_singleOperation : l_listOfOperations) {
+            if (!p_commandHandler.checkRequiredKey("Arguments", l_singleOperation)) {
+                throw new Exception("Invalid Command for edit map operation");
+            }
+            d_mapController.editMap(d_currentGameState, l_singleOperation.get("Arguments"));
+        }
     }
 
     private void loadMap(CommandHandler p_commandHandler) throws Exception{

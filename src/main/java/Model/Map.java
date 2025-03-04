@@ -183,6 +183,33 @@ public class Map {
         System.out.println("Continent " + p_mapContinentName + " added successfully!");
     }
 
+    public void removeContinent(String p_mapContinentName) {
+
+
+        if (d_mapContinents == null || d_mapContinents.isEmpty()) {
+
+            return;
+        }
+
+        Continent l_targetContinent = getContinentByName(p_mapContinentName);
+        if (l_targetContinent == null) {
+
+            return;
+        }
+
+        // Remove all neighboring references from countries before deleting them
+        if (l_targetContinent.getD_countries() != null && !l_targetContinent.getD_countries().isEmpty()) {
+            for (Country l_country : l_targetContinent.getD_countries()) {
+                removeAllCountryNeighbours(l_country);
+                d_mapCountries.remove(l_country);
+            }
+        }
+
+        d_mapContinents.remove(l_targetContinent);
+        System.out.println("Success: Continent '" + p_mapContinentName + "' has been removed.");
+    }
+
+
     private int getMaxContinentID() {
         if (d_mapContinents == null || d_mapContinents.isEmpty()) {
             return 0;
@@ -195,6 +222,41 @@ public class Map {
             }
         }
         return l_max;
+    }
+    public Continent getContinentByName(String p_mapContinentName) {
+        if (d_mapContinents == null || d_mapContinents.isEmpty()) {
+            return null;
+        }
+
+        for (Continent l_continent : d_mapContinents) {
+            if (l_continent.getD_continentName().equals(p_mapContinentName)) {
+                return l_continent;
+            }
+        }
+
+        return null; // Continent not found
+    }
+
+    private void removeAllCountryNeighbours(Country p_country) {
+        if (p_country == null || p_country.getD_neighbouringCountriesId() == null) {
+
+            return;
+        }
+
+        // Store the country ID once for better performance
+        int l_countryId = p_country.getD_countryID();
+
+        // Clear neighbors of the country being removed
+        p_country.getD_neighbouringCountriesId().clear();
+
+
+        // Remove references to this country from all other countries
+        for (Country l_eachCountry : d_mapCountries) {
+            if (l_eachCountry.getD_neighbouringCountriesId() != null && l_eachCountry.getD_neighbouringCountriesId().contains(l_countryId)) {
+                l_eachCountry.getD_neighbouringCountriesId().remove(Integer.valueOf(l_countryId));
+
+            }
+        }
     }
 
     public void addCountry(String p_countryName, String p_continentName) {
