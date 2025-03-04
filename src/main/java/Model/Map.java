@@ -377,17 +377,13 @@ public class Map {
         System.out.println("Country " + p_countryID + " removed as a neighbor from " + p_neighbourID);
     }
 
-    private Country getCountryById(Integer p_countryID) {
-        if (d_mapCountries == null || d_mapCountries.isEmpty()) {
-            return null;
-        }
-
-        for (Country l_country : d_mapCountries) {
-            if (Objects.equals(l_country.getD_countryID(), p_countryID)) {
-                return l_country;
+    public String getCountryNameById(Integer p_neighbourID) {
+        for(Country l_eachCountry : d_mapCountries){
+            if(l_eachCountry.getD_countryID().equals(p_neighbourID)){
+                return l_eachCountry.getD_countryName();
             }
         }
-        return null;
+        return "null";
     }
 
 }
