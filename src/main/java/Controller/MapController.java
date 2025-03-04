@@ -372,4 +372,20 @@ public class MapController {
 
         return p_mapToUpdate;
     }
+
+    public void editContinent(CurrentState p_currentState, String p_operation, String p_argument) {
+        String l_filename = p_currentState.getD_map().getD_mapName();
+        Map l_mapToBeEdited = p_currentState.getD_map();
+
+        if (l_mapToBeEdited.getD_mapCountries() == null && l_mapToBeEdited.getD_mapContinents() == null) {
+            l_mapToBeEdited = this.loadMap(p_currentState, l_filename);
+        }
+
+        if (l_mapToBeEdited != null) {
+            Map l_updatedMap = addRemoveContinents(l_mapToBeEdited, p_operation, p_argument);
+            p_currentState.setD_map(l_updatedMap);
+            p_currentState.getD_map().setD_mapName(l_filename);
+        }
+    }
+
 }
