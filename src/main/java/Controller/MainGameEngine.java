@@ -179,9 +179,24 @@ public class MainGameEngine {
         }
     }
 
-    private void editContinent(CommandHandler p_commandHandler) {
-        List<Map<String,String>> l_listOfOperations=p_commandHandler.getListOfOperations();
+    private void editContinent(CommandHandler p_commandHandler) throws Exception {
+        List<Map<String,String>> l_listOfOperations = p_commandHandler.getListOfOperations();
         System.out.println(l_listOfOperations);
+
+        if (l_listOfOperations.isEmpty()) {
+            throw new Exception("Invalid Command for edit Continent");
+        }
+
+        for (Map<String, String> l_singleOperation : l_listOfOperations) {
+            String l_operation = l_singleOperation.get("Operation");
+            String l_arguments = l_singleOperation.get("Arguments");
+
+            if (l_operation != null && !l_operation.isEmpty() && l_arguments != null && !l_arguments.isEmpty()) {
+                d_mapController.editContinent(d_currentGameState, l_operation, l_arguments);
+            } else {
+                throw new Exception("Missing or invalid 'Operation' or 'Arguments' in command.");
+            }
+        }
     }
 
     private void editCountry(CommandHandler p_commandHandler) throws Exception {
@@ -203,6 +218,9 @@ public class MainGameEngine {
         }
 
     }
+
+
+
 
     private void editMap(CommandHandler p_commandHandler) throws Exception {
         List<Map<String,String>> l_listOfOperations=p_commandHandler.getListOfOperations();
