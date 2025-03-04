@@ -184,16 +184,16 @@ public class Map {
     }
 
     public void removeContinent(String p_mapContinentName) {
-        System.out.println("Attempting to remove continent: " + p_mapContinentName);
+
 
         if (d_mapContinents == null || d_mapContinents.isEmpty()) {
-            System.out.println("Error: Continent '" + p_mapContinentName + "' does not exist.");
+
             return;
         }
 
         Continent l_targetContinent = getContinentByName(p_mapContinentName);
         if (l_targetContinent == null) {
-            System.out.println("Error: Continent '" + p_mapContinentName + "' not found in the map.");
+
             return;
         }
 
@@ -239,7 +239,7 @@ public class Map {
 
     private void removeAllCountryNeighbours(Country p_country) {
         if (p_country == null || p_country.getD_neighbouringCountriesId() == null) {
-            System.out.println("Error: Country or its neighboring list is null.");
+
             return;
         }
 
@@ -248,13 +248,13 @@ public class Map {
 
         // Clear neighbors of the country being removed
         p_country.getD_neighbouringCountriesId().clear();
-        System.out.println("Removed all neighbors from country: " + p_country.getD_countryName());
+
 
         // Remove references to this country from all other countries
         for (Country l_eachCountry : d_mapCountries) {
             if (l_eachCountry.getD_neighbouringCountriesId() != null && l_eachCountry.getD_neighbouringCountriesId().contains(l_countryId)) {
                 l_eachCountry.getD_neighbouringCountriesId().remove(Integer.valueOf(l_countryId));
-                System.out.println("Removed " + p_country.getD_countryName() + " from neighbors of " + l_eachCountry.getD_countryName());
+
             }
         }
     }

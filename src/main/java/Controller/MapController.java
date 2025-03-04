@@ -340,5 +340,5 @@ public class MapController {
             Map l_updatedMap = addRemoveNeighbour(l_map, p_operation, p_arguments);
             p_currentState.setD_map(l_updatedMap);
         }
-    }c
+    }
 }
