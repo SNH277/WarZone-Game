@@ -33,7 +33,10 @@ public class Country {
     }
 
     public List<Integer> getD_neighbouringCountriesId() {
-        return d_neighbouringCountriesId;
+        if(d_neighbouringCountriesId == null)
+            return new ArrayList<Integer>();
+        else
+            return d_neighbouringCountriesId;
     }
 
     public Integer getD_armies() {
