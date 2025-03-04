@@ -59,6 +59,7 @@ public class Map {
     }
 
     private boolean validateCountryConnections() {
+        return false;
     }
 
     private boolean validateContinentSubgraph() {
@@ -66,6 +67,20 @@ public class Map {
     }
 
     private boolean validateCountriesAndContinents() {
+        if (d_mapContinents == null || d_mapContinents.isEmpty()) {
+            System.out.println("Map does not have Continents");
+            return false;
+        }
+        if (d_mapCountries == null || d_mapCountries.isEmpty()) {
+            System.out.println("Map does not have Countries");
+            return false;
+        }
+        for (Country l_eachCountry : d_mapCountries) {
+            if (l_eachCountry.getD_neighbouringCountriesId().isEmpty()) {
+                System.out.println("Country: " + l_eachCountry.getD_countryName() + " does not have any neighbours.");
+                return false;
+            }
+        }
         return false;
     }
 
