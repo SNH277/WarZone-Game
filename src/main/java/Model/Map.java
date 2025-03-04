@@ -60,8 +60,45 @@ public class Map {
     }
 
     private boolean validateCountryConnections() {
-        return false;
+        if (d_mapCountries == null || d_mapCountries.isEmpty()) {
+            return false;
+        }
+
+        HashMap<Integer, Boolean> l_visited = new HashMap<>();
+        for (Country l_eachCountry : d_mapCountries) {
+            l_visited.put(l_eachCountry.getD_countryID(), false);
+        }
+
+        dfsCountry(d_mapCountries.get(0), l_visited);
+
+        for (java.util.Map.Entry<Integer, Boolean> l_entry : l_visited.entrySet()) {
+            if (!l_entry.getValue()) {
+                System.out.println("Country : " + getCountryById(l_entry.getKey()).getD_countryName() + " is not reachable");
+            }
+        }
+
+        return !l_visited.containsValue(false);
     }
+
+    private void dfsCountry(Country p_country, HashMap<Integer, Boolean> p_visited) {
+        p_visited.put(p_country.getD_countryID(),true);
+        for(Country l_eachCountry : getAdjacentCountries(p_country)){
+            if(!p_visited.get(l_eachCountry.getD_countryID())){
+                dfsCountry(l_eachCountry,p_visited);
+            }
+        }
+    }
+
+    private List<Country> getAdjacentCountries(Country p_country) {
+        List<Country> l_adjacentCountries = new ArrayList<>();
+        if (!p_country.getD_neighbouringCountriesId().isEmpty()) {
+            for (Integer l_neighbourId : p_country.getD_neighbouringCountriesId()) {
+                l_adjacentCountries.add(getCountryById(l_neighbourId));
+            }
+        }
+        return l_adjacentCountries;
+    }
+
 
     private boolean validateContinentSubgraph() {
         for (Continent l_eachContinent : d_mapContinents) {
