@@ -131,7 +131,7 @@ public class PlayerController {
 
         if(!validateCountryOwnership(p_Player, l_countryName)){
             System.out.println("Country " + l_countryName + " is not owned by " + p_Player.getD_playerName());
-        } else if (!validateNumberOfArmiesToDeploy(p_Player, l_numberOfArmiesToDeploy)) {
+        } else if (!hasSufficientArmies(p_Player, l_numberOfArmiesToDeploy)) {
             System.out.println("Player does not have enough armies to deploy.");
         } else {
             Orders l_order = new Orders(p_OrderName.split(" ")[0], l_countryName, l_numberOfArmiesToDeploy);
@@ -146,9 +146,20 @@ public class PlayerController {
 
     }
 
-    private boolean validateNumberOfArmiesToDeploy(Player pPlayer, int lNumberOfArmiesToDeploy) {
+    private boolean hasSufficientArmies(Player p_Player, int p_NumberOfArmiesToDeploy) {
+        if(p_Player.getD_unallocatedArmies() >= p_NumberOfArmiesToDeploy) {
+            return true;
+        }
+        return false;
     }
 
-    private boolean validateCountryOwnership(Player pPlayer, String lCountryName) {
+    private boolean validateCountryOwnership(Player p_Player, String p_CountryName) {
+        for(Country l_country : p_Player.getD_currentCountries()) {
+            if(l_country.getD_countryName().equals(p_CountryName)) {
+                return true;
+            }
+        }
+        return false;
     }
+
 }
