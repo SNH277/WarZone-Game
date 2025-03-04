@@ -137,7 +137,22 @@ public class MainGameEngine {
 
     private void validateMap(CommandHandler p_commandHandler) {
         List<Map<String,String>> l_listOfOperations=p_commandHandler.getListOfOperations();
-        System.out.println(l_listOfOperations);
+        if (l_listOfOperations != null && !l_listOfOperations.isEmpty()) {
+            System.out.println("Validate map command is not correct. Use 'validatemap' command.");
+            return;
+        }
+
+        Model.Map l_map = d_currentGameState.getD_map();
+        if (l_map == null) {
+            System.out.println("Map not Found!");
+            return;
+        }
+
+        if (l_map.validateMap()) {
+            System.out.println("Map is Valid");
+        } else {
+            System.out.println("Map is not Valid");
+        }
     }
 
     private void assignCountries(CommandHandler p_commandHandler) {
