@@ -341,4 +341,35 @@ public class MapController {
             p_currentState.setD_map(l_updatedMap);
         }
     }
+
+    private Map addRemoveContinents(Map p_mapToUpdate, String p_operation, String p_arguments) {
+        String[] splitArgs = p_arguments.split(" ");
+
+        if (p_operation.equals("add")) {
+            if (splitArgs.length == 2) {
+                String continentName = splitArgs[0];
+                try {
+                    int controlValue = Integer.parseInt(splitArgs[1]);
+                    p_mapToUpdate.addContinent(continentName, controlValue);
+                    System.out.println("Continent " + continentName + " added successfully!");
+                } catch (NumberFormatException e) {
+                    System.out.println("Error: Control value must be a valid integer.");
+                }
+            } else {
+                System.out.println("Error: Invalid format. Use 'add <continent> <controlValue>'.");
+            }
+        } else if (p_operation.equals("remove")) {
+            if (splitArgs.length == 1) {
+                String continentName = splitArgs[0];
+                p_mapToUpdate.removeContinent(continentName);
+                System.out.println("Continent " + continentName + " removed successfully!");
+            } else {
+                System.out.println("Error: Invalid format. Use 'remove <continent>'.");
+            }
+        } else {
+            System.out.println("Error: Invalid operation. Use 'add' or 'remove'.");
+        }
+
+        return p_mapToUpdate;
+    }
 }
