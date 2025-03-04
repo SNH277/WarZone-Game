@@ -52,7 +52,21 @@ public class Map {
     }
 
     public boolean validateMap() {
-        return true;
+        if(validateCountriesAndContinents() && validateContinentSubgraph() && validateCountryConnections()) {
+            return true;
+        }
+        return false;
+    }
+
+    private boolean validateCountryConnections() {
+    }
+
+    private boolean validateContinentSubgraph() {
+        return false;
+    }
+
+    private boolean validateCountriesAndContinents() {
+        return false;
     }
 
     public void addContinent(String p_mapContinentName, Integer p_continentValue) {
