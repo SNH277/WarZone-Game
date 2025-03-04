@@ -183,6 +183,9 @@ public class Map {
         System.out.println("Continent " + p_mapContinentName + " added successfully!");
     }
 
+
+
+
     private int getMaxContinentID() {
         if (d_mapContinents == null || d_mapContinents.isEmpty()) {
             return 0;
@@ -208,6 +211,28 @@ public class Map {
         }
 
         return null; // Continent not found
+    }
+
+    private void removeAllCountryNeighbours(Country p_country) {
+        if (p_country == null || p_country.getD_neighbouringCountriesId() == null) {
+            System.out.println("Error: Country or its neighboring list is null.");
+            return;
+        }
+
+        // Store the country ID once for better performance
+        int l_countryId = p_country.getD_countryID();
+
+        // Clear neighbors of the country being removed
+        p_country.getD_neighbouringCountriesId().clear();
+        System.out.println("Removed all neighbors from country: " + p_country.getD_countryName());
+
+        // Remove references to this country from all other countries
+        for (Country l_eachCountry : d_mapCountries) {
+            if (l_eachCountry.getD_neighbouringCountriesId() != null && l_eachCountry.getD_neighbouringCountriesId().contains(l_countryId)) {
+                l_eachCountry.getD_neighbouringCountriesId().remove(Integer.valueOf(l_countryId));
+                System.out.println("Removed " + p_country.getD_countryName() + " from neighbors of " + l_eachCountry.getD_countryName());
+            }
+        }
     }
 
     public void addCountry(String p_countryName, String p_continentName) {
