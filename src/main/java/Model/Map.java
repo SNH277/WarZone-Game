@@ -183,7 +183,31 @@ public class Map {
         System.out.println("Continent " + p_mapContinentName + " added successfully!");
     }
 
+    public void removeContinent(String p_mapContinentName) {
+        System.out.println("Attempting to remove continent: " + p_mapContinentName);
 
+        if (d_mapContinents == null || d_mapContinents.isEmpty()) {
+            System.out.println("Error: Continent '" + p_mapContinentName + "' does not exist.");
+            return;
+        }
+
+        Continent l_targetContinent = getContinentByName(p_mapContinentName);
+        if (l_targetContinent == null) {
+            System.out.println("Error: Continent '" + p_mapContinentName + "' not found in the map.");
+            return;
+        }
+
+        // Remove all neighboring references from countries before deleting them
+        if (l_targetContinent.getD_countries() != null && !l_targetContinent.getD_countries().isEmpty()) {
+            for (Country l_country : l_targetContinent.getD_countries()) {
+                removeAllCountryNeighbours(l_country);
+                d_mapCountries.remove(l_country);
+            }
+        }
+
+        d_mapContinents.remove(l_targetContinent);
+        System.out.println("Success: Continent '" + p_mapContinentName + "' has been removed.");
+    }
 
 
     private int getMaxContinentID() {
