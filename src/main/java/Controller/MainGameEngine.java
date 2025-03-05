@@ -163,6 +163,16 @@ public class MainGameEngine {
     private void gamePlayer(CommandHandler p_commandHandler) {
         List<Map<String,String>> l_listOfOperations=p_commandHandler.getListOfOperations();
         System.out.println(l_listOfOperations);
+        if (l_listOfOperations == null || l_listOfOperations.isEmpty()) {
+            System.out.println("Wrong command entered, Please enter the correct 'gameplayer' command.");
+        }
+        else {
+            for (Map<String, String> l_eachMap : l_listOfOperations) {
+                if (l_eachMap.containsKey("Operation") && l_eachMap.containsKey("Arguments")) {
+                    d_currentGameState.addOrRemovePlayer(l_eachMap.get("Operation"), l_eachMap.get("Arguments"));
+                }
+            }
+        }
     }
 
     private void editNeighbourCountry(CommandHandler p_commandHandler) throws  Exception {
