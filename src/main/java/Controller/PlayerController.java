@@ -162,4 +162,21 @@ public class PlayerController {
         return false;
     }
 
+    public boolean isUnallocatedArmiesExist(CurrentState p_currentState) {
+        for (Player l_eachPlayer : p_currentState.getD_players()) {
+            if (l_eachPlayer.getD_unallocatedArmies() > 0) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean isUnexecutedOrdersExist(CurrentState p_currentState) {
+        for (Player l_eachPlayer : p_currentState.getD_players()) {
+            if (l_eachPlayer.getD_orders().size() > 0) {
+                return true;
+            }
+        }
+        return false;
+    }
 }
