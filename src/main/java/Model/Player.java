@@ -94,6 +94,15 @@ public class Player {
         }
     }
 
+    public Orders nextOrder() {
+        if(d_orders == null || d_orders.isEmpty()) {
+            return null;
+        }
+        Orders l_order = d_orders.get(0);
+        d_orders.remove(l_order);
+        return l_order;
+    }
+
     public String toString() {
         return "Player [Player Name=" + d_playerName + ", Unallocated Armies=" + d_unallocatedArmies + ", Current Countries=" + d_currentCountries.size() + ", Current Continents=" + d_currentContinents.size() + ", Orders=" + d_orders.size() + "]";
     }
