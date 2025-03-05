@@ -158,6 +158,14 @@ public class MainGameEngine {
     private void assignCountries(CommandHandler p_commandHandler) {
         List<Map<String,String>> l_listOfOperations=p_commandHandler.getListOfOperations();
         System.out.println(l_listOfOperations);
+        if (l_listOfOperations == null || l_listOfOperations.isEmpty()) {
+            d_playerController.assignCountry(d_currentGameState);
+            d_playerController.assignArmies(d_currentGameState);
+            playGame();
+        }
+    }
+
+    private void playGame() {
     }
 
     private void gamePlayer(CommandHandler p_commandHandler) {
