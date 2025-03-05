@@ -198,6 +198,22 @@ public class MapController {
         }
     }
 
+    public void editMap(CurrentState p_currentState, String p_editFileName) throws IOException {
+        String l_fileLocation = getFilePath(p_editFileName);
+        File l_fileToEdit = new File(l_fileLocation);
+
+        if (l_fileToEdit.createNewFile()) {
+            System.out.println("File has been created");
+            Map l_map = new Map();
+            l_map.setD_mapName(p_editFileName);
+            p_currentState.setD_map(l_map);
+        } else {
+            System.out.println("File already exists");
+            Map l_map = this.loadMap(p_currentState, p_editFileName);
+            l_map.setD_mapName(p_editFileName);
+            p_currentState.setD_map(l_map);
+        }
+    }
     private boolean writeContinents(FileOutputStream p_writer, Map p_map) throws IOException {
         if (p_map.getD_mapContinents() == null || p_map.getD_mapContinents().isEmpty()) {
             System.out.println("No Continents in this map. Can't save an incorrect map.");
