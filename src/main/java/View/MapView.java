@@ -31,10 +31,10 @@ public class MapView {
 
                 List<Country> l_countries = l_continent.getD_countries();
                 if (l_countries != null && !l_countries.isEmpty()) {
-                    HashMap<Object, Object> countryToPosition = new HashMap<>();
+                    HashMap<Object, Object> l_countryToPosition = new HashMap<>();
 
                     for (Country l_country : l_countries) {
-                        countryToPosition.put(l_country.getD_countryID(), l_country.getD_countryName());
+                        l_countryToPosition.put(l_country.getD_countryID(), l_country.getD_countryName());
                     }
 
                     System.out.println("  +--------------------------+-------+------------+--------------------------+");
@@ -43,20 +43,20 @@ public class MapView {
 
                     for (int i = 0; i < l_countries.size(); i++) {
                         Country l_country = l_countries.get(i);
-                        String countryName = l_country.getD_countryName();
-                        int countryId = l_country.getD_countryID();
-                        int armies = l_country.getD_armies();
-                        String connectedCountries = "";
+                        String l_countryName = l_country.getD_countryName();
+                        int l_countryId = l_country.getD_countryID();
+                        int l_armies = l_country.getD_armies();
+                        String l_connectedCountries = "";
 
-                        for (Integer neighborID : l_country.getD_neighbouringCountriesId()) {
-                            connectedCountries += d_map.getCountryNameById(neighborID) + ", ";
+                        for (Integer l_neighborID : l_country.getD_neighbouringCountriesId()) {
+                            l_connectedCountries += d_map.getCountryNameById(l_neighborID) + ", ";
                         }
 
-                        if (connectedCountries.length() > 0) {
-                            connectedCountries = connectedCountries.substring(0, connectedCountries.length() - 2);
+                        if (l_connectedCountries.length() > 0) {
+                            l_connectedCountries = l_connectedCountries.substring(0, l_connectedCountries.length() - 2);
                         }
 
-                        System.out.printf("  | %-24s | %-5d | %-10d | %-24s |\n", countryName, countryId, armies, connectedCountries);
+                        System.out.printf("  | %-24s | %-5d | %-10d | %-24s |\n", l_countryName, l_countryId, l_armies, l_connectedCountries);
 
                         if (i == l_countries.size() - 1) {
                             System.out.println("  +--------------------------+-------+------------+--------------------------+");
@@ -64,11 +64,11 @@ public class MapView {
                     }
 
                     for (Country l_country : l_countries) {
-                        String countryName = l_country.getD_countryName();
-                        System.out.println("\nConnections from " + countryName + " (ID: " + l_country.getD_countryID() + "):");
+                        String l_countryName = l_country.getD_countryName();
+                        System.out.println("\nConnections from " + l_countryName + " (ID: " + l_country.getD_countryID() + "):");
                         for (Integer l_neighborID : l_country.getD_neighbouringCountriesId()) {
-                            String neighborName = d_map.getCountryNameById(l_neighborID);
-                            System.out.println("    -> " + neighborName + " (ID: " + l_neighborID + ")");
+                            String l_neighborName = d_map.getCountryNameById(l_neighborID);
+                            System.out.println("    -> " + l_neighborName + " (ID: " + l_neighborID + ")");
                         }
                         System.out.println("-------------------------------------------------------------");
                     }
