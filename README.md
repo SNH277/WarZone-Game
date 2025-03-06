@@ -18,7 +18,7 @@ Yash Koladiya
 Shrey Hingu
 Taksh Rana
 
-Instructor
+# Instructor
 Prof. M. Taleb
 
 
