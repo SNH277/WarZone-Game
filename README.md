@@ -12,11 +12,11 @@ can play by placing armies on countries they own, from which they can attack adj
 to conquer them. The objective of the game is to conquer all countries on the map.
 
 ## 🤝 Team Members
-Akhilesh Kanbarkar
-Disha Padsala
-Yash Koladiya
-Shrey Hingu
-Taksh Rana
+	•	Akhilesh Kanbarkar
+	•	Disha Padsala
+	•	Yash Koladiya
+ 	•	Shrey Hingu
+	•	Taksh Rana
 
 # Instructor
 Prof. M. Taleb
