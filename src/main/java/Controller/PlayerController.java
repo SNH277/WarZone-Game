@@ -58,7 +58,7 @@ public class PlayerController {
                 l_output.append("No countries assigned.");
             } else {
                 for(Country l_country : l_countries) {
-                    l_output.append(l_country.getD_countryName()).append(", ");
+                    l_output.append(l_country.getD_countryName()).append(" ");
                 }
             }
             System.out.println(l_output.toString().trim());
@@ -78,7 +78,7 @@ public class PlayerController {
             if(l_Player.getD_currentCountries() == null) {
                 l_Player.setD_currentCountries(new ArrayList<>());
             }
-            for (int i = 0; i <= p_CountriesPerPlayer && !l_unassignedCountries.isEmpty(); i++) {
+            for (int i = 0; i < p_CountriesPerPlayer && !l_unassignedCountries.isEmpty(); i++) {
                 int l_randomIndex = rand.nextInt(l_unassignedCountries.size());
                 l_Player.getD_currentCountries().add(l_unassignedCountries.get(l_randomIndex));
                 l_unassignedCountries.remove(l_randomIndex);

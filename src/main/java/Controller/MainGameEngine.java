@@ -1,10 +1,13 @@
 package Controller;
 
 import Model.CurrentState;
+import Model.Orders;
+import Model.Player;
 import Utils.CommandHandler;
 import View.MapView;
 
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.List;
 import java.util.Map;
@@ -23,6 +26,7 @@ public class MainGameEngine {
 
     private void startGame(){
         BufferedReader l_bufferedReader = new BufferedReader(new InputStreamReader(System.in));
+        commandDescription();
 
         while (true) {
             displayMenu();
@@ -40,6 +44,70 @@ public class MainGameEngine {
                 System.err.println("An error occurred: " + e.getMessage());
             }
         }
+    }
+
+    private void commandDescription() {
+        System.out.println("================================== COMMAND Description ===================================");
+        System.out.println("1. Initiate the Map:");
+        System.out.println("   - Loads an existing map file into the game.");
+        System.out.println("   - Usage: 'loadmap <your_filename(.map)>'");
+        System.out.println("   - Example: 'loadmap world.map'");
+        System.out.println();
+        System.out.println("2. Edit the Map:");
+        System.out.println("   - Opens an existing map for editing or creates a new one if the file does not exist.");
+        System.out.println("   - Allows adding, modifying, or deleting continents, countries, and connections.");
+        System.out.println("   - Usage: 'editmap <filename>(.map)'");
+        System.out.println("   - Example: 'editmap mycustommap.map'");
+        System.out.println();
+        System.out.println("3. Validate the Map:");
+        System.out.println("   - Checks if the map is correctly structured.");
+        System.out.println("   - Ensures all countries are connected, continents are properly defined, and no isolated territories exist.");
+        System.out.println("   - Usage: 'validatemap'");
+        System.out.println();
+        System.out.println("4. Show the Map:");
+        System.out.println("   - Displays the current map in a structured text format on the command line.");
+        System.out.println("   - Shows continents, countries, and their neighboring connections.");
+        System.out.println("   - Usage: 'showmap'");
+        System.out.println();
+        System.out.println("5. Save the Map:");
+        System.out.println("   - Saves the current map exactly as it was edited, preserving all changes.");
+        System.out.println("   - The saved map can be reloaded later for further modifications or gameplay.");
+        System.out.println("   - Usage: 'savemap <filename>'");
+        System.out.println("   - Example: 'savemap editedworld.map'");
+        System.out.println();
+        System.out.println("6. Edit the Continent:");
+        System.out.println("   - Adds or removes a continent from the map.");
+        System.out.println("   - Adding a continent: 'editcontinent -add <continent_name> <control_value>'");
+        System.out.println("   - Removing a continent: 'editcontinent -remove <continent_name>'");
+        System.out.println("   - Example: 'editcontinent -add Europe 5'");
+        System.out.println();
+        System.out.println("7. Edit the Country:");
+        System.out.println("   - Adds or removes a country from the map.");
+        System.out.println("   - Adding a country: 'editcountry -add <country_name> <continent_name>'");
+        System.out.println("   - Removing a country: 'editcountry -remove <country_name>'");
+        System.out.println("   - Example: 'editcountry -add France Europe'");
+        System.out.println();
+        System.out.println("8. Edit the Neighbour:");
+        System.out.println("   - Manages adjacency between countries.");
+        System.out.println("   - Adding a connection: 'editneighbour -add <country_1> <country_2>'");
+        System.out.println("   - Removing a connection: 'editneighbour -remove <country_1> <country_2>'");
+        System.out.println("   - Example: 'editneighbour -add France Germany'");
+        System.out.println();
+        System.out.println("9. Add or Remove a Player:");
+        System.out.println("   - Adds or removes a player in the game.");
+        System.out.println("   - Adding: 'gameplayer -add <player_name>'");
+        System.out.println("   - Removing: 'gameplayer -remove <player_name>'");
+        System.out.println("   - Example: 'gameplayer -add Alex'");
+        System.out.println();
+        System.out.println("10. Assign Countries to Players:");
+        System.out.println("   - Distributes all countries among players and assigns initial armies.");
+        System.out.println("   - Must be done before starting the game.");
+        System.out.println("   - Usage: 'assigncountries'");
+        System.out.println();
+        System.out.println("11. Exit the Game:");
+        System.out.println("   - Closes the game and ends the session.");
+        System.out.println("   - Usage: 'exit'");
+        System.out.println();
     }
 
     private void displayMenu() {
@@ -155,7 +223,7 @@ public class MainGameEngine {
         }
     }
 
-    private void assignCountries(CommandHandler p_commandHandler) {
+    private void assignCountries(CommandHandler p_commandHandler) throws IOException {
         List<Map<String,String>> l_listOfOperations=p_commandHandler.getListOfOperations();
         System.out.println(l_listOfOperations);
         if (l_listOfOperations == null || l_listOfOperations.isEmpty()) {
@@ -165,7 +233,34 @@ public class MainGameEngine {
         }
     }
 
-    private void playGame() {
+    private void playGame() throws IOException {
+        if (d_currentGameState.getD_players() == null || d_currentGameState.getD_players().isEmpty()) {
+            System.out.println("No players in the game.");
+            return;
+        }
+
+        System.out.println("➡ Deploy armies: 'deploy <country> <num_of_armies>'");
+
+        while (d_playerController.isUnallocatedArmiesExist(d_currentGameState)) {
+            for (Player l_eachPlayer : d_currentGameState.getD_players()) {
+                if (l_eachPlayer.getD_unallocatedArmies() > 0) {
+                    l_eachPlayer.issueOrder();
+                }
+            }
+        }
+
+        while (d_playerController.isUnexecutedOrdersExist(d_currentGameState)) {
+            for (Player l_eachPlayer : d_currentGameState.getD_players()) {
+                Orders l_orderToExecute = l_eachPlayer.nextOrder();
+                if (l_orderToExecute != null) {
+                    l_orderToExecute.execute(l_eachPlayer); // Throws IOException if execution fails
+                }
+            }
+        }
+
+        System.out.println("All orders have been executed successfully.");
+        System.out.println("Thank you for playing the game");
+        System.exit(0);
     }
 
     private void gamePlayer(CommandHandler p_commandHandler) {
