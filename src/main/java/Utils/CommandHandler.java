@@ -2,18 +2,38 @@ package Utils;
 
 import java.util.*;
 
+/**
+ * Handles and parses commands and operations.
+ */
 public class CommandHandler {
+
+    /** The command string provided by the user. */
     String d_command;
 
+    /**
+     * Initializes the command handler with the given command.
+     *
+     * @param p_command The command string.
+     */
     public CommandHandler(String p_command) {
         this.d_command = p_command;
     }
 
+    /**
+     * Returns the main command (first word) from the input string.
+     *
+     * @return The main command.
+     */
     public String getMainCommand(){
         String[] l_commands= d_command.split(" ");
         return l_commands[0];
     }
 
+    /**
+     * Parses the command and returns a list of operations.
+     *
+     * @return A list of operation maps.
+     */
     public List<Map<String,String>> getListOfOperations(){
         String l_mainCommand=this.getMainCommand();
         String l_remainingCommand=d_command.replace(l_mainCommand,"").trim();
@@ -39,6 +59,12 @@ public class CommandHandler {
 
     }
 
+    /**
+     * Converts a single operation into a map.
+     *
+     * @param p_operation The operation string.
+     * @return The operation map.
+     */
     private Map<String, String> getOperatiionMap(String p_operation) {
         Map<String,String> l_operationMap= new HashMap<>();
         String[] l_splitOperation=p_operation.split(" ");
@@ -52,6 +78,13 @@ public class CommandHandler {
         return l_operationMap;
     }
 
+    /**
+     * Checks if a required argument is present and not empty.
+     *
+     * @param l_arguments The argument key.
+     * @param l_singleOperation The operation map.
+     * @return {@code true} if the argument is valid, {@code false} otherwise.
+     */
     public boolean checkRequiredKey(String l_arguments, Map<String, String> l_singleOperation) {
         if(l_singleOperation.containsKey((l_arguments)) && l_singleOperation.get(l_arguments) != null && !l_singleOperation.get(l_arguments).isEmpty()){
             return true;
