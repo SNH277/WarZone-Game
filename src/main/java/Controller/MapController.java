@@ -18,7 +18,6 @@ import java.util.stream.Collectors;
  * </p>
  */
 public class MapController {
-
     /**
      * Loads a map from a file and updates the current state.
      *
