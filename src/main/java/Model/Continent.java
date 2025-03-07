@@ -81,7 +81,7 @@ public class Continent {
      *
      * @param p_continentID the p continent id
      */
-    public void setD_continentID(Integer d_continentID) {
+    public void setD_continentID(Integer p_continentID) {
         this.d_continentID = d_continentID;
     }
     /**
@@ -89,7 +89,7 @@ public class Continent {
      *
      * @param p_continentName the p continent name
      */
-    public void setD_continentName(String d_continentName) {
+    public void setD_continentName(String p_continentName) {
         this.d_continentName = d_continentName;
     }
     /**
@@ -97,7 +97,7 @@ public class Continent {
      *
      * @param p_continentValue the p continent value
      */
-    public void setD_continentValue(Integer d_continentValue) {
+    public void setD_continentValue(Integer p_continentValue) {
         this.d_continentValue = d_continentValue;
     }
     /**
@@ -105,7 +105,7 @@ public class Continent {
      *
      * @param p_countries the p countries
      */
-    public void setD_countries(List<Country> d_countries) {
+    public void setD_countries(List<Country> p_countries) {
         this.d_countries = d_countries;
     }
     /**
