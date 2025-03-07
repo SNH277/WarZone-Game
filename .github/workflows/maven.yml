@@ -1,0 +1,35 @@
+name: Java CI with Maven
+
+on:
+  push:
+    branches: ["main"]
+  pull_request:
+    branches: ["main"]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Set up JDK 17
+      uses: actions/setup-java@v4
+      with:
+        java-version: '17'
+        distribution: 'temurin'
+
+    - name: Cache Maven dependencies
+      uses: actions/cache@v3
+      with:
+        path: ~/.m2/repository  # Maven's default dependency cache location
+        key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+        restore-keys: |
+          ${{ runner.os }}-maven-
+
+    - name: Build with Maven
+      run: mvn -B package --file pom.xml
+
+    # Optional: Update dependency graph for Dependabot alerts (if needed)
+    - name: Update dependency graph
+      uses: advanced-security/maven-dependency-submission-action@latest  # Ensure the action version is correct
