@@ -34,4 +34,15 @@ public class Orders {
     public void setD_noOfArmiesToMove(Integer d_noOfArmiesToMove) {
         this.d_noOfArmiesToMove = d_noOfArmiesToMove;
     }
+
+    public void execute(Player p_eachPlayer) {
+        if(d_order.equals("deploy")){
+            for(Country l_eachCountry : p_eachPlayer.getD_currentCountries()){
+                if(l_eachCountry.getD_countryName().equals(this.d_targetName)){
+                    l_eachCountry.setD_armies(l_eachCountry.getD_armies() + this.d_noOfArmiesToMove);
+                    break;
+                }
+            }
+        }
+    }
 }
