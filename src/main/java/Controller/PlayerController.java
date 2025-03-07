@@ -6,13 +6,13 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Random;
-/**
- * Controller Class PlayerController.
- * <p>
- * This class handles the assignment of countries to players, the distribution of armies,
- * and the creation and validation of deploy orders.
- * </p>
- */
+    /**
+    * Controller Class PlayerController.
+    * <p>
+    * This class handles the assignment of countries to players, the distribution of armies,
+    * and the creation and validation of deploy orders.
+    * </p>
+    */
 public class PlayerController {
     /**
      * Assigns countries to players in the current state.
