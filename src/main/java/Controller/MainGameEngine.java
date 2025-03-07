@@ -11,6 +11,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.List;
 import java.util.Map;
+import java.util.Scanner;
 import java.util.Set;
 
 public class MainGameEngine {
@@ -29,8 +30,6 @@ public class MainGameEngine {
         commandDescription();
 
         while (true) {
-            displayMenu();
-
             System.out.print("Enter your command: ");
             try {
                 String l_inputCommand = l_bufferedReader.readLine();
@@ -108,23 +107,18 @@ public class MainGameEngine {
         System.out.println("   - Closes the game and ends the session.");
         System.out.println("   - Usage: 'exit'");
         System.out.println();
+
+        Scanner scanner = new Scanner(System.in);
+        String userInput;
+
+        do {
+            System.out.print("Do you understand all the commands? Press 'y' or 'Y' to continue: ");
+            userInput = scanner.nextLine().trim();
+        } while (!userInput.equalsIgnoreCase("y"));
+
+        System.out.println("Continuing the game...");
     }
 
-    private void displayMenu() {
-        System.out.println("================================== COMMAND MENU ===================================");
-        System.out.println("1. Initiate the map: (Usage: 'loadmap <your_filename(.map)>')");
-        System.out.println("2. Edit the Map: (Usage: 'editmap <filename>(.map)')");
-        System.out.println("3. Validate the Map: (Usage: 'validatemap')");
-        System.out.println("4. Show the Map: (Usage: 'showmap')");
-        System.out.println("5. Save the Map: (Usage: 'savemap <file_name_same_used_in_loadmap>')");
-        System.out.println("6. Edit the Continent: (Usage: 'editcontinent -add/-remove <continent_name>')");
-        System.out.println("7. Edit the Country: (Usage: 'editcountry -add/-remove <country_name>')");
-        System.out.println("8. Edit the Neighbour: (Usage: 'editneighbour -add/-remove <country_id_1> <country_id_2>')");
-        System.out.println("9. Add a player: (Usage: 'gameplayer -add/-remove <player_name>')");
-        System.out.println("10. Assign countries and allocate armies to players: (Usage: 'assigncountries')");
-        System.out.println("11. Exit the game: (Usage: 'exit')");
-        System.out.println();
-    }
 
     private void commandHandler(String p_inputCommand) throws Exception {
         CommandHandler l_commandHandler =new CommandHandler(p_inputCommand);

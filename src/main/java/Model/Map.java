@@ -57,7 +57,6 @@ public class Map {
     }
 
     private boolean validateCountryConnections() {
-        System.out.println("Validating Country connections.");
         if (d_mapCountries == null || d_mapCountries.isEmpty()) {
             return false;
         }
@@ -99,7 +98,6 @@ public class Map {
 
 
     private boolean validateContinentSubgraph() {
-        System.out.println("Validating Continent Subgraph.");
         for (Continent l_eachContinent : d_mapContinents) {
             if (l_eachContinent.d_countries == null || l_eachContinent.d_countries.isEmpty()) {
                 System.out.println("Continent: " + l_eachContinent.getD_continentName() + " has no countries.");
@@ -109,7 +107,6 @@ public class Map {
                 return false;
             }
         }
-        System.out.println("Continent Subgraph Validation Complete.");
         return true;
     }
 
@@ -143,7 +140,6 @@ public class Map {
     }
 
     private boolean validateCountriesAndContinents() {
-        System.out.println("Validating Countries and Continents");
         if (d_mapContinents == null || d_mapContinents.isEmpty()) {
             System.out.println("Map does not have Continents");
             return false;
@@ -158,7 +154,6 @@ public class Map {
                 return false;
             }
         }
-        System.out.println("Countries and Continent Validation Complete.");
         return true;
     }
 
