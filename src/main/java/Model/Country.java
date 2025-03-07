@@ -58,7 +58,6 @@ public class Country {
         return d_countryID;
     }
 
-
     /**
      * Gets the country name.
      *
@@ -66,7 +65,6 @@ public class Country {
      */public String getD_countryName() {
         return d_countryName;
     }
-
 
     /**
      * Gets the list of neighboring country IDs.
@@ -173,5 +171,4 @@ public class Country {
             System.out.println("Country ID: " + p_removeCountryId + " is not a neighbour in the first place.");
         }
     }
-
 }

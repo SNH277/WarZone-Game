@@ -356,7 +356,6 @@ public class MapController {
             System.out.println("No borders defined. This is not a connected graph.");
             return false;
         }
-
         return true;
     }
     /**
@@ -412,7 +411,6 @@ public class MapController {
         } else {
             System.out.println("Error: Invalid operation. Use 'add' or 'remove'.");
         }
-
         return p_mapToUpdate;
     }
     /**
@@ -449,7 +447,6 @@ public class MapController {
         else {
             System.out.println("Invalid operation. Please use 'add' or 'remove'.");
         }
-
         return p_mapToUpdate;
     }
     /**
@@ -529,5 +526,4 @@ public class MapController {
             p_currentState.getD_map().setD_mapName(l_filename);
         }
     }
-
 }

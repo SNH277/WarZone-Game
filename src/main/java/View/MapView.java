@@ -1,7 +1,5 @@
 package View;
-
 import Model.*;
-
 import java.util.HashMap;
 import java.util.List;
 
@@ -92,5 +90,4 @@ public class MapView {
             System.out.println("************************************************************************************************************************");
         }
     }
-
 }

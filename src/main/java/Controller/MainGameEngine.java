@@ -137,7 +137,6 @@ public class MainGameEngine {
         System.out.println("Continuing the game...");
     }
 
-
     /**
      * Handles the execution of commands entered by the user.
      *

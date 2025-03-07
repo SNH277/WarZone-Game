@@ -125,5 +125,4 @@ public class CurrentState {
             System.out.println("Player " + l_player + " added.");
         }
     }
-
 }
