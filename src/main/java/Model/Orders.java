@@ -22,7 +22,6 @@ public class Orders {
      * @param p_targetName the p target country's name
      * @param p_noOfArmiesToMove the p number of armies to move
      */
-
     public Orders(String p_order, String p_targetName, Integer p_noOfArmiesToMove){
         this.d_order = p_order;
         this.d_targetName = p_targetName;
@@ -85,7 +84,6 @@ public class Orders {
      *
      * @param p_eachPlayer the player executing the order
      */
-
     public void execute(Player p_eachPlayer) {
         if(d_order.equals("deploy")){
             for(Country l_eachCountry : p_eachPlayer.getD_currentCountries()){

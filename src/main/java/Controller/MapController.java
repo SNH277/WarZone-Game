@@ -11,9 +11,20 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.stream.Collectors;
-
+/**
+ * Controller Class MapController.
+ * <p>
+ * This class handles the loading, editing, and saving of map data.
+ * </p>
+ */
 public class MapController {
-
+    /**
+     * Loads a map from a file and updates the current state.
+     *
+     * @param p_currentState the current state object to update with the loaded map
+     * @param p_fileName     the name of the map file
+     * @return the loaded Map object
+     */
     public Map loadMap(CurrentState p_currentState, String p_fileName){
         Map l_map=new Map();
         List<String> l_fileLines=loadFile(p_fileName);
@@ -36,7 +47,13 @@ public class MapController {
         }
         return l_map;
     }
-
+    /**
+     * Updates the continents by adding the corresponding countries to each continent.
+     *
+     * @param p_continents the list of continents to update
+     * @param p_countries  the list of countries to be assigned to continents
+     * @return the updated list of continents with countries added
+     */
     private List<Continent> updateContinentCountries(List<Continent> p_continents, List<Country> p_countries) {
         for(Country l_country : p_countries){
             for(Continent l_continent:p_continents){
@@ -47,7 +64,13 @@ public class MapController {
         }
         return p_continents;
     }
-
+    /**
+     * Updates the border information for each country based on the provided border data.
+     *
+     * @param p_borderData the list of border data strings
+     * @param p_countries  the list of countries to update with neighbouring country IDs
+     * @return the updated list of countries with border information set
+     */
     private List<Country> updateCountryBorders(List<String> p_borderData, List<Country> p_countries) {
         LinkedHashMap<Integer,List<Integer>> l_borderDataMap =new LinkedHashMap<>();
 
@@ -80,7 +103,12 @@ public class MapController {
 
         return p_countries;
     }
-
+    /**
+     * Parses and modifies the country data from file lines.
+     *
+     * @param p_countryData the list of strings representing country data
+     * @return the list of Country objects created from the data
+     */
     private List<Country> modifyCountryData(List<String> p_countryData) {
         List<Country> l_countries =new ArrayList<>();
 
@@ -102,7 +130,12 @@ public class MapController {
         }
         return l_countries;
     }
-
+    /**
+     * Parses and modifies the continent data from file lines.
+     *
+     * @param p_continentData the list of strings representing continent data
+     * @return the list of Continent objects created from the data
+     */
     private List<Continent> modifyContinentData(List<String> p_continentData) {
         List<Continent> l_continents =new ArrayList<>();
         int l_continentIds=1;
@@ -126,28 +159,48 @@ public class MapController {
         }
         return l_continents;
     }
-
+    /**
+     * Extracts the border data section from the file lines.
+     *
+     * @param p_fileLines the list of all lines in the file
+     * @return the list of border data strings
+     */
     private List<String> getBorderData(List<String> p_fileLines) {
         int l_startIndex=p_fileLines.indexOf("[Borders]")+1;
         int l_endIndex=p_fileLines.size();
 
         return (l_startIndex>0 && l_endIndex>l_startIndex) ? p_fileLines.subList(l_startIndex,l_endIndex) : new ArrayList<>();
     }
-
+    /**
+     * Extracts the country data section from the file lines.
+     *
+     * @param p_fileLines the list of all lines in the file
+     * @return the list of country data strings
+     */
     private List<String> getCountryData(List<String> p_fileLines) {
         int l_startIndex=p_fileLines.indexOf("[Countries]")+1;
         int l_endIndex=p_fileLines.indexOf("[Borders]")-1;
 
         return (l_startIndex>0 && l_endIndex>l_startIndex) ? p_fileLines.subList(l_startIndex,l_endIndex) : new ArrayList<>();
     }
-
+    /**
+     * Extracts the continent data section from the file lines.
+     *
+     * @param p_fileLines the list of all lines in the file
+     * @return the list of continent data strings
+     */
     private List<String> getContinentData(List<String> p_fileLines) {
         int l_startIndex=p_fileLines.indexOf("[Continents]")+1;
         int l_endIndex=p_fileLines.indexOf("[Countries]")-1;
 
         return (l_startIndex>0 && l_endIndex>l_startIndex) ? p_fileLines.subList(l_startIndex,l_endIndex) : new ArrayList<>();
     }
-
+    /**
+     * Loads the file content from the given filename.
+     *
+     * @param p_filename the name of the file to load
+     * @return the list of lines read from the file
+     */
     private List<String> loadFile(String p_filename){
         String l_fileLocation = getFilePath(p_filename);
         List<String> l_fileLines =new ArrayList<>();
@@ -163,11 +216,22 @@ public class MapController {
         }
         return l_fileLines;
     }
-
+    /**
+     * Constructs the file path for the given map file.
+     *
+     * @param p_fileName the name of the file
+     * @return the constructed file path as a string
+     */
     private String getFilePath(String p_fileName){
         return Paths.get("src","main","Maps",p_fileName).toString();
     }
-
+    /**
+     * Saves the current map state to a file.
+     *
+     * @param p_currentState the current state containing the map to save
+     * @param p_arguments    the expected map filename
+     * @return true if the map is saved successfully, false otherwise
+     */
     public boolean saveMap(CurrentState p_currentState, String p_arguments) {
         try {
             Map l_map = p_currentState.getD_map();
@@ -197,7 +261,13 @@ public class MapController {
             return false;
         }
     }
-
+    /**
+     * Edits the map by either creating a new file or loading an existing one.
+     *
+     * @param p_currentState the current state containing the map to edit
+     * @param p_editFileName the filename of the map to edit
+     * @throws IOException if an I/O error occurs while editing the map
+     */
     public void editMap(CurrentState p_currentState, String p_editFileName) throws IOException {
         String l_fileLocation = getFilePath(p_editFileName);
         File l_fileToEdit = new File(l_fileLocation);
@@ -214,6 +284,14 @@ public class MapController {
             p_currentState.setD_map(l_map);
         }
     }
+    /**
+     * Writes the continent data to the map file.
+     *
+     * @param p_writer the file output stream to write data to
+     * @param p_map    the map object containing continent data
+     * @return true if continents are written successfully, false otherwise
+     * @throws IOException if an I/O error occurs during writing
+     */
     private boolean writeContinents(FileOutputStream p_writer, Map p_map) throws IOException {
         if (p_map.getD_mapContinents() == null || p_map.getD_mapContinents().isEmpty()) {
             System.out.println("No Continents in this map. Can't save an incorrect map.");
@@ -227,7 +305,14 @@ public class MapController {
         }
         return true;
     }
-
+    /**
+     * Writes the country data to the map file.
+     *
+     * @param p_writer the file output stream to write data to
+     * @param p_map    the map object containing country data
+     * @return true if countries are written successfully, false otherwise
+     * @throws IOException if an I/O error occurs during writing
+     */
     private boolean writeCountries(FileOutputStream p_writer, Map p_map) throws IOException {
         if (p_map.getD_mapCountries() == null || p_map.getD_mapCountries().isEmpty()) {
             System.out.println("No Countries in this map. Can't save an incorrect map.");
@@ -241,7 +326,14 @@ public class MapController {
         }
         return true;
     }
-
+    /**
+     * Writes the border data to the map file.
+     *
+     * @param p_writer the file output stream to write data to
+     * @param p_map    the map object containing border data
+     * @return true if borders are written successfully, false otherwise
+     * @throws IOException if an I/O error occurs during writing
+     */
     private boolean writeBorders(FileOutputStream p_writer, Map p_map) throws IOException {
         if (p_map.getD_mapCountries() == null || p_map.getD_mapCountries().isEmpty()) {
             System.out.println("Borders cannot be saved without countries.");
@@ -267,7 +359,13 @@ public class MapController {
 
         return true;
     }
-
+    /**
+     * Edits the country information in the current map based on the specified operation.
+     *
+     * @param p_currentState the current state containing the map to edit
+     * @param p_operation    the operation to perform ("add" or "remove")
+     * @param p_argument     the argument for the operation (country name and optionally continent name)
+     */
     public void editCountry(CurrentState p_currentState, String p_operation, String p_argument) {
         String l_filename = p_currentState.getD_map().getD_mapName();
         Map l_mapToBeEdited = p_currentState.getD_map();
@@ -282,8 +380,14 @@ public class MapController {
             p_currentState.getD_map().setD_mapName(l_filename);
         }
     }
-
-
+    /**
+     * Adds or removes a country from the map based on the specified operation.
+     *
+     * @param p_mapToUpdate the map object to update
+     * @param p_operation   the operation to perform ("add" or "remove")
+     * @param p_arguments   the arguments required for the operation
+     * @return the updated map object
+     */
     private Map addRemoveCountry(Map p_mapToUpdate, String p_operation, String p_arguments) {
         String[] splitArgs = p_arguments.split(" ");
 
@@ -311,9 +415,14 @@ public class MapController {
 
         return p_mapToUpdate;
     }
-
-
-
+    /**
+     * Adds or removes a neighbour relationship between countries in the map.
+     *
+     * @param p_mapToUpdate the map object to update
+     * @param p_operation   the operation to perform ("add" or "remove")
+     * @param p_arguments   the arguments required for the operation (two country IDs)
+     * @return the updated map object
+     */
     private Map addRemoveNeighbour(Map p_mapToUpdate, String p_operation, String p_arguments) {
         String[] l_args = p_arguments.split(" ");
 
@@ -343,7 +452,13 @@ public class MapController {
 
         return p_mapToUpdate;
     }
-
+    /**
+     * Edits the neighbouring countries in the current map based on the specified operation.
+     *
+     * @param p_currentState the current state containing the map to edit
+     * @param p_operation    the operation to perform ("add" or "remove")
+     * @param p_arguments    the arguments required for the operation (two country IDs)
+     */
     public void editNeighbourCountry(CurrentState p_currentState, String p_operation, String p_arguments) {
         String l_mapName = p_currentState.getD_map().getD_mapName();
         Map l_map = p_currentState.getD_map();
@@ -357,7 +472,14 @@ public class MapController {
             p_currentState.setD_map(l_updatedMap);
         }
     }
-
+    /**
+     * Adds or removes a continent from the map based on the specified operation.
+     *
+     * @param p_mapToUpdate the map object to update
+     * @param p_operation   the operation to perform ("add" or "remove")
+     * @param p_arguments   the arguments required for the operation
+     * @return the updated map object
+     */
     private Map addRemoveContinents(Map p_mapToUpdate, String p_operation, String p_arguments) {
         String[] splitArgs = p_arguments.split(" ");
 
@@ -386,7 +508,13 @@ public class MapController {
 
         return p_mapToUpdate;
     }
-
+    /**
+     * Edits the continent information in the current map based on the specified operation.
+     *
+     * @param p_currentState the current state containing the map to edit
+     * @param p_operation    the operation to perform ("add" or "remove")
+     * @param p_argument     the argument required for the operation (continent name and optionally control value)
+     */
     public void editContinent(CurrentState p_currentState, String p_operation, String p_argument) {
         String l_filename = p_currentState.getD_map().getD_mapName();
         Map l_mapToBeEdited = p_currentState.getD_map();
