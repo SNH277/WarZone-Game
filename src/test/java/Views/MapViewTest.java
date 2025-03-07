@@ -1,4 +1,5 @@
-package View;
+package Views;
 
 public class MapViewTest {
+
 }
