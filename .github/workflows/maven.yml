@@ -32,4 +32,4 @@ jobs:
 
     # Optional: Update dependency graph for Dependabot alerts (if needed)
     - name: Update dependency graph
-      uses: advanced-security/maven-dependency-submission-action@latest  # Ensure the action version is correct
+      uses: advanced-security/maven-dependency-submission-action@v1  # Use a stable version like v1 instead of @latest
