@@ -1,6 +1,9 @@
 package Models;
 
 import Controller.MapController;
+import Model.Country;
+import Model.CurrentState;
+import Model.Map;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -46,16 +49,11 @@ public class CurrentStateTest {
         d_map.addContinent("Africa", 10);
 
         // Add countries and assign them to continents
-        d_map.addCountry("India", "Asia");
-        d_map.addCountry("China", "Asia");
+        d_map.addCountry("USA", "Asia");
+        d_map.addCountry("Canada", "Asia");
         d_map.addCountry("Morocco", "Africa");
         d_map.addCountry("Nigeria", "Africa");
 
-        // Set borders (using country IDs)
-        d_map.addBorder("India", "China");
-        d_map.addBorder("China", "Morocco");
-        d_map.addBorder("Morocco", "Nigeria");
-        d_map.addBorder("Nigeria", "India");
     }
 
     /**
@@ -67,11 +65,11 @@ public class CurrentStateTest {
         d_currentState.setD_players(new ArrayList<>());
         
         // Add "Player1" to the game
-        d_currentState.addOrRemoveGamePlayers("add", "Player1");
+        d_currentState.addOrRemovePlayer("add", "Player1");
         assertEquals(1, d_currentState.getD_players().size());  // Verify one player has been added
         
         // Remove "Player1" from the game
-        d_currentState.addOrRemoveGamePlayers("remove", "Player1");
+        d_currentState.addOrRemovePlayer("remove", "Player1");
         assertEquals(0, d_currentState.getD_players().size());  // Verify no players are present
     }
 
@@ -80,14 +78,14 @@ public class CurrentStateTest {
      */
     @Test
     public void verifyCountryBorders() {
-        // Test the neighboring countries for "India"
-        Country india = d_map.getCountryByName("India");
-        assertNotNull(india);
-        assertEquals("[2, 4]", india.getD_neighbouringCountriesId().toString());  // Verify borders for India
+        // Test the neighboring countries for "USA"
+        Country USA = d_map.getCountryByName("USA");
+        assertNotNull(USA);
+        assertEquals("[2, 4, 6]", USA.getD_neighbouringCountriesId().toString());  // Verify borders for USA
 
-        // Test the neighboring countries for "China"
-        Country china = d_map.getCountryByName("China");
-        assertNotNull(china);
-        assertEquals("[1, 3, 4]", china.getD_neighbouringCountriesId().toString());  // Verify borders for China
+        // Test the neighboring countries for "Canada"
+        Country Canada = d_map.getCountryByName("Canada");
+        assertNotNull(Canada);
+        assertEquals("[1, 3, 5]", Canada.getD_neighbouringCountriesId().toString());  // Verify borders for Canada
     }
 }

@@ -5,6 +5,11 @@ import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
+
+import Model.CurrentState;
+import Model.Map;
+import Model.Orders;
+import Model.Player;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -56,7 +61,7 @@ public class PlayerTest {
         d_player.setContinent(d_map.getD_mapContinents().get(0));  // Asia
 
         // Check that the player's continent is correctly set
-        assertEquals("Asia", d_player.getD_currentContinents().iterator().next().getD_continentName());
+        assertEquals("NorthAmerica", d_player.getD_currentContinents().iterator().next().getD_continentName());
         assertNotEquals("Europe", d_player.getD_currentContinents().iterator().next().getD_continentName());
     }
 
@@ -67,7 +72,7 @@ public class PlayerTest {
     public void nextOrder() {
         // Create orders for deployment
         Orders l_order1 = new Orders("deploy", "India", 3);
-        Orders l_order2 = new Orders("deploy", "China", 4);
+        Orders l_order2 = new Orders("deploy", "UK", 4);
         
         // Create a list of orders and set them for the player
         List<Orders> l_orderlist = new ArrayList<>();

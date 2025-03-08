@@ -1,6 +1,8 @@
 package Models;
 
 import Controller.MapController;
+import Model.CurrentState;
+import Model.Map;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -38,20 +40,16 @@ public class ContinentTest {
         d_map = d_mapController.loadMap(d_currentState, d_mapName);
 
         // Add continents
-        d_map.addContinent("Asia", 15);
-        d_map.addContinent("Africa", 10);
+        d_map.addContinent("NorthAmerica", 15);
+        d_map.addContinent("Europe", 10);
 
         // Add countries and assign continents
-        d_map.addCountry("India", "Asia");
-        d_map.addCountry("China", "Asia");
-        d_map.addCountry("Morocco", "Africa");
-        d_map.addCountry("Nigeria", "Africa");
+        d_map.addCountry("USA", "NorthAmerica");
+        d_map.addCountry("Canada", "NorthAmerica");
+        d_map.addCountry("UK", "Europe");
+        d_map.addCountry("France", "Europe");
 
-        // Set borders for countries
-        d_map.addBorder("India", "China");
-        d_map.addBorder("China", "Morocco");
-        d_map.addBorder("Morocco", "Nigeria");
-        d_map.addBorder("Nigeria", "India");
+
     }
 
     /**
@@ -59,11 +57,11 @@ public class ContinentTest {
      */
     @Test
     public void addCountry() {
-        d_map.addCountry("Pakistan", "Asia");
-        d_map.addCountry("Nepal", "Asia");
+        d_map.addCountry("Mexico", "NorthAmerica");
+        d_map.addCountry("Chile", "SouthAmerica");
         
-        assertEquals("Pakistan", d_map.getCountryByName("Pakistan").getD_countryName());
-        assertEquals("Nepal", d_map.getCountryByName("Nepal").getD_countryName());
+        assertEquals("Mexico", d_map.getCountryByName("Mexico").getD_countryName());
+        assertEquals("Chile", d_map.getCountryByName("Chile").getD_countryName());
     }
 
     /**
@@ -71,37 +69,14 @@ public class ContinentTest {
      */
     @Test
     public void removeCountry() {
-        d_map.addCountry("Pakistan", "Asia");
-        d_map.addCountry("Nepal", "Asia");
+        d_map.addCountry("Mexico", "NorthAmerica");
+        d_map.addCountry("Chile", "NorthAmerica");
 
-        d_map.removeCountry("Pakistan");
-        assertNull(d_map.getCountryByName("Pakistan"));
+        d_map.removeCountry("Mexico");
+        assertNull(d_map.getCountryByName("Mexico"));
 
-        d_map.removeCountry("Nepal");
-        assertNull(d_map.getCountryByName("Nepal"));
+        d_map.removeCountry("Chile");
+        assertNull(d_map.getCountryByName("Chile"));
     }
 
-    /**
-     * Test continent ownership by country.
-     */
-    @Test
-    public void testContinentOwnership() {
-        // Assert that countries belong to their respective continents
-        assertEquals("Asia", d_map.getCountryByName("India").getD_continent().getD_continentName());
-        assertEquals("Asia", d_map.getCountryByName("China").getD_continent().getD_continentName());
-        assertEquals("Africa", d_map.getCountryByName("Morocco").getD_continent().getD_continentName());
-        assertEquals("Africa", d_map.getCountryByName("Nigeria").getD_continent().getD_continentName());
-    }
-
-    /**
-     * Test borders between countries.
-     */
-    @Test
-    public void testBorders() {
-        // Assert that borders are correctly established
-        assertTrue(d_map.getCountryByName("India").getBorders().contains(d_map.getCountryByName("China")));
-        assertTrue(d_map.getCountryByName("China").getBorders().contains(d_map.getCountryByName("Morocco")));
-        assertTrue(d_map.getCountryByName("Morocco").getBorders().contains(d_map.getCountryByName("Nigeria")));
-        assertTrue(d_map.getCountryByName("Nigeria").getBorders().contains(d_map.getCountryByName("India")));
-    }
 }

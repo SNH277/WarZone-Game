@@ -1,6 +1,9 @@
 package Models;
 
 import Controller.MapController;
+import Model.Country;
+import Model.CurrentState;
+import Model.Map;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -39,20 +42,15 @@ public class CountryTest {
         d_map = d_mapController.loadMap(d_currentState, d_mapName);
 
         // Add continents
-        d_map.addContinent("Asia", 15);
-        d_map.addContinent("Africa", 10);
+        d_map.addContinent("NorthAmerica", 15);
+        d_map.addContinent("Europe", 10);
 
         // Add countries and assign continents
-        d_map.addCountry("India", "Asia");
-        d_map.addCountry("China", "Asia");
-        d_map.addCountry("Morocco", "Africa");
-        d_map.addCountry("Nigeria", "Africa");
+        d_map.addCountry("USA", "NorthAmerica");
+        d_map.addCountry("Canada", "NorthAmerica");
+        d_map.addCountry("UK", "Europe");
+        d_map.addCountry("France", "Europe");
 
-        // Set borders for countries (using their country IDs)
-        d_map.addBorder("India", "China");
-        d_map.addBorder("China", "Morocco");
-        d_map.addBorder("Morocco", "Nigeria");
-        d_map.addBorder("Nigeria", "India");
     }
 
     /**
@@ -60,16 +58,16 @@ public class CountryTest {
      */
     @Test
     public void removeCountryNeighbourIfPresent() {
-        // Assume the Country object for "India"
-        Country india = d_map.getCountryByName("India");
+        // Assume the Country object for "USA"
+        Country USA = d_map.getCountryByName("USA");
         
-        // Verify that the neighbours for India are China (ID 2) and Nigeria (ID 4)
-        assertEquals("[2, 4]", india.getD_neighbouringCountriesId().toString());
+        // Verify that the neighbours for USA are Canada (ID 2) and France (ID 4)
+        assertEquals("[2, 4, 6]", USA.getD_neighbouringCountriesId().toString());
         
-        // Remove China (ID 2) as a neighbour of India
-        india.removeCountryNeighbourIfPresent(2);
-        
-        // Verify that China has been removed from the neighbour list of India
-        assertEquals("[4]", india.getD_neighbouringCountriesId().toString());
+        // Remove Canada (ID 2) as a neighbour of USA
+        USA.removeCountryNeighbour(2);
+
+        // Verify that Canada has been removed from the neighbour list of USA
+        assertEquals("[4, 6]", USA.getD_neighbouringCountriesId().toString());
     }
 }

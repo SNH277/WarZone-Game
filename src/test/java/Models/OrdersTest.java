@@ -2,6 +2,11 @@ package Models;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
+
+import Model.CurrentState;
+import Model.Map;
+import Model.Orders;
+import Model.Player;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -50,12 +55,12 @@ public class OrdersTest {
     @Test
     public void execute() {
         d_player.setD_currentCountries(d_map.getD_mapCountries());
-        Orders l_order1 = new Orders("deploy","India",3);
-        Orders l_order2 = new Orders("deploy","China",4);
+        Orders l_order1 = new Orders("deploy","USA",3);
+        Orders l_order2 = new Orders("deploy","UK",4);
         l_order1.execute(d_player);
-        assertEquals("3", d_map.getCountryByName("India").getD_armies().toString());
+        assertEquals("3", d_map.getCountryByName("USA").getD_armies().toString());
         l_order2.execute(d_player);
-        assertEquals("4", d_map.getCountryByName("China").getD_armies().toString());
-        assertNotEquals("3", d_map.getCountryByName("Morocco").getD_armies().toString());
+        assertEquals("4", d_map.getCountryByName("UK").getD_armies().toString());
+        assertNotEquals("3", d_map.getCountryByName("Chile").getD_armies().toString());
     }
 }
