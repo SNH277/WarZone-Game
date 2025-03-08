@@ -124,11 +124,11 @@ public class Map {
             l_visited.put(l_eachCountry.getD_countryID(), false);
         }
 
-        dfsCountry(d_mapCountries.get(0), l_visited);
+        dfsCountry(d_mapCountries.getFirst(), l_visited);
 
         for (java.util.Map.Entry<Integer, Boolean> l_entry : l_visited.entrySet()) {
             if (!l_entry.getValue()) {
-                System.out.println("Country : " + getCountryById(l_entry.getKey()).getD_countryName() + " is not reachable");
+                System.out.println("Country : " + Objects.requireNonNull(getCountryById(l_entry.getKey())).getD_countryName() + " is not reachable");
             }
         }
 
@@ -196,11 +196,12 @@ public class Map {
             l_visited.put(l_eachCountry.d_countryID, false);
         }
 
-        dfsSubgraph(p_EachContinent.d_countries.get(0), l_visited, p_EachContinent);
+        dfsSubgraph(p_EachContinent.d_countries.getFirst(), l_visited, p_EachContinent);
 
         for (java.util.Map.Entry<Integer, Boolean> l_entry : l_visited.entrySet()) {
             if (!l_entry.getValue()) {
                 Country l_country = getCountryById(l_entry.getKey());
+                assert l_country != null;
                 System.out.println("Country : " + l_country.d_countryName + " is not reachable.");
             }
         }

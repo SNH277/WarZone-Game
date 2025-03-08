@@ -58,7 +58,7 @@ public class PlayerTest {
     @Test
     public void setContinent() {
         // Set the continent for the player
-        d_player.setContinent(d_map.getD_mapContinents().get(0));  // Asia
+        d_player.setContinent(d_map.getD_mapContinents().getFirst());  // Asia
 
         // Check that the player's continent is correctly set
         assertEquals("NorthAmerica", d_player.getD_currentContinents().iterator().next().getD_continentName());

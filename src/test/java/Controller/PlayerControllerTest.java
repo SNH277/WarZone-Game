@@ -6,7 +6,6 @@ import java.util.List;
 import static org.junit.Assert.assertEquals;
 import org.junit.Before;
 import org.junit.Test;
-import Model.Orders;
 
 import Model.Country;
 import Model.CurrentState;
@@ -76,7 +75,7 @@ public class PlayerControllerTest {
 
         // Test removing a country and checking continent assignment again
         d_player1.getD_currentContinents().clear();
-        d_player1.getD_currentCountries().remove(0);
+        d_player1.getD_currentCountries().removeFirst();
         d_playerController.updatePlayerContinentOwnership(l_playerList, d_map.getD_mapContinents());
         assertEquals(2, d_player1.getD_currentContinents().size());
     }

@@ -191,10 +191,7 @@ public class PlayerController {
      * @return True if the player has enough unallocated armies, otherwise false.
      */
     private boolean hasSufficientArmies(Player p_Player, int p_NumberOfArmiesToDeploy) {
-        if(p_Player.getD_unallocatedArmies() >= p_NumberOfArmiesToDeploy) {
-            return true;
-        }
-        return false;
+        return p_Player.getD_unallocatedArmies() >= p_NumberOfArmiesToDeploy;
     }
     /**
      * Validates if the player owns the specified country.
@@ -233,7 +230,7 @@ public class PlayerController {
      */
     public boolean isUnexecutedOrdersExist(CurrentState p_currentState) {
         for (Player l_eachPlayer : p_currentState.getD_players()) {
-            if (l_eachPlayer.getD_orders().size() > 0) {
+            if (!l_eachPlayer.getD_orders().isEmpty()) {
                 return true;
             }
         }
