@@ -37,7 +37,7 @@ public class MapControllerTest {
      * Setup.
      */
     @Before
-    public void setup(){
+    public void setup() {
         d_currentState = new CurrentState();
         d_mapController = new MapController();
         d_playerController = new PlayerController();
@@ -66,7 +66,6 @@ public class MapControllerTest {
         assertEquals("Mexico", d_map.getCountryByName("Mexico").getD_countryName());
         d_mapController.editCountry(d_currentState, "remove", "Mexico");
         assertNull(d_map.getCountryByName("Mexico"));
-
     }
 
     /**
@@ -94,7 +93,7 @@ public class MapControllerTest {
         assertEquals("[2, 4, 6, 3]", d_map.getCountryByName("France").getD_neighbouringCountriesId().toString());
 
         d_mapController.editNeighbourCountry(d_currentState, "remove", "3 5");
-        assertEquals("[2, 4]", d_map.getCountryByName("Uk").getD_neighbouringCountriesId().toString());
+        assertEquals("[2, 4]", d_map.getCountryByName("UK").getD_neighbouringCountriesId().toString());
         assertEquals("[2, 4, 6]", d_map.getCountryByName("France").getD_neighbouringCountriesId().toString());
     }
 

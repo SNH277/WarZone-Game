@@ -114,7 +114,7 @@ public class Map {
      *
      * @return True if all countries are connected, otherwise false.
      */
-    private boolean validateCountryConnections() {
+    public boolean validateCountryConnections() {
         if (d_mapCountries == null || d_mapCountries.isEmpty()) {
             return false;
         }
@@ -124,11 +124,11 @@ public class Map {
             l_visited.put(l_eachCountry.getD_countryID(), false);
         }
 
-        dfsCountry(d_mapCountries.get(0), l_visited);
+        dfsCountry(d_mapCountries.getFirst(), l_visited);
 
         for (java.util.Map.Entry<Integer, Boolean> l_entry : l_visited.entrySet()) {
             if (!l_entry.getValue()) {
-                System.out.println("Country : " + getCountryById(l_entry.getKey()).getD_countryName() + " is not reachable");
+                System.out.println("Country : " + Objects.requireNonNull(getCountryById(l_entry.getKey())).getD_countryName() + " is not reachable");
             }
         }
 
@@ -171,7 +171,7 @@ public class Map {
      *
      * @return True if all continents are connected, otherwise false.
      */
-    private boolean validateContinentSubgraph() {
+    public boolean validateContinentSubgraph() {
         for (Continent l_eachContinent : d_mapContinents) {
             if (l_eachContinent.d_countries == null || l_eachContinent.d_countries.isEmpty()) {
                 System.out.println("Continent: " + l_eachContinent.getD_continentName() + " has no countries.");
@@ -196,11 +196,12 @@ public class Map {
             l_visited.put(l_eachCountry.d_countryID, false);
         }
 
-        dfsSubgraph(p_EachContinent.d_countries.get(0), l_visited, p_EachContinent);
+        dfsSubgraph(p_EachContinent.d_countries.getFirst(), l_visited, p_EachContinent);
 
         for (java.util.Map.Entry<Integer, Boolean> l_entry : l_visited.entrySet()) {
             if (!l_entry.getValue()) {
                 Country l_country = getCountryById(l_entry.getKey());
+                assert l_country != null;
                 System.out.println("Country : " + l_country.d_countryName + " is not reachable.");
             }
         }
@@ -230,7 +231,7 @@ public class Map {
      *
      * @return True if the map contains valid data, otherwise false.
      */
-    private boolean validateCountriesAndContinents() {
+    public boolean validateCountriesAndContinents() {
         if (d_mapContinents == null || d_mapContinents.isEmpty()) {
             System.out.println("Map does not have Continents");
             return false;

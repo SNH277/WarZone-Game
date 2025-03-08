@@ -48,7 +48,7 @@ public class PlayerController {
      * @param p_Players The list of players.
      * @param p_MapContinents The list of continents in the map.
      */
-    private void updatePlayerContinentOwnership(List<Player> p_Players, List<Continent> p_MapContinents) {
+    public void updatePlayerContinentOwnership(List<Player> p_Players, List<Continent> p_MapContinents) {
         for(Player l_player : p_Players) {
             List<Country> l_countriesOwnedByPlayer = l_player.getD_currentCountries();
             if(l_countriesOwnedByPlayer == null || l_countriesOwnedByPlayer.isEmpty()) {
@@ -67,7 +67,7 @@ public class PlayerController {
      * @param p_Players The list of players.
      */
 
-    private void displayAssignedCountries(List<Player> p_Players) {
+    public void displayAssignedCountries(List<Player> p_Players) {
         for(Player l_currentPlayer : p_Players) {
             StringBuilder l_output = new StringBuilder("Player " + l_currentPlayer.getD_playerName() + " has assigned countries: ");
 
@@ -89,7 +89,7 @@ public class PlayerController {
      * @param p_Countries The list of countries.
      * @param p_CountriesPerPlayer The number of countries per player.
      */
-    private void randomCountryDistribution(List<Player> p_Players, List<Country> p_Countries, int p_CountriesPerPlayer) {
+    public void randomCountryDistribution(List<Player> p_Players, List<Country> p_Countries, int p_CountriesPerPlayer) {
         List<Country> l_unassignedCountries = new ArrayList<>(p_Countries);
 
         if(l_unassignedCountries.isEmpty()) {
@@ -191,10 +191,7 @@ public class PlayerController {
      * @return True if the player has enough unallocated armies, otherwise false.
      */
     private boolean hasSufficientArmies(Player p_Player, int p_NumberOfArmiesToDeploy) {
-        if(p_Player.getD_unallocatedArmies() >= p_NumberOfArmiesToDeploy) {
-            return true;
-        }
-        return false;
+        return p_Player.getD_unallocatedArmies() >= p_NumberOfArmiesToDeploy;
     }
     /**
      * Validates if the player owns the specified country.
@@ -233,7 +230,7 @@ public class PlayerController {
      */
     public boolean isUnexecutedOrdersExist(CurrentState p_currentState) {
         for (Player l_eachPlayer : p_currentState.getD_players()) {
-            if (l_eachPlayer.getD_orders().size() > 0) {
+            if (!l_eachPlayer.getD_orders().isEmpty()) {
                 return true;
             }
         }
