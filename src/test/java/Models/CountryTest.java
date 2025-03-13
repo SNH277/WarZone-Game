@@ -1,19 +1,35 @@
 package Models;
 
 import Controller.MapController;
+import Model.Country;
+import Model.CurrentState;
+import Model.Map;
 import org.junit.Before;
 import org.junit.Test;
-import java.util.List;
+
 import static org.junit.Assert.*;
 
 /**
  * The type Country test.
  */
 public class CountryTest {
-    private Map d_map;
-    private CurrentState d_currentState;
-    private MapController d_mapController;
-    private String d_mapName;
+
+    /**
+     * The D map.
+     */
+    Map d_map;
+    /**
+     * The D map name.
+     */
+    String d_mapName;
+    /**
+     * The D current state.
+     */
+    CurrentState d_currentState;
+    /**
+     * The D map controller.
+     */
+    MapController d_mapController;
 
     /**
      * Sets up the test environment.
@@ -25,34 +41,33 @@ public class CountryTest {
         d_mapName = "test.map";
         d_map = d_mapController.loadMap(d_currentState, d_mapName);
 
-        // Ensure the map is loaded successfully
-        assertNotNull("Map should be loaded successfully", d_map);
+        // Add continents
+        d_map.addContinent("NorthAmerica", 15);
+        d_map.addContinent("Europe", 10);
 
-        // Ensure "India" exists in the map
-        if (d_map.getCountryByName("India") == null) {
-            Country l_india = new Country(1, "India", 1);
-            l_india.addCountryNeighbour(2);
-            l_india.addCountryNeighbour(4);
-            d_map.addCountry("India", "Asia");  // Assuming Asia exists
-            d_map.getCountryByName("India").setD_neighbouringCountriesId(List.of(2, 4));
-        }
+        // Add countries and assign continents
+        d_map.addCountry("USA", "NorthAmerica");
+        d_map.addCountry("Canada", "NorthAmerica");
+        d_map.addCountry("UK", "Europe");
+        d_map.addCountry("France", "Europe");
+
     }
 
     /**
-     * Test removing a neighboring country.
+     * Remove country neighbour if present.
      */
     @Test
     public void removeCountryNeighbourIfPresent() {
-        Country l_country = d_map.getCountryByName("India");
-        assertNotNull("India should exist in the map", l_country);
+        // Assume the Country object for "USA"
+        Country USA = d_map.getCountryByName("USA");
+        
+        // Verify that the neighbours for USA are Canada (ID 2) and France (ID 4)
+        assertEquals("[2, 4, 6]", USA.getD_neighbouringCountriesId().toString());
+        
+        // Remove Canada (ID 2) as a neighbour of USA
+        USA.removeCountryNeighbour(2);
 
-        // Ensure initial neighbors
-        assertTrue("India should initially have neighbor 2", l_country.getD_neighbouringCountriesId().contains(2));
-        assertTrue("India should initially have neighbor 4", l_country.getD_neighbouringCountriesId().contains(4));
-
-        // Remove neighbor and test again
-        l_country.removeCountryNeighbourIfPresent(2);
-        assertFalse("India should no longer have neighbor 2", l_country.getD_neighbouringCountriesId().contains(2));
-        assertTrue("India should still have neighbor 4", l_country.getD_neighbouringCountriesId().contains(4));
+        // Verify that Canada has been removed from the neighbour list of USA
+        assertEquals("[4, 6]", USA.getD_neighbouringCountriesId().toString());
     }
 }

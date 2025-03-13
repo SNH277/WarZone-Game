@@ -6,8 +6,16 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Random;
-
+/**
+ * The PlayerController class manages player actions such as assigning countries,
+ * distributing armies, and creating orders.
+ */
 public class PlayerController {
+    /**
+     * Assigns countries to players based on the number of available players and countries.
+     *
+     * @param p_currentState The current game state containing players and the map.
+     */
     public void assignCountry(CurrentState p_currentState) {
         if(p_currentState.getD_players() == null || p_currentState.getD_players().isEmpty()) {
             System.out.println("No players found. Please add players using 'gameplayer -add playerName' command first.");
@@ -34,8 +42,13 @@ public class PlayerController {
 
         updatePlayerContinentOwnership(l_players, p_currentState.getD_map().getD_mapContinents());
     }
-
-    private void updatePlayerContinentOwnership(List<Player> p_Players, List<Continent> p_MapContinents) {
+    /**
+     * Updates the player's ownership of continents based on country ownership.
+     *
+     * @param p_Players The list of players.
+     * @param p_MapContinents The list of continents in the map.
+     */
+    public void updatePlayerContinentOwnership(List<Player> p_Players, List<Continent> p_MapContinents) {
         for(Player l_player : p_Players) {
             List<Country> l_countriesOwnedByPlayer = l_player.getD_currentCountries();
             if(l_countriesOwnedByPlayer == null || l_countriesOwnedByPlayer.isEmpty()) {
@@ -48,8 +61,13 @@ public class PlayerController {
             }
         }
     }
+    /**
+     * Displays the assigned countries for each player.
+     *
+     * @param p_Players The list of players.
+     */
 
-    private void displayAssignedCountries(List<Player> p_Players) {
+    public void displayAssignedCountries(List<Player> p_Players) {
         for(Player l_currentPlayer : p_Players) {
             StringBuilder l_output = new StringBuilder("Player " + l_currentPlayer.getD_playerName() + " has assigned countries: ");
 
@@ -64,8 +82,14 @@ public class PlayerController {
             System.out.println(l_output.toString().trim());
         }
     }
-
-    private void randomCountryDistribution(List<Player> p_Players, List<Country> p_Countries, int p_CountriesPerPlayer) {
+    /**
+     * Distributes countries randomly among players.
+     *
+     * @param p_Players The list of players.
+     * @param p_Countries The list of countries.
+     * @param p_CountriesPerPlayer The number of countries per player.
+     */
+    public void randomCountryDistribution(List<Player> p_Players, List<Country> p_Countries, int p_CountriesPerPlayer) {
         List<Country> l_unassignedCountries = new ArrayList<>(p_Countries);
 
         if(l_unassignedCountries.isEmpty()) {
@@ -89,7 +113,12 @@ public class PlayerController {
             randomCountryDistribution(p_Players, l_unassignedCountries, 1);
         }
     }
-
+    /**
+     * Gets the number of armies assigned to a player.
+     *
+     * @param p_Player The player.
+     * @return The number of armies.
+     */
     public int getNumberOfArmies(Player p_Player) {
         int l_currentArmySize = 0;
         if (p_Player.getD_currentCountries() != null && !p_Player.getD_currentCountries().isEmpty()){
@@ -104,7 +133,11 @@ public class PlayerController {
         }
         return l_currentArmySize;
     }
-
+    /**
+     * Assigns armies to players based on the number of countries they own and continent bonuses.
+     *
+     * @param p_CurrentState The current game state containing players.
+     */
     public void assignArmies(CurrentState p_CurrentState) {
         List<Player> l_players = p_CurrentState.getD_players();
         if(l_players == null || l_players.isEmpty()) {
@@ -117,7 +150,12 @@ public class PlayerController {
             System.out.println("Player" + l_player.getD_playerName() + " got assigned: " + l_NumberOfArmiesPerPlayer + " armies.");
         }
     }
-
+    /**
+     * Creates and validates a deploy order for a player.
+     *
+     * @param p_OrderName The order command.
+     * @param p_Player The player issuing the order.
+     */
     public void createDeployOrder(String p_OrderName, Player p_Player) {
         List<Orders> l_orders;
         if(p_Player.getD_orders() == null || p_Player.getD_orders().isEmpty()) {
@@ -145,14 +183,23 @@ public class PlayerController {
         }
 
     }
-
+    /**
+     * Checks if the player has sufficient armies to deploy.
+     *
+     * @param p_Player The player issuing the deploy order.
+     * @param p_NumberOfArmiesToDeploy The number of armies the player wants to deploy.
+     * @return True if the player has enough unallocated armies, otherwise false.
+     */
     private boolean hasSufficientArmies(Player p_Player, int p_NumberOfArmiesToDeploy) {
-        if(p_Player.getD_unallocatedArmies() >= p_NumberOfArmiesToDeploy) {
-            return true;
-        }
-        return false;
+        return p_Player.getD_unallocatedArmies() >= p_NumberOfArmiesToDeploy;
     }
-
+    /**
+     * Validates if the player owns the specified country.
+     *
+     * @param p_Player The player whose country ownership is being checked.
+     * @param p_CountryName The name of the country to validate.
+     * @return True if the player owns the country, otherwise false.
+     */
     private boolean validateCountryOwnership(Player p_Player, String p_CountryName) {
         for(Country l_country : p_Player.getD_currentCountries()) {
             if(l_country.getD_countryName().equals(p_CountryName)) {
@@ -161,7 +208,12 @@ public class PlayerController {
         }
         return false;
     }
-
+    /**
+     * Checks if any player has unallocated armies.
+     *
+     * @param p_currentState The current game state.
+     * @return True if unallocated armies exist, otherwise false.
+     */
     public boolean isUnallocatedArmiesExist(CurrentState p_currentState) {
         for (Player l_eachPlayer : p_currentState.getD_players()) {
             if (l_eachPlayer.getD_unallocatedArmies() > 0) {
@@ -170,10 +222,15 @@ public class PlayerController {
         }
         return false;
     }
-
+    /**
+     * Checks if any unexecuted orders exist for any player.
+     *
+     * @param p_currentState The current game state.
+     * @return True if unexecuted orders exist, otherwise false.
+     */
     public boolean isUnexecutedOrdersExist(CurrentState p_currentState) {
         for (Player l_eachPlayer : p_currentState.getD_players()) {
-            if (l_eachPlayer.getD_orders().size() > 0) {
+            if (!l_eachPlayer.getD_orders().isEmpty()) {
                 return true;
             }
         }

@@ -11,26 +11,40 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.List;
 import java.util.Map;
+import java.util.Scanner;
 import java.util.Set;
 
+/**
+ * The {@code MainGameEngine} class serves as the main controller for handling game commands and logic.
+ * It manages game states, player operations, and map functionalities.
+ */
 public class MainGameEngine {
 
+    /** The map controller for handling map-related commands. */
     MapController d_mapController=new MapController();
+    /** The player controller for managing player-related actions. */
     PlayerController d_playerController=new PlayerController();
+    /** The current state of the game. */
     CurrentState d_currentGameState = new CurrentState();
 
+    /**
+     * The main entry point of the application.
+     *
+     * @param args The command-line arguments.
+     */
     public static void main(String[] args) {
         MainGameEngine l_mainGameEngine = new MainGameEngine();
         l_mainGameEngine.startGame();
     }
 
+    /**
+     * Starts the game and continuously listens for player commands.
+     */
     private void startGame(){
         BufferedReader l_bufferedReader = new BufferedReader(new InputStreamReader(System.in));
         commandDescription();
 
         while (true) {
-            displayMenu();
-
             System.out.print("Enter your command: ");
             try {
                 String l_inputCommand = l_bufferedReader.readLine();
@@ -46,6 +60,9 @@ public class MainGameEngine {
         }
     }
 
+    /**
+     * Displays a list of available game commands and their descriptions.
+     */
     private void commandDescription() {
         System.out.println("================================== COMMAND Description ===================================");
         System.out.println("1. Initiate the Map:");
@@ -108,24 +125,24 @@ public class MainGameEngine {
         System.out.println("   - Closes the game and ends the session.");
         System.out.println("   - Usage: 'exit'");
         System.out.println();
+
+        Scanner scanner = new Scanner(System.in);
+        String userInput;
+
+        do {
+            System.out.print("Do you understand all the commands? Press 'y' or 'Y' to continue: ");
+            userInput = scanner.nextLine().trim();
+        } while (!userInput.equalsIgnoreCase("y"));
+
+        System.out.println("Continuing the game...");
     }
 
-    private void displayMenu() {
-        System.out.println("================================== COMMAND MENU ===================================");
-        System.out.println("1. Initiate the map: (Usage: 'loadmap <your_filename(.map)>')");
-        System.out.println("2. Edit the Map: (Usage: 'editmap <filename>(.map)')");
-        System.out.println("3. Validate the Map: (Usage: 'validatemap')");
-        System.out.println("4. Show the Map: (Usage: 'showmap')");
-        System.out.println("5. Save the Map: (Usage: 'savemap <file_name_same_used_in_loadmap>')");
-        System.out.println("6. Edit the Continent: (Usage: 'editcontinent -add/-remove <continent_name>')");
-        System.out.println("7. Edit the Country: (Usage: 'editcountry -add/-remove <country_name>')");
-        System.out.println("8. Edit the Neighbour: (Usage: 'editneighbour -add/-remove <country_id_1> <country_id_2>')");
-        System.out.println("9. Add a player: (Usage: 'gameplayer -add/-remove <player_name>')");
-        System.out.println("10. Assign countries and allocate armies to players: (Usage: 'assigncountries')");
-        System.out.println("11. Exit the game: (Usage: 'exit')");
-        System.out.println();
-    }
-
+    /**
+     * Handles the execution of commands entered by the user.
+     *
+     * @param p_inputCommand The command entered by the user.
+     * @throws Exception If an invalid command is entered.
+     */
     private void commandHandler(String p_inputCommand) throws Exception {
         CommandHandler l_commandHandler =new CommandHandler(p_inputCommand);
         String l_mainCommand = l_commandHandler.getMainCommand();
@@ -179,6 +196,11 @@ public class MainGameEngine {
         }
     }
 
+    /**
+     * Saves the current map to a file.
+     *
+     * @param p_commandHandler The command handler containing the filename argument.
+     */
     private void saveMap(CommandHandler p_commandHandler) {
         List<Map<String,String>> l_listOfOperations=p_commandHandler.getListOfOperations();
         System.out.println(l_listOfOperations);
@@ -203,6 +225,11 @@ public class MainGameEngine {
         }
     }
 
+    /**
+     * Validates the current map structure.
+     *
+     * @param p_commandHandler The command handler to process the validation request.
+     */
     private void validateMap(CommandHandler p_commandHandler) {
         List<Map<String,String>> l_listOfOperations=p_commandHandler.getListOfOperations();
         if (l_listOfOperations != null && !l_listOfOperations.isEmpty()) {
@@ -223,6 +250,12 @@ public class MainGameEngine {
         }
     }
 
+    /**
+     * Assigns countries to players and starts the game.
+     *
+     * @param p_commandHandler The command handler to process the assignment request.
+     * @throws IOException If an I/O error occurs.
+     */
     private void assignCountries(CommandHandler p_commandHandler) throws IOException {
         List<Map<String,String>> l_listOfOperations=p_commandHandler.getListOfOperations();
         System.out.println(l_listOfOperations);
@@ -233,6 +266,11 @@ public class MainGameEngine {
         }
     }
 
+    /**
+     * Starts the game, allowing players to deploy armies and execute orders.
+     *
+     * @throws IOException If an I/O error occurs.
+     */
     private void playGame() throws IOException {
         if (d_currentGameState.getD_players() == null || d_currentGameState.getD_players().isEmpty()) {
             System.out.println("No players in the game.");
@@ -263,6 +301,11 @@ public class MainGameEngine {
         System.exit(0);
     }
 
+    /**
+     * Adds or removes players based on the command.
+     *
+     * @param p_commandHandler The command handler containing player operations.
+     */
     private void gamePlayer(CommandHandler p_commandHandler) {
         List<Map<String,String>> l_listOfOperations=p_commandHandler.getListOfOperations();
         System.out.println(l_listOfOperations);
@@ -278,6 +321,12 @@ public class MainGameEngine {
         }
     }
 
+    /**
+     * Edits the neighboring country relationships.
+     *
+     * @param p_commandHandler The command handler containing neighbor modifications.
+     * @throws Exception If an invalid command is entered.
+     */
     private void editNeighbourCountry(CommandHandler p_commandHandler) throws  Exception {
         List<Map<String,String>> l_listOfOperations=p_commandHandler.getListOfOperations();
         System.out.println(l_listOfOperations);
@@ -292,6 +341,12 @@ public class MainGameEngine {
         }
     }
 
+    /**
+     * Edits the continents on the map based on the provided command.
+     *
+     * @param p_commandHandler The command handler containing continent modification details.
+     * @throws Exception If an invalid command is provided.
+     */
     private void editContinent(CommandHandler p_commandHandler) throws Exception {
         List<Map<String,String>> l_listOfOperations = p_commandHandler.getListOfOperations();
         System.out.println(l_listOfOperations);
@@ -312,6 +367,12 @@ public class MainGameEngine {
         }
     }
 
+    /**
+     * Edits the countries on the map based on the provided command.
+     *
+     * @param p_commandHandler The command handler containing country modification details.
+     * @throws Exception If an invalid command is provided.
+     */
     private void editCountry(CommandHandler p_commandHandler) throws Exception {
         List<Map<String,String>> l_listOfOperations=p_commandHandler.getListOfOperations();
         System.out.println(l_listOfOperations);
@@ -332,9 +393,12 @@ public class MainGameEngine {
 
     }
 
-
-
-
+    /**
+     * Edits the map based on the provided command.
+     *
+     * @param p_commandHandler The command handler containing map modification details.
+     * @throws Exception If an invalid command is provided.
+     */
     private void editMap(CommandHandler p_commandHandler) throws Exception {
         List<Map<String,String>> l_listOfOperations=p_commandHandler.getListOfOperations();
         System.out.println(l_listOfOperations);
@@ -350,6 +414,12 @@ public class MainGameEngine {
         }
     }
 
+    /**
+     * Loads a game map from a file.
+     *
+     * @param p_commandHandler The command handler with map loading arguments.
+     * @throws Exception If an error occurs while loading the map.
+     */
     private void loadMap(CommandHandler p_commandHandler) throws Exception{
         List<Map<String,String>> l_listOfOperations=p_commandHandler.getListOfOperations();
         System.out.println(l_listOfOperations);
@@ -369,6 +439,4 @@ public class MainGameEngine {
             }
         }
     }
-
-
 }

@@ -1,16 +1,26 @@
 package View;
-
 import Model.*;
-
 import java.util.HashMap;
 import java.util.List;
 
+/**
+ * The {@code MapView} class provides a visual representation of the game map, including continents and countries.
+ */
 public class MapView {
+    /** The game map. */
     Map d_map;
+    /** The list of countries in the map. */
     List<Country> d_countries;
+    /** The list of continents in the map. */
     List<Continent> d_continents;
+    /** The current state of the game. */
     CurrentState d_currentState;
 
+    /**
+     * Constructs a {@code MapView} object based on the current state of the game.
+     *
+     * @param p_currentState The current game state.
+     */
     public MapView(CurrentState p_currentState) {
         this.d_currentState = p_currentState;
         this.d_map = p_currentState.getD_map();
@@ -18,6 +28,9 @@ public class MapView {
         this.d_continents = p_currentState.getD_map().getD_mapContinents();
     }
 
+    /**
+     * Displays the map, including continents, countries, armies, and neighboring countries.
+     */
     public void showMap() {
         if (d_continents != null && !d_continents.isEmpty()) {
             System.out.println("************************************************************************************************************************");
@@ -77,5 +90,4 @@ public class MapView {
             System.out.println("************************************************************************************************************************");
         }
     }
-
 }

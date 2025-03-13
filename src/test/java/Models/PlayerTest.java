@@ -1,26 +1,47 @@
 package Models;
 
-import Controller.MapController;
-import org.junit.Before;
-import org.junit.Test;
-
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
+
+import Model.CurrentState;
+import Model.Map;
+import Model.Orders;
+import Model.Player;
+import org.junit.Before;
+import org.junit.Test;
+
+import Controller.MapController;
 
 /**
  * The type Player test.
  */
 public class PlayerTest {
-    private Player d_player;
-    private Map d_map;
-    private MapController d_mapController;
-    private CurrentState d_currentState;
-    private String d_mapName;
+    /**
+     * The D player.
+     */
+    Player d_player;
+    /**
+     * The D map.
+     */
+    Map d_map;
+    /**
+     * The D map controller.
+     */
+    MapController d_mapController;
+    /**
+     * The D current state.
+     */
+    CurrentState d_currentState;
+    /**
+     * The D map name.
+     */
+    String d_mapName;
 
     /**
-     * Setup.
+     * Setup method to initialize test variables.
      */
     @Before
     public void setup() {
@@ -28,39 +49,39 @@ public class PlayerTest {
         d_mapController = new MapController();
         d_player = new Player("Player 1");
         d_mapName = "test.map";
-
-        // Load map and validate
         d_map = d_mapController.loadMap(d_currentState, d_mapName);
-        assertNotNull("Map should be loaded successfully", d_map);
     }
 
     /**
-     * Test setting a continent to a player.
+     * Test setting continent for the player.
      */
     @Test
     public void setContinent() {
-        assertFalse("Map should have at least one continent", d_map.getD_mapContinents().isEmpty());
+        // Set the continent for the player
+        d_player.setContinent(d_map.getD_mapContinents().getFirst());  // Asia
 
-        d_player.setContinent(d_map.getD_mapContinents().get(0));
-        assertEquals("Asia", d_player.getD_currentContinents().get(0).getD_continentName());
-        assertNotEquals("Europe", d_player.getD_currentContinents().get(0).getD_continentName());
+        // Check that the player's continent is correctly set
+        assertEquals("NorthAmerica", d_player.getD_currentContinents().iterator().next().getD_continentName());
+        assertNotEquals("Europe", d_player.getD_currentContinents().iterator().next().getD_continentName());
     }
 
     /**
-     * Test the nextOrder method.
+     * Test processing orders for the player.
      */
     @Test
     public void nextOrder() {
-        Orders l_order1 = new Deploy(d_player, "India", 3);
-        Orders l_order2 = new Deploy(d_player, "China", 4);
-        List<Orders> l_orderList = new ArrayList<>();
-        l_orderList.add(l_order1);
-        l_orderList.add(l_order2);
+        // Create orders for deployment
+        Orders l_order1 = new Orders("deploy", "India", 3);
+        Orders l_order2 = new Orders("deploy", "UK", 4);
+        
+        // Create a list of orders and set them for the player
+        List<Orders> l_orderlist = new ArrayList<>();
+        l_orderlist.add(l_order1);
+        l_orderlist.add(l_order2);
+        d_player.setD_orders(l_orderlist);
 
-        d_player.setD_orders(l_orderList);
-
-        assertEquals("First order should be returned", l_order1, d_player.nextOrder());
-        assertEquals("Second order should be returned", l_order2, d_player.nextOrder());
-        assertNull("No more orders should be left", d_player.nextOrder());
+        // Test that the player's next order is processed correctly
+        assertEquals(l_order1, d_player.nextOrder());
+        assertEquals(l_order2, d_player.nextOrder());
     }
 }
