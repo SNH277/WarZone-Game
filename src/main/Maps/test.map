@@ -3,7 +3,6 @@
 NorthAmerica 10
 Europe 15
 SouthAmerica 8
-Asia 15
 
 [Countries]
 1 USA 1
@@ -14,7 +13,6 @@ Asia 15
 6 Brazil 3
 7 Argentina 3
 8 Chile 3
-9 India 4
 
 [Borders]
 1 2 4 6
@@ -25,4 +23,3 @@ Asia 15
 6 1 5 7 8
 7 4 6 8
 8 6 7 9
-9 8
