@@ -1,5 +1,6 @@
 package Controller;
 
+import Constants.ProjectConstants;
 import Model.Continent;
 import Model.Country;
 import Model.CurrentState;
@@ -273,12 +274,12 @@ public class MapController {
         File l_fileToEdit = new File(l_fileLocation);
 
         if (l_fileToEdit.createNewFile()) {
-            System.out.println("File has been created");
+            System.out.println(ProjectConstants.FILE_CREATED);
             Map l_map = new Map();
             l_map.setD_mapName(p_editFileName);
             p_currentState.setD_map(l_map);
         } else {
-            System.out.println("File already exists");
+            System.out.println(ProjectConstants.FILE_ALREADY_EXISTS);
             Map l_map = this.loadMap(p_currentState, p_editFileName);
             l_map.setD_mapName(p_editFileName);
             p_currentState.setD_map(l_map);
@@ -294,7 +295,7 @@ public class MapController {
      */
     private boolean writeContinents(FileOutputStream p_writer, Map p_map) throws IOException {
         if (p_map.getD_mapContinents() == null || p_map.getD_mapContinents().isEmpty()) {
-            System.out.println("No Continents in this map. Can't save an incorrect map.");
+            System.out.println(ProjectConstants.NO_CONTINENTS);
             return false;
         }
 
@@ -315,7 +316,7 @@ public class MapController {
      */
     private boolean writeCountries(FileOutputStream p_writer, Map p_map) throws IOException {
         if (p_map.getD_mapCountries() == null || p_map.getD_mapCountries().isEmpty()) {
-            System.out.println("No Countries in this map. Can't save an incorrect map.");
+            System.out.println(ProjectConstants.NO_COUNTRIES);
             return false;
         }
 
@@ -336,7 +337,7 @@ public class MapController {
      */
     private boolean writeBorders(FileOutputStream p_writer, Map p_map) throws IOException {
         if (p_map.getD_mapCountries() == null || p_map.getD_mapCountries().isEmpty()) {
-            System.out.println("Borders cannot be saved without countries.");
+            System.out.println(ProjectConstants.NO_COUNTRIES);
             return false;
         }
 
@@ -353,7 +354,7 @@ public class MapController {
         }
 
         if (!hasBorders) {
-            System.out.println("No borders defined. This is not a connected graph.");
+            System.out.println(ProjectConstants.NO_BORDERS);
             return false;
         }
         return true;
@@ -397,7 +398,7 @@ public class MapController {
 
                 p_mapToUpdate.addCountry(countryName, continentName);
             } else {
-                System.out.println("Error: Invalid format. Use 'add <country> <continent>'.");
+                System.out.println(ProjectConstants.INVALID_ADD_COUNTRY_COMMAND);
             }
         } else if (p_operation.equals("remove")) {
             if (splitArgs.length == 1) {
@@ -406,10 +407,10 @@ public class MapController {
                 p_mapToUpdate.removeCountry(countryName);
                 System.out.println("Country " + countryName + " removed successfully!");
             } else {
-                System.out.println("Error: Invalid format. Use 'remove <country>'.");
+                System.out.println(ProjectConstants.INVALID_REMOVE_COUNTRY_COMMAND);
             }
         } else {
-            System.out.println("Error: Invalid operation. Use 'add' or 'remove'.");
+            System.out.println(ProjectConstants.INVALID_OPERATION);
         }
         return p_mapToUpdate;
     }
@@ -425,7 +426,7 @@ public class MapController {
         String[] l_args = p_arguments.split(" ");
 
         if (l_args.length != 2) {
-            System.out.println("Invalid arguments. Please provide exactly two country IDs.");
+            System.out.println(ProjectConstants.INVALID_ARGUMENTS);
             return p_mapToUpdate;
         }
 
@@ -445,7 +446,7 @@ public class MapController {
             p_mapToUpdate.removeNeighbour(l_countryID, l_neighbourID);
         }
         else {
-            System.out.println("Invalid operation. Please use 'add' or 'remove'.");
+            System.out.println(ProjectConstants.INVALID_OPERATION);
         }
         return p_mapToUpdate;
     }
@@ -490,17 +491,17 @@ public class MapController {
                     System.out.println("Error: Control value must be a valid integer.");
                 }
             } else {
-                System.out.println("Error: Invalid format. Use '-add <continent> <controlValue>'.");
+                System.out.println(ProjectConstants.INVALID_ADD_CONTINENT_COMMAND);
             }
         } else if (p_operation.equals("remove")) {
             if (splitArgs.length == 1) {
                 String continentName = splitArgs[0];
                 p_mapToUpdate.removeContinent(continentName);
             } else {
-                System.out.println("Error: Invalid format. Use '-remove <continent>'.");
+                System.out.println(ProjectConstants.INVALID_REMOVE_CONTINENT_COMMAND);
             }
         } else {
-            System.out.println("Error: Invalid operation. Use 'add' or 'remove'.");
+            System.out.println(ProjectConstants.INVALID_OPERATION);
         }
 
         return p_mapToUpdate;
