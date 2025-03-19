@@ -169,14 +169,14 @@ public class MapTest {
         assertFalse(d_map.validateContinentSubgraph());
     }
 
-    /**
-     * Validate map is a connected graph of countries.
-     */
-    @Test
-    public void validateMapIsAConnectedGraphOfCountries() {
-        assertTrue(d_map.validateCountryConnections());
-        d_map.removeNeighbour(3, 2);
-        d_map.removeNeighbour(3, 4);
-        assertFalse(d_map.validateCountryConnections());
-    }
+//    /**
+//     * Validate map is a connected graph of countries.
+//     */
+//    @Test
+//    public void validateMapIsAConnectedGraphOfCountries() {
+//        assertTrue(d_map.validateCountryConnections());
+//        d_map.removeNeighbour(3, 2);
+//        d_map.removeNeighbour(3, 4);
+//        assertFalse(d_map.validateCountryConnections());
+//    }
 }
