@@ -5,6 +5,7 @@ import Model.Orders;
 import Model.Player;
 import Utils.CommandHandler;
 import View.MapView;
+import Constants.ProjectConstants;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -13,6 +14,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
 import java.util.Set;
+
 
 /**
  * The {@code MainGameEngine} class serves as the main controller for handling game commands and logic.
@@ -155,7 +157,7 @@ public class MainGameEngine {
         );
 
         if (requiresMap.contains(l_mainCommand) && !l_isMapAvailable) {
-            System.out.println("Error: Map not available. Use 'loadmap' or 'editmap' first.");
+            System.out.println(ProjectConstants.MAP_NOT_AVAILABLE);
             return;
         }
 
@@ -191,7 +193,7 @@ public class MainGameEngine {
                 saveMap(l_commandHandler);
                 break;
             default:
-                System.out.println("Invalid command. Please check the command menu and try again.");
+                System.out.println(ProjectConstants.INVALID_COMMAND);
                 break;
         }
     }
@@ -206,7 +208,7 @@ public class MainGameEngine {
         System.out.println(l_listOfOperations);
 
         if (l_listOfOperations == null || l_listOfOperations.isEmpty()) {
-            System.out.println("Save map command is not correct. Use 'savemap filename' command.");
+            System.out.println(ProjectConstants.INVALID_SAVEMAP_COMMAND);
         } else {
             for(Map<String,String> l_singleOperation : l_listOfOperations){
                 if(l_singleOperation.containsKey("Arguments") && l_singleOperation.get("Arguments")!=null){
@@ -219,7 +221,7 @@ public class MainGameEngine {
                     }
                 }
                 else {
-                    System.out.println("Save map command is not correct. Use 'savemap filename' command.");
+                    System.out.println(ProjectConstants.INVALID_SAVEMAP_COMMAND);
                 }
             }
         }
@@ -233,20 +235,20 @@ public class MainGameEngine {
     private void validateMap(CommandHandler p_commandHandler) {
         List<Map<String,String>> l_listOfOperations=p_commandHandler.getListOfOperations();
         if (l_listOfOperations != null && !l_listOfOperations.isEmpty()) {
-            System.out.println("Validate map command is not correct. Use 'validatemap' command.");
+            System.out.println(ProjectConstants.INVALID_VALIDATEMAP_COMMAND);
             return;
         }
 
         Model.Map l_map = d_currentGameState.getD_map();
         if (l_map == null) {
-            System.out.println("Map not Found!");
+            System.out.println(ProjectConstants.MAP_NOT_AVAILABLE);
             return;
         }
 
         if (l_map.validateMap()) {
-            System.out.println("Map is Valid");
+            System.out.println(ProjectConstants.VALID_MAP);
         } else {
-            System.out.println("Map is not Valid");
+            System.out.println(ProjectConstants.INVALID_MAP);
         }
     }
 
@@ -273,7 +275,7 @@ public class MainGameEngine {
      */
     private void playGame() throws IOException {
         if (d_currentGameState.getD_players() == null || d_currentGameState.getD_players().isEmpty()) {
-            System.out.println("No players in the game.");
+            System.out.println(ProjectConstants.NO_PLAYERS);
             return;
         }
 
@@ -310,7 +312,7 @@ public class MainGameEngine {
         List<Map<String,String>> l_listOfOperations=p_commandHandler.getListOfOperations();
         System.out.println(l_listOfOperations);
         if (l_listOfOperations == null || l_listOfOperations.isEmpty()) {
-            System.out.println("Wrong command entered, Please enter the correct 'gameplayer' command.");
+            System.out.println(ProjectConstants.INVALID_GAMEPLAYER_COMMAND);
         }
         else {
             for (Map<String, String> l_eachMap : l_listOfOperations) {
