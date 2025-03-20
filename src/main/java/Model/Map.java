@@ -1,5 +1,7 @@
 package Model;
 
+import Constants.ProjectConstants;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -233,11 +235,11 @@ public class Map {
      */
     public boolean validateCountriesAndContinents() {
         if (d_mapContinents == null || d_mapContinents.isEmpty()) {
-            System.out.println("Map does not have Continents");
+            System.out.println(ProjectConstants.NO_CONTINENTS);
             return false;
         }
         if (d_mapCountries == null || d_mapCountries.isEmpty()) {
-            System.out.println("Map does not have Countries");
+            System.out.println(ProjectConstants.NO_COUNTRIES);
             return false;
         }
         for (Country l_eachCountry : d_mapCountries) {
@@ -547,7 +549,7 @@ public class Map {
      */
     public void addNeighbour(int p_countryID, int p_neighbourID) {
         if (d_mapCountries == null || d_mapCountries.isEmpty()) {
-            System.out.println("No countries exist in the map.");
+            System.out.println(ProjectConstants.NO_COUNTRIES);
             return;
         }
 
@@ -579,7 +581,7 @@ public class Map {
      */
     public void removeNeighbour(int p_countryID, int p_neighbourID) {
         if (d_mapCountries == null || d_mapCountries.isEmpty()) {
-            System.out.println("No country in Map.");
+            System.out.println(ProjectConstants.NO_COUNTRIES);
             return;
         }
 

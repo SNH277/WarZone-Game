@@ -1,5 +1,7 @@
 package Model;
 
+import Constants.ProjectConstants;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -62,7 +64,7 @@ public class CurrentState {
             removePlayer(p_player);
         }
         else {
-            System.out.println("Command is invalid. To add or remover player, use '-add playerName' or '-remove playerName'.");
+            System.out.println(ProjectConstants.INVALID_GAMEPLAYER_COMMAND);
         }
     }
 
@@ -76,7 +78,7 @@ public class CurrentState {
             String l_player = p_command.split(" ")[0];
 
             if(d_players == null || d_players.isEmpty()) {
-                System.out.println("No players found.");
+                System.out.println(ProjectConstants.NO_PLAYERS);
                 return;
             }
 

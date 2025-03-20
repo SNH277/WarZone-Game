@@ -21,7 +21,7 @@ public class ProjectConstants {
 
     public static final String NO_PLAYERS = "No players in the game. Please add players using 'gameplayer -add <player_name>' command first.";
 
-    public static final String INVALID_GAMEPLAYER_COMMAND = "Gameplayer command is not correct. Use gameplayer -add <player_name>";
+    public static final String INVALID_GAMEPLAYER_COMMAND = "Command is invalid. Please use correct gameplayer command. To add or remover player, use 'gameplayer -add <player_name>' or 'gameplayer -remove <player_name>'.";
 
     public static final String FILE_CREATED = "File has been created.";
 
@@ -58,4 +58,5 @@ public class ProjectConstants {
     public static final String NEIGHBOUR_ALREADY_EXISTS = "Neighbour already exists.";
 
     public static final String NO_NEIGHBOURING_COUNTRIES = "No neighbouring countries present.";
+
 }
