@@ -13,6 +13,7 @@ public class CurrentState {
     List<Player> d_players;
     /** The game map. */
     Map d_map;
+    ModelLogger d_modelLogger = new ModelLogger();
 
     /**
      * Gets the list of players in the game.
@@ -48,6 +49,14 @@ public class CurrentState {
      */
     public void setD_map(Map p_map) {
         this.d_map = p_map;
+    }
+
+    public ModelLogger getD_modelLogger() {
+        return d_modelLogger;
+    }
+
+    public void setD_modelLogger(ModelLogger p_modelLogger) {
+        this.d_modelLogger = p_modelLogger;
     }
 
     /**
@@ -127,4 +136,9 @@ public class CurrentState {
             System.out.println("Player " + l_player + " added.");
         }
     }
+
+    public void updateLog(String p_logMessage,String p_logType){
+        d_modelLogger.setD_message(p_logMessage,p_logType);
+    }
+
 }

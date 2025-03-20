@@ -1,8 +1,6 @@
 package Controller;
 
-import Model.CurrentState;
-import Model.Orders;
-import Model.Player;
+import Model.*;
 import Utils.CommandHandler;
 import View.MapView;
 import Constants.ProjectConstants;
@@ -28,6 +26,7 @@ public class MainGameEngine {
     PlayerController d_playerController=new PlayerController();
     /** The current state of the game. */
     CurrentState d_currentGameState = new CurrentState();
+    Phase d_currentPhase = new StartupPhase(d_currentGameState,this);
 
     /**
      * The main entry point of the application.
@@ -440,5 +439,16 @@ public class MainGameEngine {
                 }
             }
         }
+    }
+
+    public void setD_mainEngineLog(String p_logForMainEngine,String p_logType){
+        d_currentPhase.getD_currentState().updateLog(p_logForMainEngine,p_logType);
+        String l_consoleMessage;
+        if (p_logType.equalsIgnoreCase("phase")){
+            l_consoleMessage = "\n=============================== "+p_logForMainEngine+" ===============================\n";
+        }else {
+            l_consoleMessage = p_logForMainEngine;
+        }
+        System.out.println(l_consoleMessage);
     }
 }
