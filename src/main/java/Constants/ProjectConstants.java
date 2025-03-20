@@ -9,7 +9,7 @@ public class ProjectConstants {
 
     public static final String MAP_NOT_AVAILABLE = "Map is not available. Use 'loadmap <filename>' or 'editmap <filename>' first.";
 
-    public static final String INVALID_COMMAND = "Invalid command. Please check the command menu and try again.";
+    public static final String INVALID_COMMAND = "Invalid command. Please provide a valid command.";
 
     public static final String INVALID_SAVEMAP_COMMAND = "Save map command is not correct. Use 'savemap <filename>' command.";
 

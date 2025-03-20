@@ -1,5 +1,6 @@
 package Model;
 
+import Constants.ProjectConstants;
 import Controller.PlayerController;
 import Utils.CommandHandler;
 
@@ -167,7 +168,7 @@ public class Player {
                 PlayerController l_playerController = new PlayerController();
                 l_playerController.createDeployOrder(l_command, this);
             } else {
-                System.out.println("Invalid command format. Please provide a valid command.");
+                System.out.println(ProjectConstants.INVALID_COMMAND);
             }
         }
     }
