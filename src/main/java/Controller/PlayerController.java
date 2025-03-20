@@ -1,5 +1,6 @@
 package Controller;
 
+import Constants.ProjectConstants;
 import Model.*;
 
 import java.util.ArrayList;
@@ -18,11 +19,11 @@ public class PlayerController {
      */
     public void assignCountry(CurrentState p_currentState) {
         if(p_currentState.getD_players() == null || p_currentState.getD_players().isEmpty()) {
-            System.out.println("No players found. Please add players using 'gameplayer -add playerName' command first.");
+            System.out.println(ProjectConstants.NO_PLAYERS);
             return;
         }
         if(p_currentState.getD_map() == null || p_currentState.getD_map().getD_mapCountries() == null) {
-            System.out.println("Map data is missing. Ensure a valid map is loaded before assigning countries");
+            System.out.println(ProjectConstants.MAP_NOT_AVAILABLE);
         }
 
         List<Player> l_players = p_currentState.getD_players();
@@ -31,7 +32,7 @@ public class PlayerController {
         int l_playerCount = l_players.size();
         int l_countryCount = l_countries.size();
         if (l_playerCount > l_countryCount) {
-            System.out.println("More players than available countries. Reduce player count or add more countries.");
+            System.out.println(ProjectConstants.MORE_PLAYERS_THAN_COUNTRIES);
         }
 
         int l_countriesPerPlayer = Math.floorDiv(l_countryCount, l_playerCount);
@@ -93,7 +94,7 @@ public class PlayerController {
         List<Country> l_unassignedCountries = new ArrayList<>(p_Countries);
 
         if(l_unassignedCountries.isEmpty()) {
-            System.out.println("No Countries in the map.");
+            System.out.println(ProjectConstants.NO_COUNTRIES);
             return;
         }
         Random rand = new Random();
@@ -141,7 +142,7 @@ public class PlayerController {
     public void assignArmies(CurrentState p_CurrentState) {
         List<Player> l_players = p_CurrentState.getD_players();
         if(l_players == null || l_players.isEmpty()) {
-            System.out.println("No players found.");
+            System.out.println(ProjectConstants.NO_PLAYERS);
             return;
         }
         for (Player l_player : l_players) {
@@ -170,7 +171,7 @@ public class PlayerController {
         if(!validateCountryOwnership(p_Player, l_countryName)){
             System.out.println("Country " + l_countryName + " is not owned by " + p_Player.getD_playerName());
         } else if (!hasSufficientArmies(p_Player, l_numberOfArmiesToDeploy)) {
-            System.out.println("Player does not have enough armies to deploy.");
+            System.out.println(ProjectConstants.NOT_ENOUGH_ARMIES);
         } else {
             Orders l_order = new Orders(p_OrderName.split(" ")[0], l_countryName, l_numberOfArmiesToDeploy);
             l_orders.add(l_order);
@@ -179,7 +180,7 @@ public class PlayerController {
             Integer l_unallocatedArmies = p_Player.getD_unallocatedArmies() - l_numberOfArmiesToDeploy;
             p_Player.setD_unallocatedArmies(l_unallocatedArmies);
 
-            System.out.println("Order is added to queue for execution.");
+            System.out.println(ProjectConstants.ORDER_ADDED);
         }
 
     }
