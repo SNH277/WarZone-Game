@@ -50,4 +50,12 @@ public class ProjectConstants {
     public static final String NOT_ENOUGH_ARMIES = "Player does not have enough armies to deploy.";
 
     public static final String ORDER_ADDED = "Order is added to queue for execution.";
+
+    public static final String EMPTY_CONTINENT = "No countries exist in this continent.";
+
+    public static final String COUNTRY_NOT_IN_CONTINENT = "This country does not exist in this continent.";
+
+    public static final String NEIGHBOUR_ALREADY_EXISTS = "Neighbour already exists.";
+
+    public static final String NO_NEIGHBOURING_COUNTRIES = "No neighbouring countries present.";
 }
