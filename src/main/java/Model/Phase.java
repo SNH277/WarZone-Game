@@ -56,14 +56,16 @@ public abstract class Phase {
         this.d_gameplayController = p_gameplayController;
     }
 
-    public abstract void next();
-    public abstract void printPhase();
+    public abstract void initPhase();
 
+    public void handleCommand(String p_inputCommand) throws CommandValidationException, IOException {
+        commandHandler(p_inputCommand,null);
+    }
     public void handleCommand(String p_inputCommand, Player p_player) throws CommandValidationException, IOException {
         commandHandler(p_inputCommand, p_player);
     }
 
-    private void commandHandler(String p_inputCommand,Player p_player) throws Exception {
+    private void commandHandler(String p_inputCommand,Player p_player) throws CommandValidationException, IOException {
         CommandHandler l_commandHandler =new CommandHandler(p_inputCommand);
         String l_mainCommand = l_commandHandler.getMainCommand();
         boolean l_isMapAvailable = (d_currentState.getD_map() != null);
@@ -150,7 +152,7 @@ public abstract class Phase {
 
     protected abstract void validateMap(CommandHandler p_commandHandler) throws CommandValidationException;
 
-    protected abstract void assignCountries(CommandHandler p_commandHandler) throws CommandValidationException;
+    protected abstract void assignCountries(CommandHandler p_commandHandler) throws CommandValidationException, IOException;
 
     protected abstract void gamePlayer(CommandHandler p_commandHandler) throws CommandValidationException;
 
@@ -162,8 +164,12 @@ public abstract class Phase {
 
     protected abstract void editCountry(CommandHandler p_commandHandler) throws CommandValidationException;
 
-    protected abstract void editMap(CommandHandler p_commandHandler) throws CommandValidationException;
+    protected abstract void editMap(CommandHandler p_commandHandler) throws CommandValidationException, IOException;
 
     protected abstract void loadMap(CommandHandler p_commandHandler) throws CommandValidationException;
+
+    public void printInvalidCommandInPhase(){
+        d_mainGameEngine.setD_mainEngineLog("Invalid Command entered for this phase.","effect");
+    }
 
 }
