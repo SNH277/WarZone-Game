@@ -32,6 +32,15 @@ public class Player {
     /** The list of orders the player has issued. */
     List<Orders> d_orders;
 
+    public String d_playerLog;
+
+    boolean d_moreOrders;
+
+    List<String> d_cardOwnedByPlayer = new ArrayList<>();
+
+    List<Player> d_negotiatePlayer = new ArrayList<>();
+
+    boolean d_oneCardPerTurn = false;
     /**
      * Constructor to initialize a new player.
      *
@@ -43,6 +52,7 @@ public class Player {
         this.d_orders = new ArrayList<Orders>();
         this.d_currentCountries = new ArrayList<Country>();
         this.d_currentContinents = new HashSet<>();
+        this.d_moreOrders = true;
     }
 
     /**
@@ -149,6 +159,50 @@ public class Player {
         }
     }
 
+    public String getD_playerLog(){
+        return d_playerLog;
+    }
+
+    public void setD_playerLog(String p_orderExecutionLog, String p_messageType){
+        this.d_playerLog = p_orderExecutionLog;
+        if (p_messageType.equals("error")){
+            System.err.println(p_orderExecutionLog);
+        } else {
+            System.out.println(p_orderExecutionLog);
+        }
+    }
+
+    public boolean isD_moreOrders(){
+        return d_moreOrders;
+    }
+
+    public void setD_moreOrders(boolean d_moreOrders){
+        this.d_moreOrders = d_moreOrders;
+    }
+
+    public List<String> getD_cardOwnedByPlayer(){
+        return d_cardOwnedByPlayer;
+    }
+
+    public void setD_cardOwnedByPlayer(List<String> d_cardOwnedByPlayer){
+        this.d_cardOwnedByPlayer = d_cardOwnedByPlayer;
+    }
+
+    public List<Player> getD_negotiatePlayer(){
+        return d_negotiatePlayer;
+    }
+
+    public void setD_negotiatePlayer(List<Player> d_negotiatePlayer){
+        this.d_negotiatePlayer = d_negotiatePlayer;
+    }
+
+    public boolean isD_oneCardPerTurn() {
+        return d_oneCardPerTurn;
+    }
+
+    public void setD_oneCardPerTurn(boolean d_oneCardPerTurn) {
+        this.d_oneCardPerTurn = d_oneCardPerTurn;
+    }
     /**
      * Issues an order for the player to deploy armies.
      *
