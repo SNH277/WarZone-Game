@@ -325,4 +325,53 @@ public class Player {
             System.err.println("An error occurred while reading input: " + e.getMessage());
         }
     }
+
+    public void createAdvanceOrder(String p_inputCommand, CurrentState p_currentState) {
+        String[] l_commandParts = p_inputCommand.split(" ");
+
+        if (l_commandParts.length != 4) {
+            this.setD_playerLog("Invalid command format for Advance order.", "error");
+            return;
+        }
+
+        String l_sourceCountry = l_commandParts[1];
+        String l_targetCountry = l_commandParts[2];
+        Integer l_noOfArmies;
+
+        try {
+            l_noOfArmies = Integer.parseInt(l_commandParts[3]);
+        } catch (NumberFormatException e) {
+            this.setD_playerLog("Invalid number of armies specified.", "error");
+            return;
+        }
+
+        if (!checkCountryPresent(l_sourceCountry, p_currentState) ||
+                !checkCountryPresent(l_targetCountry, p_currentState)) {
+            return;
+        }
+
+        if (l_noOfArmies <= 0) {
+            this.setD_playerLog("Number of armies must be greater than 0.", "error");
+            return;
+        }
+
+        /*if (!validateCountryBelongstoPlayer(this, l_sourceCountry, p_currentState)) {
+            this.setD_playerLog("Source country does not belong to the player.", "error");
+            return;
+        }*/
+
+        if (!checkAdjacentCountry(l_sourceCountry, l_targetCountry, p_currentState)) {
+            this.setD_playerLog("Target country is not adjacent to the source country.", "error");
+            return;
+        }
+
+        //this.d_orders.add(new Advance(l_sourceCountry, l_targetCountry, l_noOfArmies, this));
+        this.setD_playerLog("Advance order added successfully for player " + this.getD_playerName(), "log");
+    }
+
+    private boolean checkAdjacentCountry(String p_sourceCountry, String p_targetCountry, CurrentState pCurrentState) {
+    }
+
+    private boolean checkCountryPresent(String p_sourceCountry, CurrentState p_currentState) {
+    }
 }
