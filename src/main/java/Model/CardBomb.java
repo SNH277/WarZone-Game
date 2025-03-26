@@ -81,4 +81,62 @@ public class CardBomb implements Card {
         }
         return true;
     }
+
+    /**
+     * Validates whether the Bomb card can be used based on game rules.
+     * <p>
+     * Checks that:
+     * <ul>
+     *   <li>The target country is not owned by the player.</li>
+     *   <li>The target country is a neighbor of at least one of the player's countries.</li>
+     *   <li>(Optional) No negotiation is in place with the target country.</li>
+     * </ul>
+     * Logs an error and returns {@code false} if any condition fails.
+     *
+     * @param p_currentState the current state of the game for validation and logging
+     * @return {@code true} if the Bomb card usage is valid; {@code false} otherwise
+     */
+    public boolean valid(CurrentState p_currentState) {
+        // Find the target country and check if it exists in the player's current countries
+        Country l_country = null;
+        Country l_targetCountry = p_currentState.getD_map().getCountryByName(d_targetCountryName);
+        for (Country l_eachCountry : d_cardOwner.getD_currentCountries()) {
+            if (l_eachCountry.getD_countryName().equals(d_targetCountryName)) {
+                l_country = l_eachCountry;
+                break; // Exit early once we find the target country
+            }
+        }
+
+        // Check if the target country is a neighbour of any owned country
+        boolean l_isTargetCountryNeighbour = false;
+        if (l_targetCountry != null) {
+            for (Country l_eachCountry : d_cardOwner.getD_currentCountries()) {
+                for (Integer l_eachNeighbour : l_eachCountry.getD_neighbouringCountriesId()) {
+                    if (l_eachNeighbour.equals(l_targetCountry.getD_countryID())) {
+                        l_isTargetCountryNeighbour = true;
+                        break; // Exit early if a neighbour is found
+                    }
+                }
+                if (l_isTargetCountryNeighbour) {
+                    break; // Exit the loop if the neighbour is confirmed
+                }
+            }
+        }
+
+        // Check if negotiation validation fails
+//        if (!d_cardOwner.negotiationValidation(this.d_targetCountryName)) {
+//            this.setD_orderExecutionLog("Invalid! Negotiation is in place with the target country", "error");
+//            p_currentState.updateLog(orderExecutionLog(), "effect");
+//            return false;
+//        }
+
+        // Validate the conditions for using the Bomb card
+        if (l_country == null || !l_isTargetCountryNeighbour) {
+            this.setD_orderExecutionLog("Invalid! Bomb card cannot be used on own country or non-neighbouring country", "error");
+            p_currentState.updateLog(orderExecutionLog(), "effect");
+            return false;
+        }
+
+        return true;
+    }
 }
