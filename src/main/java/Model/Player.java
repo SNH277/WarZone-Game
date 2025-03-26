@@ -303,4 +303,26 @@ public class Player {
         }
         return false;
     }
+
+    public void checkForMoreOrder() {
+        try (BufferedReader l_reader = new BufferedReader(new InputStreamReader(System.in))) {
+            boolean l_validInput = false;
+
+            while (!l_validInput) {
+                System.out.println("Do you still want to give orders for player: " + this.getD_playerName() + " in the next turn?");
+                System.out.println("Press Y for Yes and N for No");
+
+                String l_check = l_reader.readLine();
+
+                if (l_check.equalsIgnoreCase("Y") || l_check.equalsIgnoreCase("N")) {
+                    this.setD_moreOrders(l_check.equalsIgnoreCase("Y"));
+                    l_validInput = true;
+                } else {
+                    System.err.println("Invalid input! Please enter 'Y' or 'N'.");
+                }
+            }
+        } catch (IOException e) {
+            System.err.println("An error occurred while reading input: " + e.getMessage());
+        }
+    }
 }
