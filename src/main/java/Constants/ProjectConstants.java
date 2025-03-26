@@ -1,5 +1,8 @@
 package Constants;
 
+import java.util.Arrays;
+import java.util.List;
+
 /**
  * The {@code ProjectConstants} class defines a set of constant strings used throughout the project.
  * These constants represent various messages related to command validation, file operations,
@@ -8,6 +11,8 @@ package Constants;
 public class ProjectConstants {
 
     public static final String INVALID_NO_OF_ARMIES = "Given deploy order can't be executed as armies in deploy order is more than players unallocated armies";
+    public static final List<String> ALL_CARDS = Arrays.asList("bomb", "blockade", "airlift", "negotiate");
+    public static final int NO_OF_CARDS = ALL_CARDS.size();
 
     /**
      * Private constructor to prevent instantiation of this utility class.

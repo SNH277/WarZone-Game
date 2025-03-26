@@ -7,10 +7,7 @@ import Utils.CommandHandler;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 /**
  * Represents a player in the game.
@@ -477,5 +474,30 @@ public class Player {
                 return false;
         }
         return true;
+    }
+
+    public void addNegotiatePlayer(Player p_negotiatePlayer){
+        this.d_negotiatePlayer.add(p_negotiatePlayer);
+    }
+
+    public void assignCard() {
+        if (d_oneCardPerTurn) {
+            this.setD_playerLog("Card cannot be assigned to player: " + this.getD_playerName() + " as one card per turn is already assigned.", "error");
+            return;
+        }
+
+        if (ProjectConstants.ALL_CARDS.isEmpty() || ProjectConstants.NO_OF_CARDS <= 0) {
+            this.setD_playerLog("No cards available to assign.", "error");
+            return;
+        }
+
+        Random l_random = new Random();
+        int l_cardIndex = l_random.nextInt(ProjectConstants.NO_OF_CARDS);
+        String l_assignedCard = ProjectConstants.ALL_CARDS.get(l_cardIndex);
+
+        this.d_cardOwnedByPlayer.add(l_assignedCard);
+        d_oneCardPerTurn = true;
+
+        this.setD_playerLog("Card: " + l_assignedCard + " assigned to player: " + this.getD_playerName(), "effect");
     }
 }
