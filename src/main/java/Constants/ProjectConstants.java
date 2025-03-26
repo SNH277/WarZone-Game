@@ -7,6 +7,8 @@ package Constants;
  */
 public class ProjectConstants {
 
+    public static final String INVALID_NO_OF_ARMIES = "Given deploy order can't be executed as armies in deploy order is more than players unallocated armies";
+
     /**
      * Private constructor to prevent instantiation of this utility class.
      */

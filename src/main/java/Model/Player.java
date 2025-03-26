@@ -250,4 +250,50 @@ public class Player {
     public String toString() {
         return "Player [Player Name=" + d_playerName + ", Unallocated Armies=" + d_unallocatedArmies + ", Current Countries=" + d_currentCountries.size() + ", Current Continents=" + d_currentContinents.size() + ", Orders=" + d_orders.size() + "]";
     }
+
+    public void createDeployOrder(String p_command) {
+        if (d_orders == null) {
+            d_orders = new ArrayList<>();
+        }
+
+        String[] l_commandParts = p_command.split(" ");
+
+        if (l_commandParts.length < 3) {
+            this.setD_playerLog("Invalid command format! Correct format: deploy <CountryName> <NoOfArmies>", "error");
+            return;
+        }
+
+        String l_countryName = l_commandParts[1];
+        int l_noOfArmiesToDeploy;
+
+        try {
+            l_noOfArmiesToDeploy = Integer.parseInt(l_commandParts[2]);
+        } catch (NumberFormatException e) {
+            this.setD_playerLog("Invalid number of armies! Please enter a valid integer.", "error");
+            return;
+        }
+
+        if (!validateCountryBelongstoPlayer(this, l_countryName)) {
+            this.setD_playerLog("The country " + l_countryName + " does not belong to this player.", "error");
+            return;
+        }
+
+        if (!isArmyCountValid(this, l_noOfArmiesToDeploy)) {
+            this.setD_playerLog(ProjectConstants.INVALID_NO_OF_ARMIES, "error");
+            return;
+        }
+
+        //Orders l_order = new Deploy(this, l_countryName, l_noOfArmiesToDeploy);
+        //d_orders.add(l_order);
+
+        this.setD_unallocatedArmies(this.getD_unallocatedArmies() - l_noOfArmiesToDeploy);
+
+        this.setD_playerLog(ProjectConstants.ORDER_ADDED, "effect");
+    }
+
+    private boolean isArmyCountValid(Player player, int lNoOfArmiesToDeploy) {
+    }
+
+    private boolean validateCountryBelongstoPlayer(Player p_player, String p_CountryName) {
+    }
 }
