@@ -291,9 +291,16 @@ public class Player {
         this.setD_playerLog(ProjectConstants.ORDER_ADDED, "effect");
     }
 
-    private boolean isArmyCountValid(Player player, int lNoOfArmiesToDeploy) {
+    private boolean isArmyCountValid(Player p_player, int p_noOfArmiesToDeploy) {
+        return p_player.getD_unallocatedArmies() >= p_noOfArmiesToDeploy;
     }
 
-    private boolean validateCountryBelongstoPlayer(Player p_player, String p_CountryName) {
+    private boolean validateCountryBelongstoPlayer(Player p_player, String p_countryName) {
+        for (Country l_eachCountry : p_player.getD_currentCountries()) {
+            if (l_eachCountry.getD_countryName().equals(p_countryName)) {
+                return true;
+            }
+        }
+        return false;
     }
 }
