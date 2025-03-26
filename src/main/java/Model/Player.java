@@ -389,4 +389,93 @@ public class Player {
 
         return l_exists;
     }
+
+    public void handleCardCommand(String p_inputCommand, CurrentState p_currentState) {
+        String[] l_commandParts = p_inputCommand.split(" ");
+
+        if (!checkCardArguments(l_commandParts)) {
+            return;
+        }
+
+        String l_commandType = l_commandParts[0].toLowerCase();
+
+        switch (l_commandType) {
+            case "bomb":
+                Card l_bombOrder = new CardBomb(this, l_commandParts[1]);
+                if (l_bombOrder.validOrderCheck(p_currentState)) {
+                    this.d_orders.add(l_bombOrder);
+                    this.setD_playerLog("Bomb order is added for execution for player " + this.getD_playerName(), "effect");
+                    p_currentState.updateLog(getD_playerLog(), "effect");
+                }
+                break;
+
+            case "blockade":
+                Card l_blockadeOrder = new CardBlockade(this, l_commandParts[1]);
+                if (l_blockadeOrder.validOrderCheck(p_currentState)) {
+                    this.d_orders.add(l_blockadeOrder);
+                    this.setD_playerLog("Blockade order is added for execution for player " + this.getD_playerName(), "effect");
+                    p_currentState.updateLog(getD_playerLog(), "effect");
+                }
+                break;
+
+            /*case "airlift":
+                try {
+                    int l_noOfArmies = Integer.parseInt(l_commandParts[3]);
+                    Card l_airliftOrder = new CardAirlift(l_noOfArmies, l_commandParts[1], this, l_commandParts[2], );
+                    if (l_airliftOrder.validOrderCheck(p_currentState)) {
+                        this.d_orders.add(l_airliftOrder);
+                        this.setD_playerLog("Airlift order is added for execution for player " + this.getD_playerName(), "effect");
+                        p_currentState.updateLog(getD_playerLog(), "effect");
+                    }
+                } catch (NumberFormatException e) {
+                    this.setD_playerLog("Invalid number of armies for airlift order.", "error");
+                }
+                break;
+
+            case "negotiate":
+                Card l_negotiateOrder = new CardNegotiate(this, l_commandParts[1]);
+                if (l_negotiateOrder.validOrderCheck(p_currentState)) {
+                    this.d_orders.add(l_negotiateOrder);
+                    this.setD_playerLog("Negotiate order is added for execution for player " + this.getD_playerName(), "effect");
+                    p_currentState.updateLog(getD_playerLog(), "effect");
+                }
+                break;*/
+
+            default:
+                this.setD_playerLog("Invalid card order type: " + l_commandType, "error");
+                break;
+        }
+    }
+
+    private boolean checkCardArguments(String[] p_commandParts) {
+        if (p_commandParts.length < 2) {
+            this.setD_playerLog("Invalid command format.", "error");
+            return false;
+        }
+
+        String l_commandType = p_commandParts[0].toLowerCase();
+
+        switch (l_commandType) {
+            case "negotiate":
+            case "blockade":
+            case "bomb":
+                if (p_commandParts.length != 2) {
+                    this.setD_playerLog("Invalid arguments for " + l_commandType + " order.", "error");
+                    return false;
+                }
+                break;
+
+            case "airlift":
+                if (p_commandParts.length != 4) {
+                    this.setD_playerLog("Invalid arguments for airlift order. Expected: airlift <source> <target> <armies>", "error");
+                    return false;
+                }
+                break;
+
+            default:
+                this.setD_playerLog("Invalid card order type: " + l_commandType, "error");
+                return false;
+        }
+        return true;
+    }
 }
