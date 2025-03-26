@@ -10,10 +10,6 @@ import java.util.List;
  */
 public class ProjectConstants {
 
-    public static final String INVALID_NO_OF_ARMIES = "Given deploy order can't be executed as armies in deploy order is more than players unallocated armies";
-    public static final List<String> ALL_CARDS = Arrays.asList("bomb", "blockade", "airlift", "negotiate");
-    public static final int NO_OF_CARDS = ALL_CARDS.size();
-
     /**
      * Private constructor to prevent instantiation of this utility class.
      */
@@ -98,4 +94,12 @@ public class ProjectConstants {
     /** Error message when no neighboring countries exist. */
     public static final String NO_NEIGHBOURING_COUNTRIES = "No neighbouring countries present.";
 
+    /** Error message when the deploy order exceeds unallocated armies. */
+    public static final String INVALID_NO_OF_ARMIES = "Given deploy order can't be executed as armies in deploy order is more than players unallocated armies";
+
+    /** List of all available card types: bomb, blockade, airlift, negotiate. */
+    public static final List<String> ALL_CARDS = Arrays.asList("bomb", "blockade", "airlift", "negotiate");
+
+    /** Total number of available cards, based on ALL_CARDS size. */
+    public static final int NO_OF_CARDS = ALL_CARDS.size();
 }

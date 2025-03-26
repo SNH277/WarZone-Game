@@ -29,15 +29,21 @@ public class Player {
     /** The list of orders the player has issued. */
     List<Orders> d_orders;
 
+    /** Represents a player's log of actions and events. */
     public String d_playerLog;
 
+    /** Indicates whether the player has more orders to execute. */
     boolean d_moreOrders;
 
+    /** List of cards owned by the player. */
     List<String> d_cardOwnedByPlayer = new ArrayList<>();
 
+    /** List of players with whom this player has negotiated. */
     List<Player> d_negotiatePlayer = new ArrayList<>();
 
+    /** Flag to determine if only one card can be used per turn. */
     boolean d_oneCardPerTurn = false;
+
     /**
      * Constructor to initialize a new player.
      *
@@ -156,10 +162,22 @@ public class Player {
         }
     }
 
+    /**
+     * Gets the player's log of actions and events.
+     *
+     * @return The player's log as a String.
+     */
     public String getD_playerLog(){
         return d_playerLog;
     }
 
+    /**
+     * Sets the player's log of actions and events and prints the log message.
+     * If the message type is "error," it prints to the error stream.
+     *
+     * @param p_orderExecutionLog The message to be logged.
+     * @param p_messageType The type of message ("error" or other).
+     */
     public void setD_playerLog(String p_orderExecutionLog, String p_messageType){
         this.d_playerLog = p_orderExecutionLog;
         if (p_messageType.equals("error")){
@@ -169,34 +187,74 @@ public class Player {
         }
     }
 
+    /**
+     * Checks if the player has more orders to execute.
+     *
+     * @return {@code true} if the player has more orders; otherwise, {@code false}.
+     */
     public boolean isD_moreOrders(){
         return d_moreOrders;
     }
 
+    /**
+     * Sets whether the player has more orders to execute.
+     *
+     * @param d_moreOrders {@code true} if the player has more orders; otherwise, {@code false}.
+     */
     public void setD_moreOrders(boolean d_moreOrders){
         this.d_moreOrders = d_moreOrders;
     }
 
+    /**
+     * Gets the list of cards owned by the player.
+     *
+     * @return A list of card names owned by the player.
+     */
     public List<String> getD_cardOwnedByPlayer(){
         return d_cardOwnedByPlayer;
     }
 
+    /**
+     * Sets the list of cards owned by the player.
+     *
+     * @param d_cardOwnedByPlayer The list of card names to assign to the player.
+     */
     public void setD_cardOwnedByPlayer(List<String> d_cardOwnedByPlayer){
         this.d_cardOwnedByPlayer = d_cardOwnedByPlayer;
     }
 
+    /**
+     * Gets the list of players with whom this player has negotiated.
+     *
+     * @return A list of players the current player has negotiated with.
+     */
     public List<Player> getD_negotiatePlayer(){
         return d_negotiatePlayer;
     }
 
+    /**
+     * Sets the list of players with whom this player has negotiated.
+     *
+     * @param d_negotiatePlayer The list of players to set as negotiated with.
+     */
     public void setD_negotiatePlayer(List<Player> d_negotiatePlayer){
         this.d_negotiatePlayer = d_negotiatePlayer;
     }
 
+    /**
+     * Checks whether the player is limited to using one card per turn.
+     *
+     * @return {@code true} if the player can only use one card per turn; otherwise, {@code false}.
+     */
     public boolean isD_oneCardPerTurn() {
         return d_oneCardPerTurn;
     }
 
+    /**
+     * Sets whether the player is limited to using one card per turn.
+     *
+     * @param d_oneCardPerTurn {@code true} if the player can only use one card per turn; otherwise, {@code false}.
+     */
     public void setD_oneCardPerTurn(boolean d_oneCardPerTurn) {
         this.d_oneCardPerTurn = d_oneCardPerTurn;
     }
@@ -248,6 +306,11 @@ public class Player {
         return "Player [Player Name=" + d_playerName + ", Unallocated Armies=" + d_unallocatedArmies + ", Current Countries=" + d_currentCountries.size() + ", Current Continents=" + d_currentContinents.size() + ", Orders=" + d_orders.size() + "]";
     }
 
+    /**
+     * Creates a deploy order based on the given command input.
+     *
+     * @param p_command The deploy command in the format {@code deploy <CountryName> <NoOfArmies>}.
+     */
     public void createDeployOrder(String p_command) {
         if (d_orders == null) {
             d_orders = new ArrayList<>();
@@ -288,10 +351,24 @@ public class Player {
         this.setD_playerLog(ProjectConstants.ORDER_ADDED, "effect");
     }
 
+    /**
+     * Checks if the player has enough unallocated armies to deploy.
+     *
+     * @param p_player The player attempting to deploy armies.
+     * @param p_noOfArmiesToDeploy The number of armies the player wants to deploy.
+     * @return {@code true} if the player has enough unallocated armies; otherwise, {@code false}.
+     */
     private boolean isArmyCountValid(Player p_player, int p_noOfArmiesToDeploy) {
         return p_player.getD_unallocatedArmies() >= p_noOfArmiesToDeploy;
     }
 
+    /**
+     * Validates whether a given country belongs to the specified player.
+     *
+     * @param p_player The player whose ownership is being checked.
+     * @param p_countryName The name of the country to verify.
+     * @return {@code true} if the country belongs to the player; otherwise, {@code false}.
+     */
     private boolean validateCountryBelongstoPlayer(Player p_player, String p_countryName) {
         for (Country l_eachCountry : p_player.getD_currentCountries()) {
             if (l_eachCountry.getD_countryName().equals(p_countryName)) {
@@ -301,6 +378,10 @@ public class Player {
         return false;
     }
 
+    /**
+     * Prompts the player to check if they want to give more orders in the next turn.
+     * Reads user input from the console and sets the player's order status accordingly.
+     */
     public void checkForMoreOrder() {
         try (BufferedReader l_reader = new BufferedReader(new InputStreamReader(System.in))) {
             boolean l_validInput = false;
@@ -323,6 +404,12 @@ public class Player {
         }
     }
 
+    /**
+     * Creates an advance order based on the given command.
+     *
+     * @param p_inputCommand The advance command in the format {@code advance <SourceCountry> <TargetCountry> <NoOfArmies>}.
+     * @param p_currentState The current state of the game, used for validation.
+     */
     public void createAdvanceOrder(String p_inputCommand, CurrentState p_currentState) {
         String[] l_commandParts = p_inputCommand.split(" ");
 
@@ -366,6 +453,14 @@ public class Player {
         this.setD_playerLog("Advance order added successfully for player " + this.getD_playerName(), "log");
     }
 
+    /**
+     * Checks whether the target country is adjacent to the source country.
+     *
+     * @param p_sourceCountry The name of the source country.
+     * @param p_targetCountry The name of the target country.
+     * @param p_currentState The current state of the game, used to retrieve country details.
+     * @return {@code true} if the target country is adjacent to the source country; otherwise, {@code false}.
+     */
     private boolean checkAdjacentCountry(String p_sourceCountry, String p_targetCountry, CurrentState p_currentState) {
         Country l_sourceCountry = p_currentState.getD_map().getCountryByName(p_sourceCountry);
         Country l_targetCountry = p_currentState.getD_map().getCountryByName(p_targetCountry);
@@ -377,6 +472,14 @@ public class Player {
         return l_sourceCountry.getD_neighbouringCountriesId().contains(l_targetCountry.getD_countryID());
     }
 
+    /**
+     * Checks if a given country exists on the map.
+     * If the country is not found, logs an error message.
+     *
+     * @param p_sourceCountry The name of the country to check.
+     * @param p_currentState The current state of the game, used to look up the country.
+     * @return {@code true} if the country exists; otherwise, {@code false}.
+     */
     private boolean checkCountryPresent(String p_sourceCountry, CurrentState p_currentState) {
         boolean l_exists = p_currentState.getD_map().getCountryByName(p_sourceCountry) != null;
 
@@ -387,6 +490,13 @@ public class Player {
         return l_exists;
     }
 
+    /**
+     * Handles the execution of card commands based on the given input.
+     * The input command is parsed, and depending on the card type (e.g., bomb, blockade),
+     *
+     * @param p_inputCommand The command input for the card action (e.g., bomb <country>).
+     * @param p_currentState The current state of the game used for order validation.
+     */
     public void handleCardCommand(String p_inputCommand, CurrentState p_currentState) {
         String[] l_commandParts = p_inputCommand.split(" ");
 
@@ -444,6 +554,13 @@ public class Player {
         }
     }
 
+    /**
+     * Validates the arguments provided for the card command.
+     * Ensures that the correct number of arguments is passed based on the card type.
+     *
+     * @param p_commandParts The parts of the input command (split by spaces).
+     * @return {@code true} if the arguments are valid; otherwise, {@code false}.
+     */
     private boolean checkCardArguments(String[] p_commandParts) {
         if (p_commandParts.length < 2) {
             this.setD_playerLog("Invalid command format.", "error");
@@ -476,10 +593,18 @@ public class Player {
         return true;
     }
 
+    /**
+     * Adds a player to the list of players with whom negotiations can be made.
+     *
+     * @param p_negotiatePlayer The player to add to the negotiation list.
+     */
     public void addNegotiatePlayer(Player p_negotiatePlayer){
         this.d_negotiatePlayer.add(p_negotiatePlayer);
     }
 
+    /**
+     * Assigns a card to the player. If the player already has a card for the turn or if there are no cards left,
+     */
     public void assignCard() {
         if (d_oneCardPerTurn) {
             this.setD_playerLog("Card cannot be assigned to player: " + this.getD_playerName() + " as one card per turn is already assigned.", "error");
@@ -501,6 +626,12 @@ public class Player {
         this.setD_playerLog("Card: " + l_assignedCard + " assigned to player: " + this.getD_playerName(), "effect");
     }
 
+    /**
+     * Validates if a player can negotiate with a target country. A player cannot negotiate if they control the target country.
+     *
+     * @param p_targetCountryName The name of the target country for negotiation.
+     * @return {@code true} if negotiation is possible (the player does not control the target country); {@code false} otherwise.
+     */
     public boolean negotiationValidation(String p_targetCountryName) {
         boolean l_canAttack = true;
         for(Player l_eachPlayer : d_negotiatePlayer){
@@ -511,6 +642,11 @@ public class Player {
         return l_canAttack;
     }
 
+    /**
+     * Returns a list of country names controlled by the player.
+     *
+     * @return A list of country names controlled by the player.
+     */
     public List<String> getCountryNames() {
         List<String> l_countryNames = new ArrayList<>();
         for(Country l_eachCountry : d_currentCountries){
@@ -519,6 +655,11 @@ public class Player {
         return l_countryNames;
     }
 
+    /**
+     * Removes a specific card from the player's list of owned cards.
+     *
+     * @param p_cardName The name of the card to be removed.
+     */
     public void removeCard(String p_cardName){
         this.d_cardOwnedByPlayer.remove(p_cardName);
     }
