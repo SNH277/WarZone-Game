@@ -369,9 +369,24 @@ public class Player {
         this.setD_playerLog("Advance order added successfully for player " + this.getD_playerName(), "log");
     }
 
-    private boolean checkAdjacentCountry(String p_sourceCountry, String p_targetCountry, CurrentState pCurrentState) {
+    private boolean checkAdjacentCountry(String p_sourceCountry, String p_targetCountry, CurrentState p_currentState) {
+        Country l_sourceCountry = p_currentState.getD_map().getCountryByName(p_sourceCountry);
+        Country l_targetCountry = p_currentState.getD_map().getCountryByName(p_targetCountry);
+
+        if (l_sourceCountry == null || l_targetCountry == null) {
+            return false;
+        }
+
+        return l_sourceCountry.getD_neighbouringCountriesId().contains(l_targetCountry.getD_countryID());
     }
 
     private boolean checkCountryPresent(String p_sourceCountry, CurrentState p_currentState) {
+        boolean l_exists = p_currentState.getD_map().getCountryByName(p_sourceCountry) != null;
+
+        if (!l_exists) {
+            this.setD_playerLog(ProjectConstants.NO_COUNTRIES, "error");
+        }
+
+        return l_exists;
     }
 }
