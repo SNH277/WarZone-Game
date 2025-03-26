@@ -83,6 +83,43 @@ public class CardBomb implements Card {
     }
 
     /**
+     * Executes the Bomb card action if the order is valid.
+     * <p>
+     * Reduces the number of armies in the target country to half (minimum 1),
+     * updates the game state accordingly, and logs the result.
+     * If the order is invalid, logs an error message.
+     *
+     * @param p_currentState the current state of the game used for validation, applying effects, and logging
+     */
+    public void execute(CurrentState p_currentState) {
+        if (valid(p_currentState)) {
+            Country l_targetCountry = p_currentState.getD_map().getCountryByName(d_targetCountryName);
+
+            // Simplified army count handling
+            Integer l_armyCountOnTargetCountry = Math.max(l_targetCountry.getD_armies(), 1);
+
+            // Calculate the new army count after bomb effect
+            Integer l_newArmies = l_armyCountOnTargetCountry / 2;
+
+            // Apply the new army count
+            l_targetCountry.setD_armies(l_newArmies);
+
+            // Remove the Bomb card and disable one card per turn for the player
+//            d_cardOwner.removeCard("bomb");
+//            d_cardOwner.setD_oneCardPerTurn(false);
+
+            // Log the effect of using the Bomb card
+            this.setD_orderExecutionLog("Bomb card used to reduce the armies of " + this.d_targetCountryName + " to " + l_newArmies, "default");
+            p_currentState.updateLog(orderExecutionLog(), "effect");
+        }
+        else {
+            // Handle invalid card usage
+            this.setD_orderExecutionLog("Invalid! Bomb card cannot be used", "error");
+            p_currentState.updateLog(orderExecutionLog(), "effect");
+        }
+    }
+
+    /**
      * Validates whether the Bomb card can be used based on game rules.
      * <p>
      * Checks that:
