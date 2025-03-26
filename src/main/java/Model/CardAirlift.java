@@ -123,4 +123,63 @@ public class CardAirlift implements Card{
         this.setD_orderExecutionLog("Invalid! " + p_message, "error");
         p_currentState.updateLog(orderExecutionLog(), "effect");
     }
+
+    /**
+     * Validates whether the Airlift card order is legitimate based on the player's ownership
+     * and army availability in the current game state.
+     * <p>
+     * This method checks:
+     * <ul>
+     *     <li>Whether the player owns the source and target countries.</li>
+     *     <li>Whether the source country has enough armies for the airlift.</li>
+     * </ul>
+     * If any of these conditions fail, an error message is logged and the method returns {@code false}.
+     *
+     * @param p_currentState the current state of the game used for validation and logging
+     * @return {@code true} if the order is valid; {@code false} otherwise
+     */
+    public boolean valid(CurrentState p_currentState) {
+        Country l_targetCountry = null;
+        Country l_sourceCountry = null;
+
+        // Single loop to find both source and target countries
+        for (Country l_eachCountry : d_cardOwner.getD_currentCountries()) {
+            if (l_eachCountry.getD_countryName().equals(d_targetCountryName)) {
+                l_targetCountry = l_eachCountry;
+            }
+            if (l_eachCountry.getD_countryName().equals(d_sourceCountryName)) {
+                l_sourceCountry = l_eachCountry;
+            }
+            if (l_targetCountry != null && l_sourceCountry != null) {
+                break; // Stop searching early if both are found
+            }
+        }
+
+        // Validate target country ownership
+        if (l_targetCountry == null) {
+            String l_errorMessage = "Invalid! Target country does not belong to player";
+            this.setD_orderExecutionLog(l_errorMessage, "error");
+            p_currentState.updateLog(l_errorMessage, "effect");
+            return false;
+        }
+
+        // Validate source country ownership
+        if (l_sourceCountry == null) {
+            String l_errorMessage = "Invalid! Source country does not belong to player";
+            this.setD_orderExecutionLog(l_errorMessage, "error");
+            p_currentState.updateLog(l_errorMessage, "effect");
+            return false;
+        }
+
+        // Validate sufficient armies in source country
+        if (l_sourceCountry.getD_armies() < d_armyCount) {
+            String l_errorMessage = "Invalid! Source country does not have enough armies";
+            this.setD_orderExecutionLog(l_errorMessage, "error");
+            p_currentState.updateLog(l_errorMessage, "effect");
+            return false;
+        }
+
+        return true; // If all validations pass
+    }
+
 }
