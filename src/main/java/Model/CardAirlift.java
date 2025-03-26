@@ -125,6 +125,42 @@ public class CardAirlift implements Card{
     }
 
     /**
+     * Executes the Airlift card action if the order is valid.
+     * <p>
+     * Transfers the specified number of armies from the source country
+     * to the target country, updates the army counts, and logs the result.
+     * If validation fails, logs an error and aborts execution.
+     *
+     * @param p_currentState the current game state used for validation, country access, and logging
+     */
+    public void execute(CurrentState p_currentState) {
+        if (!valid(p_currentState)) {
+            this.setD_orderExecutionLog("Invalid! Airlift card cannot be used", "error");
+            p_currentState.updateLog("Invalid! Airlift card cannot be used", "effect");
+            return;
+        }
+
+        Country l_targetCountry = p_currentState.getD_map().getCountryByName(d_targetCountryName);
+        Country l_sourceCountry = p_currentState.getD_map().getCountryByName(d_sourceCountryName);
+
+
+        // Execute airlift action
+        l_sourceCountry.setD_armies(l_sourceCountry.getD_armies() - d_armyCount);
+        l_targetCountry.setD_armies(l_targetCountry.getD_armies() + d_armyCount);
+
+        // Remove airlift card from player
+//        d_cardOwner.removeCard("airlift");
+//        d_cardOwner.setD_oneCardPerTurn(false);
+
+        // Log the successful airlift action
+        String l_successMessage = "Airlift card used to move " + d_armyCount +
+                " armies from " + d_sourceCountryName +
+                " to " + d_targetCountryName;
+        this.setD_orderExecutionLog(l_successMessage, "default");
+        p_currentState.updateLog(l_successMessage, "effect");
+    }
+
+    /**
      * Validates whether the Airlift card order is legitimate based on the player's ownership
      * and army availability in the current game state.
      * <p>
