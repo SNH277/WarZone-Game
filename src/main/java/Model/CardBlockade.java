@@ -79,6 +79,60 @@ public class CardBlockade implements Card {
         return true;
     }
     /**
+     * Executes the Blockade card action if the order is valid.
+     * <p>
+     * This method triples the number of armies in the target country,
+     * removes ownership of the country from the original player,
+     * and transfers it to the Neutral player. If the Neutral player
+     * is not found in the game state, an error is logged and execution stops.
+     *
+     * @param p_currentState the current state of the game used for validation,
+     *                       updating country ownership, and logging
+     */
+    public void execute(CurrentState p_currentState) {
+        if (!valid(p_currentState)) {
+            return; // Exit early if validation fails
+        }
+
+        // Retrieve the target country from the map
+        Country l_targetCountry = p_currentState.getD_map().getCountryByName(d_targetCountryName);
+
+        // Triple the armies in the target country (handle 0 army case)
+        int l_newArmies = (l_targetCountry.getD_armies() == 0) ? 1 : l_targetCountry.getD_armies();
+        l_targetCountry.setD_armies(l_newArmies * 3);
+
+        // Remove country from the original card owner
+        d_cardOwner.getD_currentCountries().remove(l_targetCountry);
+
+        // Find the Neutral player and transfer the country
+        Player l_neutralPlayer = null;
+        for (Player l_eachPlayer : p_currentState.getD_players()) {
+            if ("Neutral".equals(l_eachPlayer.getD_playerName())) {
+                l_neutralPlayer = l_eachPlayer;
+                break;
+            }
+        }
+
+        if (l_neutralPlayer != null) {
+            l_neutralPlayer.getD_currentCountries().add(l_targetCountry);
+            System.out.println("Neutral Country: " + l_targetCountry.getD_countryName() + " has been assigned to Neutral Player");
+        } else {
+            // Log error if the Neutral player is not found
+            this.setD_orderExecutionLog("Error! Neutral player not found", "error");
+            p_currentState.updateLog(orderExecutionLog(), "effect");
+            return;
+        }
+
+        // Remove the blockade card and disable further card usage for the turn
+//        d_cardOwner.removeCard("blockade");
+//        d_cardOwner.setD_oneCardPerTurn(false);
+
+        // Log the successful blockade card use
+        String logMessage = "Player " + d_cardOwner.getD_playerName() + " used blockade card to triple the armies of " + this.d_targetCountryName;
+        this.setD_orderExecutionLog(logMessage, "default");
+        p_currentState.updateLog(orderExecutionLog(), "effect");
+    }
+    /**
      * Validates whether the target country specified in the Blockade card
      * belongs to the player who owns the card.
      * <p>
