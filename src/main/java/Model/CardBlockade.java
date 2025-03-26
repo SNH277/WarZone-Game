@@ -78,4 +78,28 @@ public class CardBlockade implements Card {
         }
         return true;
     }
+    /**
+     * Validates whether the target country specified in the Blockade card
+     * belongs to the player who owns the card.
+     * <p>
+     * If the player does not control the target country, logs an error and returns {@code false}.
+     *
+     * @param p_currentState the current state of the game used for validation and logging
+     * @return {@code true} if the player owns the target country; {@code false} otherwise
+     */
+    public boolean valid(CurrentState p_currentState) {
+        // Loop through the countries to check if the target country exists in the player's countries
+        for (Country l_eachCountry : d_cardOwner.getD_currentCountries()) {
+            if (l_eachCountry.getD_countryName().equals(d_targetCountryName)) {
+                return true; // Target country belongs to the player
+            }
+        }
+
+        // If we reach here, the target country was not found in the player's countries
+        String errorMessage = "Invalid! Blockade card cannot be used because target country '"
+                + d_targetCountryName + "' does not belong to player";
+        this.setD_orderExecutionLog(errorMessage, "error");
+        p_currentState.updateLog(orderExecutionLog(), "effect");
+        return false;
+    }
 }
