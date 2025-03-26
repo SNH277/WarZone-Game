@@ -500,4 +500,26 @@ public class Player {
 
         this.setD_playerLog("Card: " + l_assignedCard + " assigned to player: " + this.getD_playerName(), "effect");
     }
+
+    public boolean negotiationValidation(String p_targetCountryName) {
+        boolean l_canAttack = true;
+        for(Player l_eachPlayer : d_negotiatePlayer){
+            if(l_eachPlayer.getCountryNames().contains(p_targetCountryName)){
+                l_canAttack = false;
+            }
+        }
+        return l_canAttack;
+    }
+
+    public List<String> getCountryNames() {
+        List<String> l_countryNames = new ArrayList<>();
+        for(Country l_eachCountry : d_currentCountries){
+            l_countryNames.add(l_eachCountry.getD_countryName());
+        }
+        return l_countryNames;
+    }
+
+    public void removeCard(String p_cardName){
+        this.d_cardOwnedByPlayer.remove(p_cardName);
+    }
 }
