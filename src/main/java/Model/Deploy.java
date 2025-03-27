@@ -7,12 +7,12 @@ import Model.Player;
  * Represents a Deploy order in the game, where a player deploys armies to a country.
  * @author Akhilesh Kanbarkar
  */
-public class Deploy{
+public class Deploy implements Orders{
 
     private String d_targetCountryName;
     private Integer d_noOfArmiesToMove;
     private Player d_initiatingPlayer;
-
+    private String d_logofOrderExecution;
     /**
      * Instantiates a new Deploy order.
      *
@@ -33,6 +33,11 @@ public class Deploy{
      */
     public String getTargetCountryName() {
         return d_targetCountryName;
+    }
+
+    @Override
+    public String orderExecutionLog(){
+        return d_logofOrderExecution;
     }
 
     /**
@@ -74,6 +79,7 @@ public class Deploy{
      * @param p_messageType       the type of message ("error" or other)
      */
     public void setD_orderExecutionLog(String p_orderExecutionLog, String p_messageType) {
+        this.d_logofOrderExecution=p_orderExecutionLog;
         if (p_messageType.equals("error")) {
             System.err.println(p_orderExecutionLog);
         } else {
@@ -94,7 +100,7 @@ public class Deploy{
                 if (l_eachCountry.getD_countryName().equalsIgnoreCase(this.d_targetCountryName)) {
                     Integer l_updatedArmies = l_eachCountry.getD_armies() + this.d_noOfArmiesToMove;
                     l_eachCountry.setD_armies(l_updatedArmies);
-                    this.setD_orderExecutionLog(d_intitiatingPlayer.d_name + " Armies have been deployed successfully", "default");
+                    this.setD_orderExecutionLog(d_initiatingPlayer.d_playerName + " Armies have been deployed successfully", "default");
                 }
             }
         } else {
@@ -111,7 +117,7 @@ public class Deploy{
      * @return true if the player owns the target country, false otherwise
      */
     public boolean valid(CurrentState p_currentState) {
-        for (Country l_eachCountry : d_intitiatingPlayer.getD_currentCountries()) {
+        for (Country l_eachCountry : d_initiatingPlayer.getD_currentCountries()) {
             if (l_eachCountry.getD_countryName().equals(d_targetCountryName)) {
                 return true;
             }
