@@ -89,7 +89,7 @@ public class Advance{
             Integer l_armiesToUpdate = l_sourceCountry.getD_armies() - this.d_noOfArmiesToPlace;
             l_sourceCountry.setD_armies(l_armiesToUpdate);
 
-            if (l_playerOfTargetCountry.getD_name().equalsIgnoreCase(this.d_intitiatingPlayer.getD_name())) {
+            if (l_playerOfTargetCountry.getD_playerName().equalsIgnoreCase(this.d_intitiatingPlayer.getD_name())) {
                 deployArmiesToTarget(l_targetCountry);
             } else if (l_targetCountry.getD_armies() == 0) {
                 conquerTargetCountry(p_currentState, l_playerOfTargetCountry, l_targetCountry);
@@ -102,4 +102,20 @@ public class Advance{
         }
     }
 
+    /**
+     * Handles battle logic between attacking and defending countries.
+     *
+     * @param p_currentState          the game state
+     * @param p_playerOfTargetCountry the defender
+     * @param p_sourceCountry         the attacking country
+     * @param p_targetCountry         the defending country
+     */
+    private void battleOrderResult(CurrentState p_currentState, Player p_playerOfTargetCountry,
+                                   Country p_sourceCountry, Country p_targetCountry) {
+        int l_armiesInAttack = Math.min(d_noOfArmiesToPlace, p_targetCountry.getD_armies());
+        List<Integer> l_defenderArmies = generateRandomArmyUnits(l_armiesInAttack, "defender");
+        List<Integer> l_attackerArmies = generateRandomArmyUnits(l_armiesInAttack, "attacker");
+        this.produceBattleResult(p_sourceCountry, p_targetCountry, l_attackerArmies, l_defenderArmies, p_playerOfTargetCountry);
+        updateContinents(d_intitiatingPlayer, p_playerOfTargetCountry, p_currentState);
+    }
 }
