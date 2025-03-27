@@ -13,17 +13,44 @@ import java.io.InputStreamReader;
 import java.util.List;
 import java.util.Scanner;
 
+/**
+ * Represents the Startup Phase of the game.
+ * In this phase, players can perform operations such as loading and editing the map,
+ * adding/removing players, assigning countries, and preparing the game for the main loop.
+ * Commands like deploy or advance are not valid during this phase.
+ * @author Shrey Hingu
+ */
 public class StartupPhase extends Phase{
     PlayerController d_playerController = new PlayerController();
 
+    /**
+     * Constructs the StartupPhase and initializes controllers.
+     *
+     * @param p_mainGameEngine the main game engine instance
+     * @param p_currentState   the current game state
+     */
     public StartupPhase(MainGameEngine p_mainGameEngine, CurrentState p_currentState) {
         super(p_mainGameEngine, p_currentState);
     }
 
+    /**
+     * Invalid command for Startup Phase.
+     * Advance commands are not allowed during map editing or player setup.
+     *
+     * @param p_inputCommand the input command string
+     * @param p_player       the player issuing the command
+     */
     protected void advance(String p_inputCommand, Player p_player) {
         printInvalidCommandInPhase();
     }
 
+    /**
+     * Invalid command for Startup Phase.
+     * Deploy commands are not allowed during the Startup Phase.
+     *
+     * @param p_inputCommand the input command string
+     * @param p_player       the player issuing the command
+     */
     protected void deploy(String p_inputCommand, Player p_player) {
         printInvalidCommandInPhase();
     }
@@ -372,6 +399,11 @@ public class StartupPhase extends Phase{
         }
     }
 
+    /**
+     * Displays the current state of the map including continents, countries, and neighbors.
+     *
+     * @throws CommandValidationException if map view encounters issues
+     */
     protected void showMap() throws CommandValidationException {
         MapView l_mapView = new MapView(d_currentState);
         l_mapView.showMap();

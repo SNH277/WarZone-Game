@@ -7,6 +7,7 @@ import java.util.List;
 
 /**
  * The {@code CurrentState} class represents the current state of the game, including the list of players and the game map.
+ * @author Disha Padsala,Shrey Hingu
  */
 public class CurrentState {
     /** The list of players in the game. */

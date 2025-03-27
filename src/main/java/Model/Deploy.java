@@ -5,6 +5,7 @@ import Model.Player;
 
 /**
  * Represents a Deploy order in the game, where a player deploys armies to a country.
+ * @author Akhilesh Kanbarkar
  */
 public class Deploy{
 
@@ -25,14 +26,29 @@ public class Deploy{
         this.d_noOfArmiesToMove = p_noOfArmiesToMove;
     }
 
+    /**
+     * Gets the name of the target country.
+     *
+     * @return the name of the target country
+     */
     public String getTargetCountryName() {
         return d_targetCountryName;
     }
 
+    /**
+     * Gets the number of armies to move.
+     *
+     * @return the number of armies to move
+     */
     public Integer getNoOfArmiesToMove() {
         return d_noOfArmiesToMove;
     }
 
+    /**
+     * Gets the player who initiated the move.
+     *
+     * @return the initiating player
+     */
     public Player getInitiatingPlayer() {
         return d_initiatingPlayer;
     }

@@ -5,7 +5,8 @@ import Constants.ProjectConstants;
 import java.util.ArrayList;
 import java.util.List;
 /**
- * Model Class Continent.
+ * Represents a Continent containing multiple countries with associated metadata.
+ * @author Akhilesh Kanbarkar
  */
 public class Continent {
     /**
