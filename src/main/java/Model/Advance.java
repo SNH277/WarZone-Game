@@ -74,5 +74,32 @@ public class Advance{
         }
     }
 
+    /**
+     * Executes the Advance Order by handling army movement between countries.
+     * It checks for ownership, executes deployment, triggers battles, or conquers territory.
+     *
+     * @param p_currentState the current game state
+     */
+    @Override
+    public void execute(CurrentState p_currentState) {
+        if (valid(p_currentState)) {
+            Player l_playerOfTargetCountry = getplayerOfTargetCounrty(p_currentState);
+            Country l_sourceCountry = p_currentState.getD_map().getCountryByName(d_sourceCountry);
+            Country l_targetCountry = p_currentState.getD_map().getCountryByName(d_targetCountry);
+            Integer l_armiesToUpdate = l_sourceCountry.getD_armies() - this.d_noOfArmiesToPlace;
+            l_sourceCountry.setD_armies(l_armiesToUpdate);
+
+            if (l_playerOfTargetCountry.getD_name().equalsIgnoreCase(this.d_intitiatingPlayer.getD_name())) {
+                deployArmiesToTarget(l_targetCountry);
+            } else if (l_targetCountry.getD_armies() == 0) {
+                conquerTargetCountry(p_currentState, l_playerOfTargetCountry, l_targetCountry);
+                this.d_intitiatingPlayer.assignCard();
+            } else {
+                battleOrderResult(p_currentState, l_playerOfTargetCountry, l_sourceCountry, l_targetCountry);
+            }
+        } else {
+            p_currentState.updateLog("Cannot execute advance Order", "effect");
+        }
+    }
 
 }
