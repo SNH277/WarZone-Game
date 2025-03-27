@@ -17,6 +17,7 @@ import java.util.stream.Collectors;
  * <p>
  * This class handles the loading, editing, and saving of map data.
  * </p>
+ * @author Shrey Hingu,Akhilesh Kanbarkar, Yash Koladiya
  */
 public class MapController {
     /**
@@ -25,6 +26,7 @@ public class MapController {
      * @param p_currentState the current state object to update with the loaded map
      * @param p_fileName     the name of the map file
      * @return the loaded Map object
+     * @author Shrey Hingu
      */
     public Map loadMap(CurrentState p_currentState, String p_fileName){
         Map l_map=new Map();

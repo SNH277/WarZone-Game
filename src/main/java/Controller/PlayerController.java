@@ -10,6 +10,7 @@ import java.util.Random;
 /**
  * The PlayerController class manages player actions such as assigning countries,
  * distributing armies, and creating orders.
+ * @author Disha Padsala,Shrey Hingu,Akhilesh Kanbarkar
  */
 public class PlayerController {
     /**
