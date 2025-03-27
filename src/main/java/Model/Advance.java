@@ -4,9 +4,8 @@ import Controller.PlayerController;
 import Model.Player;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
-
-import static jdk.internal.joptsimple.internal.Strings.isNullOrEmpty;
 
 /**
  * Represents an Advance order in the game, which moves armies from a source country
@@ -14,7 +13,7 @@ import static jdk.internal.joptsimple.internal.Strings.isNullOrEmpty;
  * armies to be moved.
  * @author Akhilesh Kanbarkar
  */
-public class Advance{
+public class Advance implements  Orders{
 
     /**
      * The D source country.
@@ -35,6 +34,8 @@ public class Advance{
      * The D intitiating player.
      */
     Player d_intitiatingPlayer;
+
+    String d_logOfOrderExecution;
 
     /**
      * Instantiates a new Advance.
@@ -66,6 +67,11 @@ public class Advance{
                 '}';
     }
 
+    @Override
+    public String orderExecutionLog() {
+        return this.d_logOfOrderExecution;
+    }
+
     /**
      * Sets d order execution log.
      *
@@ -73,6 +79,7 @@ public class Advance{
      * @param p_messageType       the p message type
      */
     public void setD_orderExecutionLog(String p_orderExecutionLog, String p_messageType) {
+        this.d_logOfOrderExecution = p_orderExecutionLog;
         if (p_messageType.equals("error")) {
             System.err.println(p_orderExecutionLog);
         } else {
@@ -80,60 +87,169 @@ public class Advance{
         }
     }
 
+
     /**
      * Executes the Advance Order by handling army movement between countries.
      * It checks for ownership, executes deployment, triggers battles, or conquers territory.
      *
      * @param p_currentState the current game state
      */
-    @Override
     public void execute(CurrentState p_currentState) {
         if (valid(p_currentState)) {
-            Player l_playerOfTargetCountry = getplayerOfTargetCounrty(p_currentState);
+            Player l_playerOfTargetCountry = getPlayerOfTargetCountry(p_currentState);
             Country l_sourceCountry = p_currentState.getD_map().getCountryByName(d_sourceCountry);
             Country l_targetCountry = p_currentState.getD_map().getCountryByName(d_targetCountry);
-            Integer l_armiesToUpdate = l_sourceCountry.getD_armies() - this.d_noOfArmiesToPlace;
+
+            if (l_sourceCountry == null || l_targetCountry == null) {
+                this.setD_orderExecutionLog("Execution failed: Invalid source or target country.", "error");
+                p_currentState.updateLog(orderExecutionLog(), "effect");
+                return;
+            }
+
+            // Update source country's army count
+            int l_armiesToUpdate = l_sourceCountry.getD_armies() - this.d_noOfArmiesToPlace;
             l_sourceCountry.setD_armies(l_armiesToUpdate);
 
-            if (l_playerOfTargetCountry.getD_playerName().equalsIgnoreCase(this.d_intitiatingPlayer.getD_name())) {
+            // Check if attacking own territory
+            if (l_playerOfTargetCountry.getD_playerName().equalsIgnoreCase(this.d_intitiatingPlayer.getD_playerName())) {
                 deployArmiesToTarget(l_targetCountry);
-            } else if (l_targetCountry.getD_armies() == 0) {
+            }
+            // Conquer empty target country
+            else if (l_targetCountry.getD_armies() == 0) {
                 conquerTargetCountry(p_currentState, l_playerOfTargetCountry, l_targetCountry);
                 this.d_intitiatingPlayer.assignCard();
-            } else {
+            }
+            // Battle scenario
+            else {
                 battleOrderResult(p_currentState, l_playerOfTargetCountry, l_sourceCountry, l_targetCountry);
             }
         } else {
-            p_currentState.updateLog("Cannot execute advance Order", "effect");
+            p_currentState.updateLog(orderExecutionLog(), "effect");
         }
     }
 
-    /**
-     * Handles battle logic between attacking and defending countries.
-     *
-     * @param p_currentState          the game state
-     * @param p_playerOfTargetCountry the defender
-     * @param p_sourceCountry         the attacking country
-     * @param p_targetCountry         the defending country
-     */
-    private void battleOrderResult(CurrentState p_currentState, Player p_playerOfTargetCountry,
-                                   Country p_sourceCountry, Country p_targetCountry) {
+    private void conquerTargetCountry(CurrentState p_currentState, Player p_playerOfTargetCountry, Country p_targetCountry) {
+        // Remove target country from the previous owner
+        p_playerOfTargetCountry.getD_currentCountries().remove(p_targetCountry);
+
+        // Assign the country to the initiating player
+        this.d_intitiatingPlayer.d_currentCountries.add(p_targetCountry);
+
+        // Update army count in the newly conquered country
+        p_targetCountry.setD_armies(d_noOfArmiesToPlace);
+
+        // Log the conquest event
+        this.setD_orderExecutionLog(
+                "Player: " + d_intitiatingPlayer.getD_playerName() +
+                        " conquered Country: " + p_targetCountry.getD_countryName() +
+                        " with " + p_targetCountry.getD_armies() + " armies.",
+                "default"
+        );
+        p_currentState.updateLog(orderExecutionLog(), "effect");
+
+        // Update continent control status
+        this.updateContinents(this.d_intitiatingPlayer, p_playerOfTargetCountry, p_currentState);
+    }
+
+    private void updateContinents(Player p_intitiatingPlayer, Player p_playerOfTargetCountry, CurrentState p_currentState) {
+        System.out.println("Updating continents of players involved in battle...");
+
+        // Reset the continent ownership for both players
+        p_intitiatingPlayer.getD_currentContinents().clear();
+        p_playerOfTargetCountry.getD_currentContinents().clear();
+
+        // Create a list of affected players
+        List<Player> l_playerList = Arrays.asList(p_intitiatingPlayer, p_playerOfTargetCountry);
+
+        // Assign continents based on updated state
+        new PlayerController().assignContinentToPlayers(l_playerList, p_currentState.getD_map().getD_mapContinents());
+    }
+
+
+    private Player getPlayerOfTargetCountry(CurrentState p_currentState) {
+        for (Player l_eachPlayer : p_currentState.getD_players()) {
+            if (!l_eachPlayer.getD_playerName().equalsIgnoreCase("Neutral")) {
+                boolean l_ownsCountry = l_eachPlayer.getCountryNames()
+                        .stream()
+                        .anyMatch(l_country -> l_country.equalsIgnoreCase(this.d_targetCountry));
+
+                if (l_ownsCountry) {
+                    return l_eachPlayer;  // Return immediately when a match is found
+                }
+            }
+        }
+        return null;  // If no player owns the target country, return null
+    }
+
+    public boolean valid(CurrentState p_currentState) {
+        if (d_intitiatingPlayer == null || d_sourceCountry == null) {
+            this.setD_orderExecutionLog("Invalid order: Player or source country is null.", "error");
+            p_currentState.updateLog(orderExecutionLog(), "effect");
+            return false;
+        }
+
+        // Find source country
+        Country l_country = null;
+        for (Country l_eachCountry : d_intitiatingPlayer.getD_currentCountries()) {
+            if (l_eachCountry.getD_countryName().equalsIgnoreCase(d_sourceCountry)) {
+                l_country = l_eachCountry;
+                break; // Stop loop early
+            }
+        }
+
+        if (l_country == null) {
+            this.setD_orderExecutionLog("Cannot execute order: Source country does not belong to the player.", "error");
+            p_currentState.updateLog(orderExecutionLog(), "effect");
+            return false;
+        }
+
+        if (this.d_noOfArmiesToPlace > l_country.getD_armies()) {
+            this.setD_orderExecutionLog("Cannot execute order: Insufficient armies in the source country.", "error");
+            p_currentState.updateLog(orderExecutionLog(), "effect");
+            return false;
+        }
+
+        if (this.d_noOfArmiesToPlace == l_country.getD_armies()) {
+            this.setD_orderExecutionLog("Cannot execute order: At least one army unit must remain in the source country.", "error");
+            p_currentState.updateLog(orderExecutionLog(), "effect");
+            return false;
+        }
+
+        if (!this.d_intitiatingPlayer.negotiationValidation(this.d_targetCountry)) {
+            this.setD_orderExecutionLog("Cannot execute order: Negotiation pact prevents attacking the target country.", "error");
+            p_currentState.updateLog(orderExecutionLog(), "effect");
+            return false;
+        }
+
+        return true;
+    }
+
+    private void deployArmiesToTarget(Country p_targetCountry) {
+        if (p_targetCountry != null) {
+            int l_updatedArmyCount = p_targetCountry.getD_armies() + this.d_noOfArmiesToPlace;
+            p_targetCountry.setD_armies(l_updatedArmyCount);
+        }
+    }
+
+    private void battleOrderResult(CurrentState p_currentState, Player p_playerOfTargetCountry, Country p_sourceCountry, Country p_targetCountry) {
         int l_armiesInAttack = Math.min(d_noOfArmiesToPlace, p_targetCountry.getD_armies());
+
         List<Integer> l_defenderArmies = generateRandomArmyUnits(l_armiesInAttack, "defender");
         List<Integer> l_attackerArmies = generateRandomArmyUnits(l_armiesInAttack, "attacker");
+
         this.produceBattleResult(p_sourceCountry, p_targetCountry, l_attackerArmies, l_defenderArmies, p_playerOfTargetCountry);
+        p_currentState.updateLog(orderExecutionLog(), "effect");
+
         updateContinents(d_intitiatingPlayer, p_playerOfTargetCountry, p_currentState);
     }
 
-    /**
-     * Compares attacker and defender armies and computes battle outcome.
-     */
     private void produceBattleResult(Country p_sourceCountry, Country p_targetCountry,
                                      List<Integer> p_attackerArmies, List<Integer> p_defenderArmies,
                                      Player p_playerOfTargetCountry) {
-        Integer l_attackerArmiesLeft = Math.max(0, d_noOfArmiesToPlace - p_targetCountry.getD_armies());
-        Integer l_defenderArmiesLeft = Math.max(0, p_targetCountry.getD_armies() - d_noOfArmiesToPlace);
+        int l_attackerArmiesLeft = Math.max(0, d_noOfArmiesToPlace - p_targetCountry.getD_armies());
+        int l_defenderArmiesLeft = Math.max(0, p_targetCountry.getD_armies() - d_noOfArmiesToPlace);
 
+        // Process battle results
         for (int i = 0; i < p_attackerArmies.size(); i++) {
             if (p_attackerArmies.get(i) > p_defenderArmies.get(i)) {
                 l_attackerArmiesLeft++;
@@ -142,102 +258,46 @@ public class Advance{
             }
         }
 
+        // Handle the surviving armies after battle
         handleSurvivingArmies(l_attackerArmiesLeft, l_defenderArmiesLeft, p_sourceCountry, p_targetCountry, p_playerOfTargetCountry);
     }
 
-    /**
-     * Applies post-battle results to game state depending on who wins.
-     */
     private void handleSurvivingArmies(Integer p_attackerArmiesLeft, Integer p_defenderArmiesLeft,
                                        Country p_sourceCountry, Country p_targetCountry,
                                        Player p_playerOfTargetCountry) {
-        if (p_defenderArmiesLeft == 0) {
-            p_playerOfTargetCountry.getD_currentCountries().remove(p_targetCountry);
-            p_targetCountry.setD_armies(p_attackerArmiesLeft);
-            d_intitiatingPlayer.getD_currentCountries().add(p_targetCountry);
-            this.setD_orderExecutionLog("Player:" + this.d_intitiatingPlayer.getD_name() +
-                    " has won country: " + p_targetCountry.getD_countryName(), "default");
-            d_intitiatingPlayer.assignCard();
-        } else {
-            p_targetCountry.setD_armies(p_defenderArmiesLeft);
-            Integer l_sourceArmiesToUpdate = p_sourceCountry.getD_armies() + p_attackerArmiesLeft;
-            p_sourceCountry.setD_armies(l_sourceArmiesToUpdate);
+        if (p_defenderArmiesLeft == 0) { // Attacker wins
+            p_playerOfTargetCountry.getD_currentCountries().remove(p_targetCountry); // Defender loses the country
+            p_targetCountry.setD_armies(p_attackerArmiesLeft); // Assign remaining attacker armies to new country
+            d_intitiatingPlayer.getD_currentCountries().add(p_targetCountry); // Attacker gains the country
+            this.setD_orderExecutionLog("Player: " + d_intitiatingPlayer.getD_playerName() +
+                    " has conquered country: " + p_targetCountry.getD_countryName(), "default");
+            d_intitiatingPlayer.assignCard(); // Attacker gets a card reward
+        } else { // Defender survives
+            p_targetCountry.setD_armies(p_defenderArmiesLeft); // Update remaining defender armies
+            p_sourceCountry.setD_armies(p_sourceCountry.getD_armies() + p_attackerArmiesLeft); // Update attacker's source country
 
-            String l_country1 = "Country: " + p_targetCountry.getD_countryName() + " now has " +
-                    p_targetCountry.getD_armies() + " remaining armies";
-            String l_country2 = "Country: " + p_sourceCountry.getD_countryName() + " now has " +
-                    p_sourceCountry.getD_armies() + " remaining armies";
-
+            String l_country1 = "Country: " + p_targetCountry.getD_countryName() +
+                    " now has " + p_targetCountry.getD_armies() + " remaining armies.";
+            String l_country2 = "Country: " + p_sourceCountry.getD_countryName() +
+                    " now has " + p_sourceCountry.getD_armies() + " remaining armies.";
             this.setD_orderExecutionLog(l_country1 + System.lineSeparator() + l_country2, "default");
         }
     }
 
-    /**
-     * Generates randomized army unit strength based on role.
-     */
     private List<Integer> generateRandomArmyUnits(int p_armiesInAttack, String p_role) {
         List<Integer> l_armyList = new ArrayList<>();
-        double l_probability = p_role.equals("attacker") ? 0.6 : 0.7;
+        double l_probability = p_role.equals("attacker") ? 0.6 : 0.7; // Attacker: 60%, Defender: 70%
 
         for (int i = 0; i < p_armiesInAttack; i++) {
-            int l_randomNumber = getRandomInteger(1, 10);
-            l_armyList.add((int) Math.round(l_randomNumber * l_probability));
+            int l_randomNumber = getRandomInteger();
+            int l_armyUnit = (int) Math.round(l_randomNumber * l_probability);
+            l_armyList.add(l_armyUnit);
         }
         return l_armyList;
     }
 
-    /**
-     * Returns a random integer between min (inclusive) and max (exclusive).
-     */
-    private int getRandomInteger(int p_min, int p_max) {
-        return ((int) (Math.random() * (p_max - p_min))) + p_min;
+    private int getRandomInteger() {
+        return ((int) (Math.random() * 9)) + 1;
     }
 
-    /**
-     * Handles the conquest of a target country with no defending armies.
-     */
-    private void conquerTargetCountry(CurrentState p_currentState, Player p_playerOfTargetCountry,
-                                      Country p_targetCountry) {
-        p_targetCountry.setD_armies(d_noOfArmiesToPlace);
-        p_playerOfTargetCountry.getD_currentCountries().remove(p_targetCountry);
-        this.d_intitiatingPlayer.d_currentCountries.add(p_targetCountry);
-        System.out.println("Player : " + d_intitiatingPlayer.getD_name() +
-                " is assigned with Country : " + p_targetCountry.getD_countryName() +
-                " and Armies : " + p_targetCountry.getD_armies());
-        this.updateContinents(this.d_intitiatingPlayer, p_playerOfTargetCountry, p_currentState);
-    }
-
-    /**
-     * Updates the continent ownership for both players involved in battle.
-     */
-    private void updateContinents(Player p_intitiatingPlayer, Player p_playerOfTargetCountry,
-                                  CurrentState p_currentState) {
-        System.out.println("Updating continents of players involved in battle....");
-        List<Player> l_playerList = new ArrayList<>();
-        p_intitiatingPlayer.setD_currentContinents(new ArrayList<>());
-        p_playerOfTargetCountry.setD_currentContinents(new ArrayList<>());
-
-        l_playerList.add(p_intitiatingPlayer);
-        l_playerList.add(p_playerOfTargetCountry);
-
-        PlayerController l_playerController = new PlayerController();
-        l_playerController.assignContinentToPlayers(l_playerList, p_currentState.getD_map().getD_mapContinents());
-    }
-
-    /**
-     * Retrieves the player who currently owns the target country.
-     */
-    private Player getplayerOfTargetCounrty(CurrentState p_currentState) {
-        Player l_player = null;
-        for (Player l_eachPlayer : p_currentState.getD_players()) {
-            if (!l_eachPlayer.getD_name().equals("Neutral")) {
-                String l_cont = l_eachPlayer.getCountryNames().stream()
-                        .filter(l_country -> l_country.equalsIgnoreCase(this.d_targetCountry)).findFirst().orElse(null);
-                if (!isNullOrEmpty(l_cont)) {
-                    l_player = l_eachPlayer;
-                }
-            }
-        }
-        return l_player;
-    }
 }
