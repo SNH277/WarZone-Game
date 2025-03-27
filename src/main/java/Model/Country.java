@@ -7,6 +7,7 @@ import java.util.List;
 
 /**
  * The {@code Country} class represents a country with an ID, name, continent ID, neighboring countries, and armies.
+ * @author Yash Koladiya
  */
 public class Country {
     /** The unique identifier for the country. */

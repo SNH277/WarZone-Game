@@ -9,10 +9,20 @@ import java.util.Objects;
 
 /**
  * Represents a map containing countries and continents.
+ * @author Disha Padsala,Shrey Hingu,Akhilesh Kanbarkar
  */
 public class Map {
+    /**
+     * The name of the map.
+     */
     String d_mapName;
+    /**
+     * The list of countries present in the map.
+     */
     List<Country> d_mapCountries;
+    /**
+     * The list of continents defined within the map.
+     */
     List<Continent> d_mapContinents;
 
     /**

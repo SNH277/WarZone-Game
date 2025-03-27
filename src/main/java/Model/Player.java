@@ -11,6 +11,7 @@ import java.util.*;
 
 /**
  * Represents a player in the game.
+ * @author Disha Padsala
  */
 public class Player {
 

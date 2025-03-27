@@ -10,6 +10,7 @@ import java.io.IOException;
 /**
  * The GameLogger class listens for changes to the message in ModelLogger
  * and writes the updated message to a log file.
+ * @author Akhilesh Kanbarkar
  */
 public class GameLogger implements PropertyChangeListener {
 

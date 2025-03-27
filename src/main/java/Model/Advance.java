@@ -3,7 +3,10 @@ package Model;
 import Model.Player;
 
 /**
- * The type Advance.
+ * Represents an Advance order in the game, which moves armies from a source country
+ * to a target country. This order is issued by a player and contains the number of
+ * armies to be moved.
+ * @author Akhilesh Kanbarkar
  */
 public class Advance{
 

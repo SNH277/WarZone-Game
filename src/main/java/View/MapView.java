@@ -5,6 +5,7 @@ import java.util.List;
 
 /**
  * The {@code MapView} class provides a visual representation of the game map, including continents and countries.
+ * @author Disha Padsala
  */
 public class MapView {
     /** The game map. */

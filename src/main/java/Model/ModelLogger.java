@@ -3,6 +3,7 @@ import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 /**
  * The type Model logger.
+ * @author Akhilesh Kanbarkar
  */
 public class ModelLogger {
     /**
