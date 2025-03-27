@@ -80,4 +80,26 @@ public class Deploy{
             System.out.println(p_orderExecutionLog);
         }
     }
+
+    /**
+     * Executes the deploy order by adding armies to the target country,
+     * if the order is valid (i.e., the player owns the target country).
+     *
+     * @param p_currentState the current game state
+     */
+    @Override
+    public void execute(CurrentState p_currentState) {
+        if (valid(p_currentState)) {
+            for (Country l_eachCountry : p_currentState.getD_map().getD_mapCountries()) {
+                if (l_eachCountry.getD_countryName().equalsIgnoreCase(this.d_targetCountryName)) {
+                    Integer l_updatedArmies = l_eachCountry.getD_armies() + this.d_noOfArmiesToMove;
+                    l_eachCountry.setD_armies(l_updatedArmies);
+                    this.setD_orderExecutionLog(d_intitiatingPlayer.d_name + " Armies have been deployed successfully", "default");
+                }
+            }
+        } else {
+            this.setD_orderExecutionLog("Given Deploy Order cannot be executed since the target country does not belong to player.", "error");
+            p_currentState.updateLog("Given Deploy Order cannot be executed since the target country does not belong to player.", "effect");
+        }
+    }
 }
