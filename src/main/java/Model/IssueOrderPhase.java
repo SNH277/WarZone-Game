@@ -195,7 +195,7 @@ public class IssueOrderPhase extends Phase{
             }
         }while(d_playerController.checkForMoreOrders(d_currentState.getD_players()));
 
-//        d_mainGameEngine.setOrderExecutionPhase();
+        d_mainGameEngine.setOrderExecutionPhase();
     }
 
     /**

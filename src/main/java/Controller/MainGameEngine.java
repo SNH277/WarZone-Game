@@ -66,11 +66,11 @@ public class MainGameEngine {
         getD_currentPhase().initPhase();
     }
 
-//    public void setOrderExecutionPhase(){
-//        this.setD_mainEngineLog("Order Execution Phase","phase");
-//        setD_currentPhase(new OrderExecutionPhase(d_currentGameState, this));
-//        getD_currentPhase().initPhase();
-//    }
+    public void setOrderExecutionPhase(){
+        this.setD_mainEngineLog("Order Execution Phase","phase");
+        setD_currentPhase(new OrderExecutionPhase(d_currentGameState, this));
+        getD_currentPhase().initPhase();
+    }
 
 
 

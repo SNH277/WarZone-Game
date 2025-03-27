@@ -158,33 +158,33 @@ public class PlayerController {
      * @param p_OrderName The order command.
      * @param p_Player The player issuing the order.
      */
-    public void createDeployOrder(String p_OrderName, Player p_Player) {
-        List<Orders> l_orders;
-        if(p_Player.getD_orders() == null || p_Player.getD_orders().isEmpty()) {
-            l_orders = new ArrayList<>();
-        } else {
-            l_orders = p_Player.getD_orders();
-        }
-
-        String l_countryName = p_OrderName.split(" ")[1];
-        int l_numberOfArmiesToDeploy = Integer.parseInt(p_OrderName.split(" ")[2]);
-
-        if(!validateCountryOwnership(p_Player, l_countryName)){
-            System.out.println("Country " + l_countryName + " is not owned by " + p_Player.getD_playerName());
-        } else if (!hasSufficientArmies(p_Player, l_numberOfArmiesToDeploy)) {
-            System.out.println(ProjectConstants.NOT_ENOUGH_ARMIES);
-        } else {
-            Orders l_order = new Orders(p_OrderName.split(" ")[0], l_countryName, l_numberOfArmiesToDeploy);
-            l_orders.add(l_order);
-            p_Player.setD_orders(l_orders);
-
-            Integer l_unallocatedArmies = p_Player.getD_unallocatedArmies() - l_numberOfArmiesToDeploy;
-            p_Player.setD_unallocatedArmies(l_unallocatedArmies);
-
-            System.out.println(ProjectConstants.ORDER_ADDED);
-        }
-
-    }
+//    public void createDeployOrder(String p_OrderName, Player p_Player) {
+//        List<Orders> l_orders;
+//        if(p_Player.getD_orders() == null || p_Player.getD_orders().isEmpty()) {
+//            l_orders = new ArrayList<>();
+//        } else {
+//            l_orders = p_Player.getD_orders();
+//        }
+//
+//        String l_countryName = p_OrderName.split(" ")[1];
+//        int l_numberOfArmiesToDeploy = Integer.parseInt(p_OrderName.split(" ")[2]);
+//
+//        if(!validateCountryOwnership(p_Player, l_countryName)){
+//            System.out.println("Country " + l_countryName + " is not owned by " + p_Player.getD_playerName());
+//        } else if (!hasSufficientArmies(p_Player, l_numberOfArmiesToDeploy)) {
+//            System.out.println(ProjectConstants.NOT_ENOUGH_ARMIES);
+//        } else {
+//            Orders l_order = new Orders(p_OrderName.split(" ")[0], l_countryName, l_numberOfArmiesToDeploy);
+//            l_orders.add(l_order);
+//            p_Player.setD_orders(l_orders);
+//
+//            Integer l_unallocatedArmies = p_Player.getD_unallocatedArmies() - l_numberOfArmiesToDeploy;
+//            p_Player.setD_unallocatedArmies(l_unallocatedArmies);
+//
+//            System.out.println(ProjectConstants.ORDER_ADDED);
+//        }
+//
+//    }
     /**
      * Checks if the player has sufficient armies to deploy.
      *
@@ -224,20 +224,25 @@ public class PlayerController {
         }
         return false;
     }
+
     /**
-     * Checks if any unexecuted orders exist for any player.
+     * Checks if any player in the given list has unexecuted orders.
      *
-     * @param p_currentState The current game state.
-     * @return True if unexecuted orders exist, otherwise false.
+     * @param p_playerList the list of players to check for unexecuted orders
+     * @return true if any player has unexecuted orders, false otherwise
      */
-    public boolean isUnexecutedOrdersExist(CurrentState p_currentState) {
-        for (Player l_eachPlayer : p_currentState.getD_players()) {
+    public boolean isUnexecutedOrdersExist(List<Player> p_playerList) {
+        // Iterate through each player to check if they have unexecuted orders
+        for (Player l_eachPlayer : p_playerList) {
+            // If the player has unexecuted orders, return true immediately
             if (!l_eachPlayer.getD_orders().isEmpty()) {
                 return true;
             }
         }
+        // Return false if no player has unexecuted orders
         return false;
     }
+
 
     public boolean checkForMoreOrders(List<Player> p_players) {
         for(Player l_eachPlayer : p_players){
@@ -247,4 +252,48 @@ public class PlayerController {
         }
         return false;
     }
+
+    public void assignContinentToPlayers(List<Player> p_players, List<Continent> p_mapContinents) {
+        for (Player l_eachPlayer : p_players) {
+            List<Country> l_countriesOwnedByPlayer = l_eachPlayer.getD_currentCountries();
+
+            if (l_countriesOwnedByPlayer == null || l_countriesOwnedByPlayer.isEmpty()) {
+                continue; // Skip players who own no countries
+            }
+
+            for (Continent l_eachContinent : p_mapContinents) {
+                if (l_eachPlayer.getD_currentContinents().contains(l_eachContinent)) {
+                    continue; // Skip if the player already owns this continent
+                }
+
+                boolean l_isContinentOwned = l_countriesOwnedByPlayer.containsAll(l_eachContinent.getD_countries());
+                if (l_isContinentOwned) {
+                    l_eachPlayer.getD_currentContinents().add(l_eachContinent);
+                }
+            }
+        }
+    }
+
+    /**
+     * Resets the player flags for the next turn.
+     *
+     * - Players (except Neutral) can issue more orders.
+     * - Each player's "one card per turn" flag is reset.
+     * - Any ongoing negotiations are reset.
+     *
+     * @param p_playerList List of players whose flags need to be reset.
+     */
+    public void resetPlayerFlag(List<Player> p_playerList) {
+        for (Player l_eachPlayer : p_playerList) {
+            // Only non-neutral players can issue more orders
+            if (!l_eachPlayer.getD_playerName().equalsIgnoreCase("Neutral")) {
+                l_eachPlayer.setD_moreOrders(true);
+            }
+
+            // Reset other flags for all players
+            l_eachPlayer.setD_oneCardPerTurn(false);
+            l_eachPlayer.resetNegotiation();
+        }
+    }
+
 }

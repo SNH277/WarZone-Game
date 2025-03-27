@@ -649,4 +649,11 @@ public class Player {
     public void removeCard(String p_cardName){
         this.d_cardOwnedByPlayer.remove(p_cardName);
     }
+
+    /**
+     * Reset negotiation.
+     */
+    public void resetNegotiation(){
+        d_negotiatePlayer.clear();
+    }
 }
