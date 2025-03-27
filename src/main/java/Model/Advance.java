@@ -118,4 +118,24 @@ public class Advance{
         this.produceBattleResult(p_sourceCountry, p_targetCountry, l_attackerArmies, l_defenderArmies, p_playerOfTargetCountry);
         updateContinents(d_intitiatingPlayer, p_playerOfTargetCountry, p_currentState);
     }
+
+    /**
+     * Compares attacker and defender armies and computes battle outcome.
+     */
+    private void produceBattleResult(Country p_sourceCountry, Country p_targetCountry,
+                                     List<Integer> p_attackerArmies, List<Integer> p_defenderArmies,
+                                     Player p_playerOfTargetCountry) {
+        Integer l_attackerArmiesLeft = Math.max(0, d_noOfArmiesToPlace - p_targetCountry.getD_armies());
+        Integer l_defenderArmiesLeft = Math.max(0, p_targetCountry.getD_armies() - d_noOfArmiesToPlace);
+
+        for (int i = 0; i < p_attackerArmies.size(); i++) {
+            if (p_attackerArmies.get(i) > p_defenderArmies.get(i)) {
+                l_attackerArmiesLeft++;
+            } else {
+                l_defenderArmiesLeft++;
+            }
+        }
+
+        handleSurvivingArmies(l_attackerArmiesLeft, l_defenderArmiesLeft, p_sourceCountry, p_targetCountry, p_playerOfTargetCountry);
+    }
 }
