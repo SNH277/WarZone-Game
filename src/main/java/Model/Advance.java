@@ -186,4 +186,18 @@ public class Advance{
     private int getRandomInteger(int p_min, int p_max) {
         return ((int) (Math.random() * (p_max - p_min))) + p_min;
     }
+
+    /**
+     * Handles the conquest of a target country with no defending armies.
+     */
+    private void conquerTargetCountry(CurrentState p_currentState, Player p_playerOfTargetCountry,
+                                      Country p_targetCountry) {
+        p_targetCountry.setD_armies(d_noOfArmiesToPlace);
+        p_playerOfTargetCountry.getD_currentCountries().remove(p_targetCountry);
+        this.d_intitiatingPlayer.d_currentCountries.add(p_targetCountry);
+        System.out.println("Player : " + d_intitiatingPlayer.getD_name() +
+                " is assigned with Country : " + p_targetCountry.getD_countryName() +
+                " and Armies : " + p_targetCountry.getD_armies());
+        this.updateContinents(this.d_intitiatingPlayer, p_playerOfTargetCountry, p_currentState);
+    }
 }
