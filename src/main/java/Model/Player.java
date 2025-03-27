@@ -264,23 +264,8 @@ public class Player {
      *
      * @throws IOException If there is an issue with reading the input.
      */
-    public void issueOrder() throws IOException {
-        BufferedReader l_bufferedReader = new BufferedReader(new InputStreamReader(System.in));
-        System.out.println("Enter command to deploy armies on the map for Player: " + d_playerName + " | Armies left: " + d_unallocatedArmies);
-
-        String l_command = l_bufferedReader.readLine().trim();
-        CommandHandler l_commandHandler = new CommandHandler(l_command);
-
-        if("deploy".equals(l_commandHandler.getMainCommand())) {
-            String[] l_commandParts = l_command.split(" ");
-
-            if(l_commandParts.length == 3) {
-                PlayerController l_playerController = new PlayerController();
-                l_playerController.createDeployOrder(l_command, this);
-            } else {
-                System.out.println(ProjectConstants.INVALID_COMMAND);
-            }
-        }
+    public void issueOrder(IssueOrderPhase p_issueOrderPhase) throws Exception {
+        p_issueOrderPhase.askForOrders(this);
     }
 
     /**
