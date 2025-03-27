@@ -102,4 +102,20 @@ public class Deploy{
             p_currentState.updateLog("Given Deploy Order cannot be executed since the target country does not belong to player.", "effect");
         }
     }
+
+    /**
+     * Validates whether the deploy order can be executed by checking if
+     * the initiating player owns the target country.
+     *
+     * @param p_currentState the current game state
+     * @return true if the player owns the target country, false otherwise
+     */
+    public boolean valid(CurrentState p_currentState) {
+        for (Country l_eachCountry : d_intitiatingPlayer.getD_currentCountries()) {
+            if (l_eachCountry.getD_countryName().equals(d_targetCountryName)) {
+                return true;
+            }
+        }
+        return false;
+    }
 }
