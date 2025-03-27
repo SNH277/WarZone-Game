@@ -67,4 +67,43 @@ public class CardNegotiate implements Card {
         }
         return true;
     }
+
+    /**
+     * Executes the negotiation logic between the current player and target player.
+     *
+     * @param p_currentState the current game state
+     */
+    public void execute(CurrentState p_currentState) {
+        Player l_targetPlayer = p_currentState.getPlayerFromName(d_targetPlayer);
+
+        // Validate if the target player exists and negotiation is possible
+        if (l_targetPlayer == null) {
+            this.setD_orderExecutionLog("Invalid! Target player does not exist", "error");
+            p_currentState.updateLog(d_logOfOrderExecution, "effect");
+            return;
+        }
+
+        if (valid(p_currentState)) {
+            l_targetPlayer.addNegotiatePlayer(d_cardOwner);
+            d_cardOwner.addNegotiatePlayer(l_targetPlayer);
+            d_cardOwner.removeCard("negotiate");
+            d_cardOwner.setD_oneCardPerTurn(false);
+            this.setD_orderExecutionLog("Negotiation Successful", "default");
+            p_currentState.updateLog(d_logOfOrderExecution, "effect");
+        } else {
+            this.setD_orderExecutionLog("Invalid! Negotiation Unsuccessful", "error");
+            p_currentState.updateLog(d_logOfOrderExecution, "effect");
+        }
+    }
+
+    /**
+     * Placeholder validation method for negotiation rules.
+     * Should be extended with actual game-specific logic.
+     *
+     * @param p_currentState the current game state
+     * @return true if valid, false otherwise
+     */
+    public boolean valid(CurrentState p_currentState) {
+        return true;
+    }
 }

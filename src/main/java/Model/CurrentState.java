@@ -107,7 +107,7 @@ public class CurrentState {
      * @param p_player The name of the player.
      * @return The player object if found, otherwise {@code null}.
      */
-    private Player getPlayerFromName(String p_player) {
+    public Player getPlayerFromName(String p_player) {
         for(Player l_eachPlayer : d_players) {
             if (l_eachPlayer.getD_playerName().equals(p_player)) {
                 return l_eachPlayer;
