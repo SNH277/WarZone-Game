@@ -165,4 +165,25 @@ public class Advance{
             this.setD_orderExecutionLog(l_country1 + System.lineSeparator() + l_country2, "default");
         }
     }
+
+    /**
+     * Generates randomized army unit strength based on role.
+     */
+    private List<Integer> generateRandomArmyUnits(int p_armiesInAttack, String p_role) {
+        List<Integer> l_armyList = new ArrayList<>();
+        double l_probability = p_role.equals("attacker") ? 0.6 : 0.7;
+
+        for (int i = 0; i < p_armiesInAttack; i++) {
+            int l_randomNumber = getRandomInteger(1, 10);
+            l_armyList.add((int) Math.round(l_randomNumber * l_probability));
+        }
+        return l_armyList;
+    }
+
+    /**
+     * Returns a random integer between min (inclusive) and max (exclusive).
+     */
+    private int getRandomInteger(int p_min, int p_max) {
+        return ((int) (Math.random() * (p_max - p_min))) + p_min;
+    }
 }
