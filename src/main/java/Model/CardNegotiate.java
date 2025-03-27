@@ -51,4 +51,20 @@ public class CardNegotiate implements Card {
     public String orderExecutionLog() {
         return this.d_logOfOrderExecution;
     }
+
+    /**
+     * Checks if the negotiation order is valid by ensuring the target player exists.
+     *
+     * @param p_currentState the current game state
+     * @return true if valid, false otherwise
+     */
+    public Boolean validOrderCheck(CurrentState p_currentState) {
+        Player l_targetPlayer = p_currentState.getPlayerFromName(d_targetPlayer);
+        if (l_targetPlayer == null) {
+            this.setD_orderExecutionLog("Invalid! No player to negotiate", "error");
+            p_currentState.updateLog(orderExecutionLog(), "effect");
+            return false;
+        }
+        return true;
+    }
 }
