@@ -138,4 +138,31 @@ public class Advance{
 
         handleSurvivingArmies(l_attackerArmiesLeft, l_defenderArmiesLeft, p_sourceCountry, p_targetCountry, p_playerOfTargetCountry);
     }
+
+    /**
+     * Applies post-battle results to game state depending on who wins.
+     */
+    private void handleSurvivingArmies(Integer p_attackerArmiesLeft, Integer p_defenderArmiesLeft,
+                                       Country p_sourceCountry, Country p_targetCountry,
+                                       Player p_playerOfTargetCountry) {
+        if (p_defenderArmiesLeft == 0) {
+            p_playerOfTargetCountry.getD_currentCountries().remove(p_targetCountry);
+            p_targetCountry.setD_armies(p_attackerArmiesLeft);
+            d_intitiatingPlayer.getD_currentCountries().add(p_targetCountry);
+            this.setD_orderExecutionLog("Player:" + this.d_intitiatingPlayer.getD_name() +
+                    " has won country: " + p_targetCountry.getD_countryName(), "default");
+            d_intitiatingPlayer.assignCard();
+        } else {
+            p_targetCountry.setD_armies(p_defenderArmiesLeft);
+            Integer l_sourceArmiesToUpdate = p_sourceCountry.getD_armies() + p_attackerArmiesLeft;
+            p_sourceCountry.setD_armies(l_sourceArmiesToUpdate);
+
+            String l_country1 = "Country: " + p_targetCountry.getD_countryName() + " now has " +
+                    p_targetCountry.getD_armies() + " remaining armies";
+            String l_country2 = "Country: " + p_sourceCountry.getD_countryName() + " now has " +
+                    p_sourceCountry.getD_armies() + " remaining armies";
+
+            this.setD_orderExecutionLog(l_country1 + System.lineSeparator() + l_country2, "default");
+        }
+    }
 }
