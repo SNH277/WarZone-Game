@@ -66,4 +66,18 @@ public class Deploy{
                 ", initiatingPlayer=" + d_initiatingPlayer +
                 '}';
     }
+
+    /**
+     * Prints the order execution log message based on its type.
+     *
+     * @param p_orderExecutionLog the log message to be printed
+     * @param p_messageType       the type of message ("error" or other)
+     */
+    public void setD_orderExecutionLog(String p_orderExecutionLog, String p_messageType) {
+        if (p_messageType.equals("error")) {
+            System.err.println(p_orderExecutionLog);
+        } else {
+            System.out.println(p_orderExecutionLog);
+        }
+    }
 }
