@@ -27,4 +27,28 @@ public class CardNegotiate implements Card {
                 ", d_targetPlayer='" + d_targetPlayer + '\'' +
                 '}';
     }
+
+    /**
+     * Sets the order execution log and prints it based on the message type.
+     *
+     * @param p_orderExecutionLog  the log message
+     * @param p_messageType        the type of message (e.g., "error", "default")
+     */
+    public void setD_orderExecutionLog(String p_orderExecutionLog, String p_messageType) {
+        this.d_logOfOrderExecution = p_orderExecutionLog;
+        if (p_messageType.equals("error")) {
+            System.err.println(p_orderExecutionLog);
+        } else {
+            System.out.println(p_orderExecutionLog);
+        }
+    }
+
+    /**
+     * Gets the order execution log.
+     *
+     * @return the log of the order execution
+     */
+    public String orderExecutionLog() {
+        return this.d_logOfOrderExecution;
+    }
 }
