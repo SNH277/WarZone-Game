@@ -1,6 +1,12 @@
 package Model;
 
+import Controller.PlayerController;
 import Model.Player;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import static jdk.internal.joptsimple.internal.Strings.isNullOrEmpty;
 
 /**
  * Represents an Advance order in the game, which moves armies from a source country
@@ -199,5 +205,39 @@ public class Advance{
                 " is assigned with Country : " + p_targetCountry.getD_countryName() +
                 " and Armies : " + p_targetCountry.getD_armies());
         this.updateContinents(this.d_intitiatingPlayer, p_playerOfTargetCountry, p_currentState);
+    }
+
+    /**
+     * Updates the continent ownership for both players involved in battle.
+     */
+    private void updateContinents(Player p_intitiatingPlayer, Player p_playerOfTargetCountry,
+                                  CurrentState p_currentState) {
+        System.out.println("Updating continents of players involved in battle....");
+        List<Player> l_playerList = new ArrayList<>();
+        p_intitiatingPlayer.setD_currentContinents(new ArrayList<>());
+        p_playerOfTargetCountry.setD_currentContinents(new ArrayList<>());
+
+        l_playerList.add(p_intitiatingPlayer);
+        l_playerList.add(p_playerOfTargetCountry);
+
+        PlayerController l_playerController = new PlayerController();
+        l_playerController.assignContinentToPlayers(l_playerList, p_currentState.getD_map().getD_mapContinents());
+    }
+
+    /**
+     * Retrieves the player who currently owns the target country.
+     */
+    private Player getplayerOfTargetCounrty(CurrentState p_currentState) {
+        Player l_player = null;
+        for (Player l_eachPlayer : p_currentState.getD_players()) {
+            if (!l_eachPlayer.getD_name().equals("Neutral")) {
+                String l_cont = l_eachPlayer.getCountryNames().stream()
+                        .filter(l_country -> l_country.equalsIgnoreCase(this.d_targetCountry)).findFirst().orElse(null);
+                if (!isNullOrEmpty(l_cont)) {
+                    l_player = l_eachPlayer;
+                }
+            }
+        }
+        return l_player;
     }
 }
