@@ -221,7 +221,7 @@ public class StartupPhase extends Phase{
         if (l_listOfOperations == null || l_listOfOperations.isEmpty()) {
             d_playerController.assignCountry(d_currentState);
             d_playerController.assignArmies(d_currentState);
-//            d_mainGameEngine.setIssueOrderPhase();
+            d_mainGameEngine.setIssueOrderPhase();
         }
     }
 

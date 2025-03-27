@@ -238,4 +238,13 @@ public class PlayerController {
         }
         return false;
     }
+
+    public boolean checkForMoreOrders(List<Player> p_players) {
+        for(Player l_eachPlayer : p_players){
+            if(l_eachPlayer.isD_moreOrders()){
+                return true;
+            }
+        }
+        return false;
+    }
 }
