@@ -1,0 +1,56 @@
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Game Session Started
+
+
+=========Startup Phase of the Game=========
+
+
+
+Command Entered: loadmap
+
+
+Command Entered: gameplayer
+
+
+Command Entered: assigncountries
+
+
+=========Issue Order Phase=========
+
+
+
+Order Issued: Player : shrey has entered command : deploy China 3
+
+
+Command Entered: deploy
+
+Log: Order is added to queue for execution.
+
+
+Order Issued: Player : xyz has entered command : deploy India 3
+
+
+Command Entered: deploy
+
+Log: Order is added to queue for execution.
+
+
+=========Order Execution Phase=========
+
+
+
+Starting Execution of Orders......
+

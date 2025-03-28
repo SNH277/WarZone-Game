@@ -19,7 +19,7 @@ public class GameLogger implements Observer {
      * The default file path for storing game log output.
      * Used by the logging system to write execution details, game events, and errors.
      */
-    private static final String LOG_FILE_PATH = "GameLogs.txt";
+    private static final String LOG_FILE_PATH = "src/main/resources/GameLogs.txt";
 
     /**
      * The D model logger.

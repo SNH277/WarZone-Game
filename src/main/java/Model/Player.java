@@ -331,8 +331,8 @@ public class Player {
             return;
         }
 
-        //Orders l_order = new Deploy(this, l_countryName, l_noOfArmiesToDeploy);
-        //d_orders.add(l_order);
+        Orders l_order = new Deploy(this, l_countryName, l_noOfArmiesToDeploy);
+        d_orders.add(l_order);
 
         this.setD_unallocatedArmies(this.getD_unallocatedArmies() - l_noOfArmiesToDeploy);
 
@@ -371,25 +371,22 @@ public class Player {
      * Reads user input from the console and sets the player's order status accordingly.
      */
     public void checkForMoreOrder() {
-        try (BufferedReader l_reader = new BufferedReader(new InputStreamReader(System.in))) {
-            boolean l_validInput = false;
-
-            while (!l_validInput) {
-                System.out.println("Do you still want to give orders for player: " + this.getD_playerName() + " in the next turn?");
-                System.out.println("Press Y for Yes and N for No");
-
-                String l_check = l_reader.readLine();
-
-                if (l_check.equalsIgnoreCase("Y") || l_check.equalsIgnoreCase("N")) {
-                    this.setD_moreOrders(l_check.equalsIgnoreCase("Y"));
-                    l_validInput = true;
-                } else {
-                    System.err.println("Invalid input! Please enter 'Y' or 'N'.");
-                }
+        BufferedReader l_reader = new BufferedReader(new InputStreamReader(System.in));
+        System.out.println("Do you still want to give order for player : " + this.getD_playerName() + " in the next turn?");
+        System.out.println("Press Y for Yes and N for No");
+        try {
+            String l_check = l_reader.readLine();
+            if(l_check.equalsIgnoreCase("Y") || l_check.equalsIgnoreCase("N")){
+                this.setD_moreOrders(l_check.equalsIgnoreCase("Y"));
+            }
+            else{
+                System.err.println("Invalid Input Entered");
+                this.checkForMoreOrder();
             }
         } catch (IOException e) {
-            System.err.println("An error occurred while reading input: " + e.getMessage());
+            throw new RuntimeException(e);
         }
+
     }
 
     /**
@@ -437,7 +434,7 @@ public class Player {
             return;
         }
 
-        //this.d_orders.add(new Advance(l_sourceCountry, l_targetCountry, l_noOfArmies, this));
+        this.d_orders.add(new Advance(l_sourceCountry, l_targetCountry, l_noOfArmies, this));
         this.setD_playerLog("Advance order added successfully for player " + this.getD_playerName(), "log");
     }
 
@@ -513,10 +510,10 @@ public class Player {
                 }
                 break;
 
-            /*case "airlift":
+            case "airlift":
                 try {
                     int l_noOfArmies = Integer.parseInt(l_commandParts[3]);
-                    Card l_airliftOrder = new CardAirlift(l_noOfArmies, l_commandParts[1], this, l_commandParts[2], );
+                    Card l_airliftOrder = new CardAirlift(l_noOfArmies, l_commandParts[1], this, l_commandParts[2]);
                     if (l_airliftOrder.validOrderCheck(p_currentState)) {
                         this.d_orders.add(l_airliftOrder);
                         this.setD_playerLog("Airlift order is added for execution for player " + this.getD_playerName(), "effect");
@@ -534,7 +531,7 @@ public class Player {
                     this.setD_playerLog("Negotiate order is added for execution for player " + this.getD_playerName(), "effect");
                     p_currentState.updateLog(getD_playerLog(), "effect");
                 }
-                break;*/
+                break;
 
             default:
                 this.setD_playerLog("Invalid card order type: " + l_commandType, "error");

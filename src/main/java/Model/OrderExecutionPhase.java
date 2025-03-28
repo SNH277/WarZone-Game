@@ -33,20 +33,18 @@ public class OrderExecutionPhase extends Phase {
      * and transitions to the next phase based on user input.
      */
     public void initPhase() {
-        BufferedReader l_reader = new BufferedReader(new InputStreamReader(System.in));
-
-        while (d_mainGameEngine.getD_currentPhase() instanceof OrderExecutionPhase) {
+        while(d_mainGameEngine.getD_currentPhase() instanceof OrderExecutionPhase){
             executeOrders();
-            new MapView(d_currentState).showMap();
+            MapView l_mapView = new MapView(d_currentState);
+            l_mapView.showMap();
 
-            if (checkEndOfGame(d_currentState)) {
-                System.out.println("Game Over. Exiting...");
+            if(this.checkEndOfGame(d_currentState)){
                 System.exit(0);
             }
 
             while(d_currentState.getD_players() != null){
                 System.out.println("Press Y/y if you want to continue for next turn or else press N/n");
-                l_reader = new BufferedReader(new InputStreamReader(System.in));
+                BufferedReader l_reader = new BufferedReader(new InputStreamReader(System.in));
 
                 try{
                     String l_continue = l_reader.readLine();
@@ -249,21 +247,14 @@ public class OrderExecutionPhase extends Phase {
     private void executeOrders() {
         addNeutralPlayer(d_currentState);
         d_mainGameEngine.setD_mainEngineLog("\nStarting Execution of Orders......", "start");
-
-        while (d_gameplayController.isUnexecutedOrdersExist(d_currentState.getD_players())) {
-            for (Player l_eachPlayer : d_currentState.getD_players()) {
-                if (!l_eachPlayer.isD_moreOrders()) { // Skip players with no orders
-                    continue;
-                }
-
+        while(d_gameplayController.isUnexecutedOrdersExist(d_currentState.getD_players())){
+            for(Player l_eachPlayer : d_currentState.getD_players()){
                 Orders l_orderToExecute = l_eachPlayer.nextOrder();
-                if (l_orderToExecute != null) {
-                    d_currentState.updateLog(l_orderToExecute.orderExecutionLog(), "effect"); // Uncommented logging
+                if(l_orderToExecute != null){
                     l_orderToExecute.execute(d_currentState);
                 }
             }
         }
-
         d_gameplayController.resetPlayerFlag(d_currentState.getD_players());
     }
 
