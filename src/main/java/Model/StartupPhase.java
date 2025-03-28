@@ -281,10 +281,10 @@ public class StartupPhase extends Phase{
     }
 
     /**
-     * Edits the neighboring country relationships.
+     * Modifies the neighboring country relationships based on the provided command.
      *
-     * @param p_commandHandler The command handler containing neighbor modifications.
-     * @throws Exception If an invalid command is entered.
+     * @param p_commandHandler The command handler containing the neighbor modification operations.
+     * @throws CommandValidationException If the command is invalid or improperly formatted.
      */
     protected void editNeighbourCountry(CommandHandler p_commandHandler) throws  CommandValidationException {
         List<java.util.Map<String,String>> l_listOfOperations=p_commandHandler.getListOfOperations();
@@ -304,7 +304,7 @@ public class StartupPhase extends Phase{
      * Edits the continents on the map based on the provided command.
      *
      * @param p_commandHandler The command handler containing continent modification details.
-     * @throws Exception If an invalid command is provided.
+     * @throws CommandValidationException If the command is invalid or improperly formatted.
      */
     protected void editContinent(CommandHandler p_commandHandler) throws CommandValidationException {
         List<java.util.Map<String,String>> l_listOfOperations = p_commandHandler.getListOfOperations();
@@ -330,7 +330,7 @@ public class StartupPhase extends Phase{
      * Edits the countries on the map based on the provided command.
      *
      * @param p_commandHandler The command handler containing country modification details.
-     * @throws Exception If an invalid command is provided.
+     * @throws CommandValidationException If the command is invalid or improperly formatted.
      */
     protected void editCountry(CommandHandler p_commandHandler) throws CommandValidationException {
         List<java.util.Map<String,String>> l_listOfOperations=p_commandHandler.getListOfOperations();
@@ -353,10 +353,11 @@ public class StartupPhase extends Phase{
     }
 
     /**
-     * Edits the map based on the provided command.
+     * Modifies the map based on the provided command operations.
      *
-     * @param p_commandHandler The command handler containing map modification details.
-     * @throws Exception If an invalid command is provided.
+     * @param p_commandHandler The command handler containing the map modification details.
+     * @throws CommandValidationException If the command is invalid or missing required arguments.
+     * @throws IOException If an I/O error occurs during map modification.
      */
     protected void editMap(CommandHandler p_commandHandler) throws CommandValidationException,IOException {
         List<java.util.Map<String,String>> l_listOfOperations=p_commandHandler.getListOfOperations();
@@ -377,7 +378,7 @@ public class StartupPhase extends Phase{
      * Loads a game map from a file.
      *
      * @param p_commandHandler The command handler with map loading arguments.
-     * @throws Exception If an error occurs while loading the map.
+     * @throws CommandValidationException If the command is invalid or missing required arguments.
      */
     protected void loadMap(CommandHandler p_commandHandler) throws CommandValidationException {
         List<java.util.Map<String,String>> l_listOfOperations=p_commandHandler.getListOfOperations();
