@@ -259,10 +259,12 @@ public class Player {
     public void setD_oneCardPerTurn(boolean d_oneCardPerTurn) {
         this.d_oneCardPerTurn = d_oneCardPerTurn;
     }
+
     /**
-     * Issues an order for the player to deploy armies.
+     * Processes and issues an order for the player during the order phase.
      *
-     * @throws IOException If there is an issue with reading the input.
+     * @param p_issueOrderPhase The current phase handling order issuance.
+     * @throws Exception If an error occurs while processing the order.
      */
     public void issueOrder(IssueOrderPhase p_issueOrderPhase) throws Exception {
         p_issueOrderPhase.askForOrders(this);
@@ -480,7 +482,7 @@ public class Player {
      * Handles the execution of card commands based on the given input.
      * The input command is parsed, and depending on the card type (e.g., bomb, blockade),
      *
-     * @param p_inputCommand The command input for the card action (e.g., bomb <country>).
+     * @param p_inputCommand The command input for the card action (e.g., bomb country_name).
      * @param p_currentState The current state of the game used for order validation.
      */
     public void handleCardCommand(String p_inputCommand, CurrentState p_currentState) {
