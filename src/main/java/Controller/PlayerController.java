@@ -13,6 +13,13 @@ import java.util.Random;
  * @author Disha Padsala,Shrey Hingu,Akhilesh Kanbarkar
  */
 public class PlayerController {
+
+    /**
+     * Default constructor for PlayerController.
+     */
+    public PlayerController() {
+    }
+
     /**
      * Assigns countries to players based on the number of available players and countries.
      *
