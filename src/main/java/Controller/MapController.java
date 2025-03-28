@@ -20,6 +20,7 @@ import java.util.stream.Collectors;
  * @author Shrey Hingu,Akhilesh Kanbarkar, Yash Koladiya
  */
 public class MapController {
+
     /**
      * Loads a map from a file and updates the current state.
      *
@@ -29,7 +30,16 @@ public class MapController {
      * @author Shrey Hingu
      */
     public Map loadMap(CurrentState p_currentState, String p_fileName){
+        /**
+         * Loads the map data from the specified file into a new Map object.
+         */
         Map l_map=new Map();
+        /**
+         * Reads the contents of the provided map file and stores each line into a list.
+         *
+         * @param p_fileName the name or path of the map file to load.
+         * @return a list of strings where each string represents a line in the map file.
+         */
         List<String> l_fileLines=loadFile(p_fileName);
 
         if(!l_fileLines.isEmpty()){

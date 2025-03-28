@@ -43,42 +43,74 @@ public abstract class Phase {
         this.d_gameplayController = new PlayerController();
     }
 
-    /** @return the main game engine instance */
+    /**
+     * Returns the main game engine instance that controls the game flow.
+     *
+     * @return the main game engine instance.
+     */
     public MainGameEngine getD_mainGameEngine() {
         return d_mainGameEngine;
     }
 
-    /** @param p_mainGameEngine sets the main game engine */
+    /**
+     * Sets the main game engine instance that controls the game flow.
+     *
+     * @param p_mainGameEngine the main game engine to set.
+     */
     public void setD_mainGameEngine(MainGameEngine p_mainGameEngine) {
         this.d_mainGameEngine = p_mainGameEngine;
     }
 
-    /** @return the current game state */
+    /**
+     * Returns the current state of the game, including players and map.
+     *
+     * @return the current game state.
+     */
     public CurrentState getD_currentState() {
         return d_currentState;
     }
 
-    /** @param p_currentState sets the current game state */
+    /**
+     * Sets the current state of the game, including players and map.
+     *
+     * @param p_currentState the game state to set.
+     */
     public void setD_currentState(CurrentState p_currentState) {
         this.d_currentState = p_currentState;
     }
 
-    /** @return the map controller */
+    /**
+     * Returns the map controller responsible for managing the game map.
+     *
+     * @return the map controller.
+     */
     public MapController getD_mapController() {
         return d_mapController;
     }
 
-    /** @param p_mapController sets the map controller */
+    /**
+     * Sets the map controller responsible for managing the game map.
+     *
+     * @param p_mapController the map controller to set.
+     */
     public void setD_mapController(MapController p_mapController) {
         this.d_mapController = p_mapController;
     }
 
-    /** @return the gameplay controller */
+    /**
+     * Returns the gameplay controller responsible for handling player actions.
+     *
+     * @return the gameplay controller.
+     */
     public PlayerController getD_gameplayController() {
         return d_gameplayController;
     }
 
-    /** @param p_gameplayController sets the gameplay controller */
+    /**
+     * Sets the gameplay controller responsible for handling player actions.
+     *
+     * @param p_gameplayController the gameplay controller to set.
+     */
     public void setD_gameplayController(PlayerController p_gameplayController) {
         this.d_gameplayController = p_gameplayController;
     }
@@ -199,17 +231,26 @@ public abstract class Phase {
     // Abstract methods to be implemented in subclasses for specific phase behavior
 
     /**
-     * Handles execution of card-based commands (bomb, blockade, airlift, negotiate).
+     * Handles execution of card-based commands such as bomb, blockade, airlift, and negotiate.
+     *
+     * @param p_inputCommand the command string entered by the player.
+     * @param p_player       the player issuing the command.
      */
     protected abstract void cardHandle(String p_inputCommand, Player p_player);
 
     /**
-     * Handles advance command logic.
+     * Handles the logic for the 'advance' command, which moves armies between countries.
+     *
+     * @param p_inputCommand the command string entered by the player.
+     * @param p_player       the player issuing the command.
      */
     protected abstract void advance(String p_inputCommand, Player p_player);
 
     /**
-     * Handles deploy command logic.
+     * Handles the logic for the 'deploy' command, which places armies on owned countries.
+     *
+     * @param p_inputCommand the command string entered by the player.
+     * @param p_player       the player issuing the command.
      */
     protected abstract void deploy(String p_inputCommand, Player p_player);
 

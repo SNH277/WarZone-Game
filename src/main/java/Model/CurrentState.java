@@ -14,6 +14,10 @@ public class CurrentState {
     List<Player> d_players;
     /** The game map. */
     Map d_map;
+    /**
+     * Logger instance for recording model-related events, errors, and game logs.
+     * Used for tracking state changes, debugging, and displaying execution output.
+     */
     ModelLogger d_modelLogger = new ModelLogger();
 
     /**
@@ -52,10 +56,20 @@ public class CurrentState {
         this.d_map = p_map;
     }
 
+    /**
+     * Gets the current {@link ModelLogger} instance used for logging model-related events.
+     *
+     * @return the current model logger.
+     */
     public ModelLogger getD_modelLogger() {
         return d_modelLogger;
     }
 
+    /**
+     * Sets the {@link ModelLogger} instance used for logging model-related events.
+     *
+     * @param p_modelLogger the model logger to set.
+     */
     public void setD_modelLogger(ModelLogger p_modelLogger) {
         this.d_modelLogger = p_modelLogger;
     }
@@ -138,6 +152,13 @@ public class CurrentState {
         }
     }
 
+    /**
+     * Updates the model log with a new message and log type.
+     * Delegates the logging to the {@link ModelLogger} instance.
+     *
+     * @param p_logMessage the message to be logged.
+     * @param p_logType    the type of the log (e.g., "start", "effect", "error", "end").
+     */
     public void updateLog(String p_logMessage,String p_logType){
         d_modelLogger.setD_message(p_logMessage,p_logType);
     }

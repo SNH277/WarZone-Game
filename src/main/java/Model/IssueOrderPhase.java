@@ -46,9 +46,12 @@ public class IssueOrderPhase extends Phase{
     }
 
     /**
-     * Loops through all players and allows them to issue orders until all are done.
+     * Handles execution of a card-based command (e.g., bomb, blockade, airlift, negotiate)
+     * for the given player. If the player owns the specified card, the command is executed
+     * and the result is logged.
      *
-     * @throws Exception if an error occurs while issuing orders
+     * @param p_inputCommand the full card command entered by the player.
+     * @param p_player       the player issuing the card command.
      */
     protected void cardHandle(String p_inputCommand, Player p_player) {
         if(p_player.getD_cardOwnedByPlayer().contains(p_inputCommand.split(" ")[0])){

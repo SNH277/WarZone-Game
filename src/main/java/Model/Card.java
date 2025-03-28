@@ -12,5 +12,15 @@ package Model;
  * @author Yash Koladiya
  */
 public interface Card extends Orders{
+    /**
+     * Validates whether the current order is logically and strategically valid
+     * based on the given game state. This method is typically implemented by
+     * specific order types (e.g., Advance, Deploy) to check if execution
+     * conditions are met.
+     *
+     * @param p_currentState the current state of the game.
+     * @return {@code true} if the order is valid and can be executed;
+     *         {@code false} otherwise.
+     */
     Boolean validOrderCheck(CurrentState p_currentState);
 }

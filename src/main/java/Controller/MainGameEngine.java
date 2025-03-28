@@ -60,12 +60,20 @@ public class MainGameEngine {
         this.d_currentPhase = d_currentPhase;
     }
 
+    /**
+     * Transitions the game to the Issue Order Phase.
+     * Logs the phase change and initializes the {@link IssueOrderPhase}.
+     */
     public void setIssueOrderPhase(){
         this.setD_mainEngineLog("Issue Order Phase","phase");
         setD_currentPhase(new IssueOrderPhase(d_currentGameState,this));
         getD_currentPhase().initPhase();
     }
 
+    /**
+     * Transitions the game to the Order Execution Phase.
+     * Logs the phase change and initializes the {@link OrderExecutionPhase}.
+     */
     public void setOrderExecutionPhase(){
         this.setD_mainEngineLog("Order Execution Phase","phase");
         setD_currentPhase(new OrderExecutionPhase(d_currentGameState, this));

@@ -14,6 +14,10 @@ import java.io.IOException;
  */
 public class GameLogger implements PropertyChangeListener {
 
+    /**
+     * The default file path for storing game log output.
+     * Used by the logging system to write execution details, game events, and errors.
+     */
     private static final String LOG_FILE_PATH = "GameLogs.txt";
 
     /**
