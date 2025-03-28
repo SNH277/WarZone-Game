@@ -1,36 +1,29 @@
 package Model;
+import View.GameLogger;
+
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
+import java.util.Observable;
+
 /**
  * The type Model logger.
  * @author Akhilesh Kanbarkar
  */
-public class ModelLogger {
+public class ModelLogger extends Observable {
     /**
      * The message being logged.
      */
     private String d_message;
 
-    /**
-     * Property change support for observers.
-     */
-    private final PropertyChangeSupport d_support;
 
     /**
      * Instantiates a new Model logger.
      */
     public ModelLogger() {
-        d_support = new PropertyChangeSupport(this);
+        GameLogger l_logger = new GameLogger();
+        this.addObserver(l_logger);
     }
 
-    /**
-     * Adds an observer to the logger.
-     *
-     * @param p_listener the listener (observer)
-     */
-    public void addObserver(PropertyChangeListener p_listener) {
-        d_support.addPropertyChangeListener(p_listener);
-    }
 
     /**
      * Gets the latest message.
@@ -84,9 +77,7 @@ public class ModelLogger {
                         .append(System.lineSeparator());
                 break;
         }
-
-        String l_oldMessage = d_message;
-        d_message = l_logBuilder.toString();
-        d_support.firePropertyChange("message", l_oldMessage, d_message);
+        setChanged();
+        notifyObservers();
     }
 }
