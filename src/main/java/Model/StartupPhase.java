@@ -226,41 +226,6 @@ public class StartupPhase extends Phase{
     }
 
     /**
-     * Starts the game, allowing players to deploy armies and execute orders.
-     *
-     * @throws IOException If an I/O error occurs.
-     */
-//    private void playGame() throws IOException {
-//        if (d_currentGameState.getD_players() == null || d_currentGameState.getD_players().isEmpty()) {
-//            System.out.println(ProjectConstants.NO_PLAYERS);
-//            return;
-//        }
-//
-//        System.out.println("➡ Deploy armies: 'deploy <country> <num_of_armies>'");
-//
-//        while (d_playerController.isUnallocatedArmiesExist(d_currentGameState)) {
-//            for (Player l_eachPlayer : d_currentGameState.getD_players()) {
-//                if (l_eachPlayer.getD_unallocatedArmies() > 0) {
-//                    l_eachPlayer.issueOrder();
-//                }
-//            }
-//        }
-//
-//        while (d_playerController.isUnexecutedOrdersExist(d_currentGameState)) {
-//            for (Player l_eachPlayer : d_currentGameState.getD_players()) {
-//                Orders l_orderToExecute = l_eachPlayer.nextOrder();
-//                if (l_orderToExecute != null) {
-//                    l_orderToExecute.execute(l_eachPlayer); // Throws IOException if execution fails
-//                }
-//            }
-//        }
-//
-//        System.out.println("All orders have been executed successfully.");
-//        System.out.println("Thank you for playing the game");
-//        System.exit(0);
-//    }
-
-    /**
      * Adds or removes players based on the command.
      *
      * @param p_commandHandler The command handler containing player operations.

@@ -154,13 +154,24 @@ public class Map {
      * @param p_visited A map to track visited countries.
      */
     private void dfsCountry(Country p_country, HashMap<Integer, Boolean> p_visited) {
-        p_visited.put(p_country.getD_countryID(),true);
-        for(Country l_eachCountry : getAdjacentCountries(p_country)){
-            if(!p_visited.get(l_eachCountry.getD_countryID())){
-                dfsCountry(l_eachCountry,p_visited);
+        if (p_country == null) return; // Ensure p_country is not null
+
+        p_visited.put(p_country.getD_countryID(), true);
+
+        // Check if getAdjacentCountries() returns null, and use an empty list if it does
+        List<Country> adjacentCountries = getAdjacentCountries(p_country);
+        if (adjacentCountries == null) {
+            adjacentCountries = new ArrayList<>();
+        }
+
+        for (Country l_eachCountry : adjacentCountries) {
+            // Null check for each adjacent country
+            if (l_eachCountry != null && !p_visited.getOrDefault(l_eachCountry.getD_countryID(), false)) {
+                dfsCountry(l_eachCountry, p_visited);
             }
         }
     }
+
 
     /**
      * Retrieves the neighboring countries of a given country.

@@ -158,39 +158,7 @@ public class PlayerController {
             System.out.println("Player" + l_player.getD_playerName() + " got assigned: " + l_NumberOfArmiesPerPlayer + " armies.");
         }
     }
-    /**
-     * Creates and validates a deploy order for a player.
-     *
-     * @param p_OrderName The order command.
-     * @param p_Player The player issuing the order.
-     */
-//    public void createDeployOrder(String p_OrderName, Player p_Player) {
-//        List<Orders> l_orders;
-//        if(p_Player.getD_orders() == null || p_Player.getD_orders().isEmpty()) {
-//            l_orders = new ArrayList<>();
-//        } else {
-//            l_orders = p_Player.getD_orders();
-//        }
-//
-//        String l_countryName = p_OrderName.split(" ")[1];
-//        int l_numberOfArmiesToDeploy = Integer.parseInt(p_OrderName.split(" ")[2]);
-//
-//        if(!validateCountryOwnership(p_Player, l_countryName)){
-//            System.out.println("Country " + l_countryName + " is not owned by " + p_Player.getD_playerName());
-//        } else if (!hasSufficientArmies(p_Player, l_numberOfArmiesToDeploy)) {
-//            System.out.println(ProjectConstants.NOT_ENOUGH_ARMIES);
-//        } else {
-//            Orders l_order = new Orders(p_OrderName.split(" ")[0], l_countryName, l_numberOfArmiesToDeploy);
-//            l_orders.add(l_order);
-//            p_Player.setD_orders(l_orders);
-//
-//            Integer l_unallocatedArmies = p_Player.getD_unallocatedArmies() - l_numberOfArmiesToDeploy;
-//            p_Player.setD_unallocatedArmies(l_unallocatedArmies);
-//
-//            System.out.println(ProjectConstants.ORDER_ADDED);
-//        }
-//
-//    }
+
     /**
      * Checks if the player has sufficient armies to deploy.
      *

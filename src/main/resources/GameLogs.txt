@@ -54,3 +54,120 @@ Log: Order is added to queue for execution.
 
 Starting Execution of Orders......
 
+Game Session Started
+
+
+=========Startup Phase of the Game=========
+
+
+
+Command Entered: loadmpa
+
+Log: Invalid command for this phase.
+
+
+Command Entered: gameplayer
+
+
+Command Entered: loadmap
+
+
+Command Entered: gameplayer
+
+
+Command Entered: assigncountries
+
+
+=========Issue Order Phase=========
+
+
+
+Order Issued: Player : shrey has entered command : deploy India 3
+
+
+Command Entered: deploy
+
+Log: Order is added to queue for execution.
+
+
+Order Issued: Player : punam has entered command : deploy China 1
+
+
+Command Entered: deploy
+
+Log: Order is added to queue for execution.
+
+
+Order Issued: Player : shrey has entered command : advance India China 2
+
+
+Command Entered: advance
+
+Log: Advance order added successfully for player shrey
+
+
+=========Order Execution Phase=========
+
+
+
+Starting Execution of Orders......
+
+Log: Player: shrey has conquered country: China
+
+Game Session Started
+
+
+=========Startup Phase of the Game=========
+
+
+
+Command Entered: loadmap
+
+
+Command Entered: editcountry
+
+
+Command Entered: savemap
+
+Game Session Started
+
+
+=========Startup Phase of the Game=========
+
+
+
+Command Entered: loadmap
+
+
+Command Entered: editcountry
+
+
+Command Entered: savemap
+
+
+Command Entered: loadmap
+
+
+Command Entered: editcountry
+
+
+Command Entered: savemap
+
+
+Command Entered: editneighbour
+
+
+Command Entered: editneighbour
+
+
+Command Entered: savemap
+
+
+Command Entered: loadmap
+
+
+Command Entered: editcountry
+
+
+Command Entered: savemap
+

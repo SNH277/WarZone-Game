@@ -97,24 +97,24 @@ public class MapControllerTest {
         assertEquals("[2, 4, 6]", d_map.getCountryByName("France").getD_neighbouringCountriesId().toString());
     }
 
-//    /**
-//     * Save map.
-//     */
-//    @Test
-//    public void saveMap() {
-//        d_map = d_mapController.loadMap(d_currentState, d_mapName);
-//        d_currentState.setD_map(d_map);
-//        assertNull(d_map.getCountryByName("Mexico"));
-//
-//        d_mapController.editCountry(d_currentState, "add", "Mexico NorthAmerica");
-//        d_mapController.editNeighbourCountry(d_currentState, "add", "9 2");
-//        assertEquals("Mexico", d_map.getCountryByName("Mexico").getD_countryName());
-//
-//        d_currentState.setD_map(d_map);
-//        d_mapController.saveMap(d_currentState, d_mapName);
-//        d_map = d_mapController.loadMap(d_currentState, d_mapName);
-//        assertEquals("Mexico", d_map.getCountryByName("Mexico").getD_countryName());
-//        d_mapController.editCountry(d_currentState, "remove", "Mexico");
-//        d_mapController.saveMap(d_currentState, d_mapName);
-//    }
+    /**
+     * Save map.
+     */
+    @Test
+    public void saveMap() {
+        d_map = d_mapController.loadMap(d_currentState, d_mapName);
+        d_currentState.setD_map(d_map);
+        assertNull(d_map.getCountryByName("Mexico"));
+
+        d_mapController.editCountry(d_currentState, "add", "Mexico NorthAmerica");
+        d_mapController.editNeighbourCountry(d_currentState, "add", "9 2");
+        assertEquals("Mexico", d_map.getCountryByName("Mexico").getD_countryName());
+
+        d_currentState.setD_map(d_map);
+        d_mapController.saveMap(d_currentState, d_mapName);
+        d_map = d_mapController.loadMap(d_currentState, d_mapName);
+        assertEquals("Mexico", d_map.getCountryByName("Mexico").getD_countryName());
+        d_mapController.editCountry(d_currentState, "remove", "Mexico");
+        d_mapController.saveMap(d_currentState, d_mapName);
+    }
 }
