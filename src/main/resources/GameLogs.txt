@@ -171,3 +171,21 @@ Command Entered: editcountry
 
 Command Entered: savemap
 
+Log: Player: Player1 conquered Country: Canada with 9 armies.
+
+Log: Cannot execute order: Insufficient armies in the source country.
+
+Log: Cannot execute order: Insufficient armies in the source country.
+
+Log: Cannot execute order: Insufficient armies in the source country.
+
+Log: Cannot execute order: Insufficient armies in the source country.
+
+Log: Cannot execute order: Insufficient armies in the source country.
+
+Log: Cannot execute order: Insufficient armies in the source country.
+
+Log: Player: Player1 conquered Country: Canada with 9 armies.
+
+Log: Player: Player1 conquered Country: Canada with 9 armies.
+
