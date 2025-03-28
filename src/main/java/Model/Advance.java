@@ -67,6 +67,11 @@ public class Advance implements  Orders{
                 '}';
     }
 
+    /**
+     * Retrieves the log of order executions for the current player or phase.
+     *
+     * @return a string containing the log of all executed orders.
+     */
     @Override
     public String orderExecutionLog() {
         return this.d_logOfOrderExecution;
@@ -128,6 +133,14 @@ public class Advance implements  Orders{
         }
     }
 
+    /**
+     * Transfers ownership of the target country from the defending player to the attacking player,
+     * updates army count, logs the conquest, and refreshes continent ownership.
+     *
+     * @param p_currentState         the current game state.
+     * @param p_playerOfTargetCountry the player currently owning the target country.
+     * @param p_targetCountry         the country being conquered.
+     */
     private void conquerTargetCountry(CurrentState p_currentState, Player p_playerOfTargetCountry, Country p_targetCountry) {
         // Remove target country from the previous owner
         p_playerOfTargetCountry.getD_currentCountries().remove(p_targetCountry);
@@ -151,6 +164,14 @@ public class Advance implements  Orders{
         this.updateContinents(this.d_intitiatingPlayer, p_playerOfTargetCountry, p_currentState);
     }
 
+    /**
+     * Updates the continent ownership for the two players involved in the battle,
+     * based on the current ownership of countries.
+     *
+     * @param p_intitiatingPlayer      the player who initiated the attack.
+     * @param p_playerOfTargetCountry  the player who owned the target country.
+     * @param p_currentState           the current state of the game.
+     */
     private void updateContinents(Player p_intitiatingPlayer, Player p_playerOfTargetCountry, CurrentState p_currentState) {
         System.out.println("Updating continents of players involved in battle...");
 
@@ -166,6 +187,12 @@ public class Advance implements  Orders{
     }
 
 
+    /**
+     * Retrieves the player who currently owns the target country (excluding Neutral player).
+     *
+     * @param p_currentState the current game state.
+     * @return the player who owns the target country, or null if not found.
+     */
     private Player getPlayerOfTargetCountry(CurrentState p_currentState) {
         for (Player l_eachPlayer : p_currentState.getD_players()) {
             if (!l_eachPlayer.getD_playerName().equalsIgnoreCase("Neutral")) {
@@ -181,6 +208,13 @@ public class Advance implements  Orders{
         return null;  // If no player owns the target country, return null
     }
 
+    /**
+     * Validates whether the current order can be executed.
+     * Checks for null player/country, army availability, and negotiation pacts.
+     *
+     * @param p_currentState the current game state.
+     * @return true if the order is valid, false otherwise.
+     */
     public boolean valid(CurrentState p_currentState) {
         if (d_intitiatingPlayer == null || d_sourceCountry == null) {
             this.setD_orderExecutionLog("Invalid order: Player or source country is null.", "error");
@@ -224,6 +258,11 @@ public class Advance implements  Orders{
         return true;
     }
 
+    /**
+     * Adds the specified number of armies to the target country.
+     *
+     * @param p_targetCountry the country to which armies are to be deployed.
+     */
     private void deployArmiesToTarget(Country p_targetCountry) {
         if (p_targetCountry != null) {
             int l_updatedArmyCount = p_targetCountry.getD_armies() + this.d_noOfArmiesToPlace;
@@ -231,6 +270,15 @@ public class Advance implements  Orders{
         }
     }
 
+    /**
+     * Executes the result of a battle between attacking and defending armies,
+     * and updates continent control accordingly.
+     *
+     * @param p_currentState           the current game state.
+     * @param p_playerOfTargetCountry  the player who owns the target country.
+     * @param p_sourceCountry          the source country from which the attack was initiated.
+     * @param p_targetCountry          the target country under attack.
+     */
     private void battleOrderResult(CurrentState p_currentState, Player p_playerOfTargetCountry, Country p_sourceCountry, Country p_targetCountry) {
         int l_armiesInAttack = Math.min(d_noOfArmiesToPlace, p_targetCountry.getD_armies());
 
@@ -243,6 +291,16 @@ public class Advance implements  Orders{
         updateContinents(d_intitiatingPlayer, p_playerOfTargetCountry, p_currentState);
     }
 
+    /**
+     * Produces the battle outcome based on attacker and defender army units.
+     * Delegates to {@code handleSurvivingArmies} for post-battle updates.
+     *
+     * @param p_sourceCountry         the source country.
+     * @param p_targetCountry         the target country.
+     * @param p_attackerArmies        the list of attacker's army strengths.
+     * @param p_defenderArmies        the list of defender's army strengths.
+     * @param p_playerOfTargetCountry the player defending the target country.
+     */
     private void produceBattleResult(Country p_sourceCountry, Country p_targetCountry,
                                      List<Integer> p_attackerArmies, List<Integer> p_defenderArmies,
                                      Player p_playerOfTargetCountry) {
@@ -262,6 +320,16 @@ public class Advance implements  Orders{
         handleSurvivingArmies(l_attackerArmiesLeft, l_defenderArmiesLeft, p_sourceCountry, p_targetCountry, p_playerOfTargetCountry);
     }
 
+    /**
+     * Handles the outcome of the battle by updating army counts and ownership
+     * of the involved countries depending on the remaining armies.
+     *
+     * @param p_attackerArmiesLeft     remaining attacker armies.
+     * @param p_defenderArmiesLeft     remaining defender armies.
+     * @param p_sourceCountry          the source country.
+     * @param p_targetCountry          the target country.
+     * @param p_playerOfTargetCountry  the player who owned the target country.
+     */
     private void handleSurvivingArmies(Integer p_attackerArmiesLeft, Integer p_defenderArmiesLeft,
                                        Country p_sourceCountry, Country p_targetCountry,
                                        Player p_playerOfTargetCountry) {
@@ -284,6 +352,14 @@ public class Advance implements  Orders{
         }
     }
 
+    /**
+     * Generates a list of random integers representing army unit strengths
+     * for either the attacker or the defender using a role-based probability.
+     *
+     * @param p_armiesInAttack number of armies participating in the battle.
+     * @param p_role           "attacker" or "defender".
+     * @return a list of random army strengths.
+     */
     private List<Integer> generateRandomArmyUnits(int p_armiesInAttack, String p_role) {
         List<Integer> l_armyList = new ArrayList<>();
         double l_probability = p_role.equals("attacker") ? 0.6 : 0.7; // Attacker: 60%, Defender: 70%
@@ -296,6 +372,11 @@ public class Advance implements  Orders{
         return l_armyList;
     }
 
+    /**
+     * Generates a random integer between 1 and 9 inclusive.
+     *
+     * @return a random integer.
+     */
     private int getRandomInteger() {
         return ((int) (Math.random() * 9)) + 1;
     }

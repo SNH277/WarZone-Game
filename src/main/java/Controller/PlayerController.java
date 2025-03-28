@@ -68,7 +68,6 @@ public class PlayerController {
      *
      * @param p_Players The list of players.
      */
-
     public void displayAssignedCountries(List<Player> p_Players) {
         for(Player l_currentPlayer : p_Players) {
             StringBuilder l_output = new StringBuilder("Player " + l_currentPlayer.getD_playerName() + " has assigned countries: ");
@@ -243,7 +242,12 @@ public class PlayerController {
         return false;
     }
 
-
+    /**
+     * Checks whether any player in the provided list has more orders to issue.
+     *
+     * @param p_players the list of players to check.
+     * @return {@code true} if at least one player has more orders to issue; {@code false} otherwise.
+     */
     public boolean checkForMoreOrders(List<Player> p_players) {
         for(Player l_eachPlayer : p_players){
             if(l_eachPlayer.isD_moreOrders()){
@@ -253,6 +257,13 @@ public class PlayerController {
         return false;
     }
 
+    /**
+     * Assigns continents to players if they own all the countries within a continent.
+     * A player is granted ownership of a continent if they already own all the countries in it.
+     *
+     * @param p_players        the list of players to evaluate.
+     * @param p_mapContinents  the list of all continents in the game map.
+     */
     public void assignContinentToPlayers(List<Player> p_players, List<Continent> p_mapContinents) {
         for (Player l_eachPlayer : p_players) {
             List<Country> l_countriesOwnedByPlayer = l_eachPlayer.getD_currentCountries();
