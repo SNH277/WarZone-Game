@@ -165,3 +165,23 @@ public class PlayerControllerTest {
         assertEquals(13, d_player1.getD_unallocatedArmies().intValue());
     }
 }
+
+    @Test
+    public void assignArmies(CurrentState currentState) {
+        for (Player player : currentState.getD_players()) {
+            int numberOfArmies = 0;
+            
+            // Calculate the number of armies based on the countries the player owns
+            numberOfArmies += player.getD_currentCountries().size();  // Assuming 1 army per country
+            
+            // Add more armies based on continents, e.g., if they own all countries in a continent
+            for (Continent continent : currentState.getD_mapContinents()) {
+                if (playerControlsContinent(player, continent)) {
+                    numberOfArmies += continent.getBonusArmies(); // Assuming some bonus from continents
+                }
+            }
+            
+            // Set the unallocated armies for the player
+            player.setD_unallocatedArmies(numberOfArmies);
+        }
+    }
