@@ -34,9 +34,9 @@ public class OrderExecutionPhase extends Phase {
      */
     public void initPhase() {
         while(d_mainGameEngine.getD_currentPhase() instanceof OrderExecutionPhase){
-            System.out.println("Entering");
+//            System.out.println("Entering");
             executeOrders();
-            System.out.println("Exiting");
+//            System.out.println("Exiting");
             MapView l_mapView = new MapView(d_currentState);
             l_mapView.showMap();
 

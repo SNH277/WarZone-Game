@@ -39,6 +39,18 @@ public class PlayerController {
 
         int l_playerCount = l_players.size();
         int l_countryCount = l_countries.size();
+
+        Player l_neutralPlayer = null;
+        for(Player l_eachPlayer : p_currentState.getD_players()){
+            if(l_eachPlayer.getD_playerName().equalsIgnoreCase("Neutral")){
+                l_neutralPlayer = l_eachPlayer;
+                break;
+            }
+        }
+        if(l_neutralPlayer != null){
+            l_playerCount--;
+        }
+
         if (l_playerCount > l_countryCount) {
             System.out.println(ProjectConstants.MORE_PLAYERS_THAN_COUNTRIES);
         }

@@ -8,6 +8,8 @@ import Utils.CommandHandler;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.List;
 
 
 /**
@@ -209,6 +211,7 @@ public class IssueOrderPhase extends Phase{
      */
     public void askForOrders(Player p_player) throws Exception {
         BufferedReader l_bufferedReader = new BufferedReader(new InputStreamReader(System.in));
+        System.out.println("PLayer has following countries : "+ getCountryNames(p_player.getD_currentCountries()));
         System.out.println("Please Enter command for Player : " + p_player.getD_playerName() + "   Armies left : " + p_player.getD_unallocatedArmies());
         System.out.println("1. Deploy Order Command : 'deploy <countryName> <noOfArmies>'");
         System.out.println("2. Advance Order Command : 'advance <countryFromName> <countryToName> <noOfArmies>");
@@ -219,6 +222,15 @@ public class IssueOrderPhase extends Phase{
         handleCommand(l_commandEntered, p_player);
     }
 
+    public static List<String> getCountryNames(List<Country> p_countries) {
+        List<String> countryNames = new ArrayList<>();
+
+        for (Country l_country : p_countries) {
+            countryNames.add(l_country.getD_countryName());  // Extract and add country name
+        }
+
+        return countryNames;
+    }
 
     @Override
     /**
