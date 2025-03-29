@@ -99,14 +99,14 @@ public class CardBomb implements Card {
             Integer l_armyCountOnTargetCountry = Math.max(l_targetCountry.getD_armies(), 1);
 
             // Calculate the new army count after bomb effect
-            Integer l_newArmies = l_armyCountOnTargetCountry / 2;
+            Integer l_newArmies = (int) Math.floor((double) l_armyCountOnTargetCountry / 2);
 
             // Apply the new army count
             l_targetCountry.setD_armies(l_newArmies);
 
             // Remove the Bomb card and disable one card per turn for the player
-//            d_cardOwner.removeCard("bomb");
-//            d_cardOwner.setD_oneCardPerTurn(false);
+            d_cardOwner.removeCard("bomb");
+            d_cardOwner.setD_oneCardPerTurn(false);
 
             // Log the effect of using the Bomb card
             this.setD_orderExecutionLog("Bomb card used to reduce the armies of " + this.d_targetCountryName + " to " + l_newArmies, "default");
@@ -134,46 +134,32 @@ public class CardBomb implements Card {
      * @return {@code true} if the Bomb card usage is valid; {@code false} otherwise
      */
     public boolean valid(CurrentState p_currentState) {
-        // Find the target country and check if it exists in the player's current countries
         Country l_country = null;
+        for(Country l_eachCountry : d_cardOwner.getD_currentCountries()){
+            if(l_eachCountry.getD_countryName().equals(d_targetCountryName)){
+                l_country = l_eachCountry;
+            }
+        }
+        boolean l_isTargetCountryNeighbour = false;
         Country l_targetCountry = p_currentState.getD_map().getCountryByName(d_targetCountryName);
         for (Country l_eachCountry : d_cardOwner.getD_currentCountries()) {
-            if (l_eachCountry.getD_countryName().equals(d_targetCountryName)) {
-                l_country = l_eachCountry;
-                break; // Exit early once we find the target country
-            }
-        }
-
-        // Check if the target country is a neighbour of any owned country
-        boolean l_isTargetCountryNeighbour = false;
-        if (l_targetCountry != null) {
-            for (Country l_eachCountry : d_cardOwner.getD_currentCountries()) {
-                for (Integer l_eachNeighbour : l_eachCountry.getD_neighbouringCountriesId()) {
-                    if (l_eachNeighbour.equals(l_targetCountry.getD_countryID())) {
-                        l_isTargetCountryNeighbour = true;
-                        break; // Exit early if a neighbour is found
-                    }
-                }
-                if (l_isTargetCountryNeighbour) {
-                    break; // Exit the loop if the neighbour is confirmed
+            for (Integer l_eachNeighbour : l_eachCountry.getD_neighbouringCountriesId()) {
+                if (l_eachNeighbour.equals(l_targetCountry.getD_countryID())) {
+                    l_isTargetCountryNeighbour = true;
+                    break;
                 }
             }
         }
-
-        // Check if negotiation validation fails
-//        if (!d_cardOwner.negotiationValidation(this.d_targetCountryName)) {
-//            this.setD_orderExecutionLog("Invalid! Negotiation is in place with the target country", "error");
-//            p_currentState.updateLog(orderExecutionLog(), "effect");
-//            return false;
-//        }
-
-        // Validate the conditions for using the Bomb card
-        if (l_country == null || !l_isTargetCountryNeighbour) {
-            this.setD_orderExecutionLog("Invalid! Bomb card cannot be used on own country or non-neighbouring country", "error");
+        if(!d_cardOwner.negotiationValidation(this.d_targetCountryName)){
+            this.setD_orderExecutionLog("Invalid! Negotiation is in place with the target country", "error");
             p_currentState.updateLog(orderExecutionLog(), "effect");
             return false;
         }
-
+        if(l_country != null || !l_isTargetCountryNeighbour){
+            this.setD_orderExecutionLog("Invalid! Bomb card cannot be used on own country or non-neighbouring Country", "error");
+            p_currentState.updateLog(orderExecutionLog(), "effect");
+            return false;
+        }
         return true;
     }
 }

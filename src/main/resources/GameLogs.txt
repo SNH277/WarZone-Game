@@ -189,3 +189,93 @@ Log: Player: Player1 conquered Country: Canada with 9 armies.
 
 Log: Player: Player1 conquered Country: Canada with 9 armies.
 
+Log: Invalid! Target country does not belong to player
+
+Log: Invalid! Airlift card cannot be used
+
+Log: Invalid! Target country does not belong to player
+
+Log: Invalid! Airlift card cannot be used
+
+Log: Airlift card used to move 2 armies from USA to Mexico
+
+Log: Airlift card used to move 2 armies from USA to Mexico
+
+Log: Invalid! Blockade card cannot be used because target country 'India' does not belong to player
+
+Log: Player player1 used blockade card to triple the armies of Canada
+
+Log: Invalid! Blockade card cannot be used because target country 'India' does not belong to player
+
+Log: Player player1 used blockade card to triple the armies of Canada
+
+Log: Invalid! Bomb card cannot be used on own country or non-neighbouring country
+
+Log: Invalid! Bomb card cannot be used
+
+Log: Invalid! Bomb card cannot be used on own country or non-neighbouring country
+
+Log: Invalid! Bomb card cannot be used
+
+Log: Invalid! Bomb card cannot be used on own country or non-neighbouring country
+
+Log: Invalid! Bomb card cannot be used
+
+Log: Invalid! Bomb card cannot be used on own country or non-neighbouring country
+
+Log: Invalid! Bomb card cannot be used
+
+Log: Invalid! Bomb card cannot be used on own country or non-neighbouring country
+
+Log: Invalid! Bomb card cannot be used
+
+Log: Invalid! Bomb card cannot be used on own country or non-neighbouring country
+
+Log: Invalid! Bomb card cannot be used
+
+Log: Invalid! Bomb card cannot be used on own country or non-neighbouring country
+
+Log: Invalid! Bomb card cannot be used
+
+Log: Invalid! Bomb card cannot be used on own country or non-neighbouring country
+
+Log: Invalid! Bomb card cannot be used on own country or non-neighbouring country
+
+Log: Invalid! Bomb card cannot be used
+
+Log: Invalid! Bomb card cannot be used on own country or non-neighbouring country
+
+Log: Invalid! Bomb card cannot be used
+
+Log: Invalid! Bomb card cannot be used on own country or non-neighbouring country
+
+Log: Invalid! Bomb card cannot be used on own country or non-neighbouring country
+
+Log: Invalid! Bomb card cannot be used on own country or non-neighbouring country
+
+Log: Invalid! Bomb card cannot be used
+
+Log: Invalid! Bomb card cannot be used on own country or non-neighbouring country
+
+Log: Invalid! Bomb card cannot be used on own country or non-neighbouring country
+
+Log: Invalid! Bomb card cannot be used
+
+Log: Bomb card used to reduce the armies of India to 7
+
+Log: Bomb card used to reduce the armies of India to 7
+
+Log: Invalid! Bomb card cannot be used on own country or non-neighbouring Country
+
+Log: Bomb card used to reduce the armies of India to 7
+
+Log: Invalid! Bomb card cannot be used on own country or non-neighbouring Country
+
+Log: Negotiation Successful
+
+Log: Cannot execute order: Negotiation pact prevents attacking the target country.
+
+Log: Negotiation Successful
+
+Log: Cannot execute order: Negotiation pact prevents attacking the target country.
+

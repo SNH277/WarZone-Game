@@ -149,8 +149,8 @@ public class CardAirlift implements Card{
         l_targetCountry.setD_armies(l_targetCountry.getD_armies() + d_armyCount);
 
         // Remove airlift card from player
-//        d_cardOwner.removeCard("airlift");
-//        d_cardOwner.setD_oneCardPerTurn(false);
+        d_cardOwner.removeCard("airlift");
+        d_cardOwner.setD_oneCardPerTurn(false);
 
         // Log the successful airlift action
         String l_successMessage = "Airlift card used to move " + d_armyCount +

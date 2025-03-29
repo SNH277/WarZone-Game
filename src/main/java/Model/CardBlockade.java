@@ -124,8 +124,8 @@ public class CardBlockade implements Card {
         }
 
         // Remove the blockade card and disable further card usage for the turn
-//        d_cardOwner.removeCard("blockade");
-//        d_cardOwner.setD_oneCardPerTurn(false);
+        d_cardOwner.removeCard("blockade");
+        d_cardOwner.setD_oneCardPerTurn(false);
 
         // Log the successful blockade card use
         String logMessage = "Player " + d_cardOwner.getD_playerName() + " used blockade card to triple the armies of " + this.d_targetCountryName;
