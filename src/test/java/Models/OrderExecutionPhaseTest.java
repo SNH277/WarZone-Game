@@ -13,39 +13,67 @@ import static org.junit.Assert.*;
 
 /**
  * The type Order execution phase test.
+ * <p>
+ * This class contains unit tests for the execution of orders during the game phase,
+ * specifically focusing on verifying the state changes after performing actions like advancing orders
+ * and checking for the end of the game.
  */
 public class OrderExecutionPhaseTest {
     /**
      * The D map.
+     * <p>
+     * This field stores the current game map, which is used for validating game mechanics like
+     * advancing orders and updating countries' armies.
      */
     Map d_map;
+
     /**
      * The D map controller.
+     * <p>
+     * This field manages the loading and setup of the game map for the current game session.
      */
     MapController d_mapController;
+
     /**
      * The D current state.
+     * <p>
+     * This field represents the current game state, including all players, territories, and the map.
      */
     CurrentState d_currentState;
+
     /**
      * The D main game engine.
+     * <p>
+     * This field is responsible for executing the main game logic and controlling the flow of the game.
      */
     MainGameEngine d_mainGameEngine;
+
     /**
      * The D player 1.
+     * <p>
+     * This field represents the first player in the game, with associated territories and actions.
      */
     Player d_player1;
+
     /**
      * The D player 2.
+     * <p>
+     * This field represents the second player in the game, with associated territories and actions.
      */
     Player d_player2;
+
     /**
      * The D order execution phase.
+     * <p>
+     * This field handles the execution of orders within the game, ensuring that actions are processed and the game state is updated accordingly.
      */
     OrderExecutionPhase d_orderExecutionPhase;
 
     /**
-     * Sets up.
+     * Sets up the test environment.
+     * <p>
+     * This method initializes the game state, players, and the map before each test case.
+     * It also prepares the order execution phase for testing.
      */
     @Before
     public void setUp() {
@@ -80,7 +108,10 @@ public class OrderExecutionPhaseTest {
     }
 
     /**
-     * Check end of game.
+     * Check if the game ends after executing an advance order.
+     * <p>
+     * This test verifies whether the end of game condition is triggered after a successful conquest
+     * and the acquisition of a card by Player 1.
      */
     @Test
     public void checkEndOfGame() {

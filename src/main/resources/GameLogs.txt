@@ -293,3 +293,7 @@ Log: Player: Player1 conquered Country: Brazil with 9 armies.
 
 Player1 has won the game. Exiting the game....
 
+Log: Player: Player1 conquered Country: Brazil with 9 armies.
+
+Player1 has won the game. Exiting the game....
+
