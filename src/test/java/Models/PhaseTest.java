@@ -102,7 +102,7 @@ public class PhaseTest {
         assertEquals(d_mainGameEngine.getD_currentPhase().getClass(), d_startupPhase.getClass());
 
         // Uncommented line for further validation of map loading can be used if needed
-        // d_mainGameEngine.getD_currentPhase().loadMap(new CommandHandler("loadmap test.map"));
+//         d_mainGameEngine.getD_currentPhase().loadMap(new CommandHandler("loadmap test.map"));
 
         // Verifies again that the current phase is still the startup phase
         assertEquals(d_mainGameEngine.getD_currentPhase().getClass(), d_startupPhase.getClass());
