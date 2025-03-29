@@ -34,7 +34,9 @@ public class OrderExecutionPhase extends Phase {
      */
     public void initPhase() {
         while(d_mainGameEngine.getD_currentPhase() instanceof OrderExecutionPhase){
+            System.out.println("Entering");
             executeOrders();
+            System.out.println("Exiting");
             MapView l_mapView = new MapView(d_currentState);
             l_mapView.showMap();
 
@@ -265,20 +267,21 @@ public class OrderExecutionPhase extends Phase {
      * @param p_currentState the current game state.
      */
     private void addNeutralPlayer(CurrentState p_currentState) {
-        if (p_currentState.getD_players() == null) { // Ensure players list is not null
-            return;
-        }
-
-        for (Player l_eachPlayer : p_currentState.getD_players()) {
-            if (l_eachPlayer.getD_playerLog().equalsIgnoreCase("Neutral")) {
-                return; // Exit early if a Neutral player already exists
+        Player l_player = null;
+        for(Player l_eachPlayer : p_currentState.getD_players()){
+            if(l_eachPlayer.getD_playerName().equalsIgnoreCase("Neutral")){
+                l_player = l_eachPlayer;
+                break;
             }
         }
-
-        // No Neutral player found, so add one
-        Player l_neutralPlayer = new Player("Neutral");
-        l_neutralPlayer.setD_moreOrders(false);
-        p_currentState.getD_players().add(l_neutralPlayer);
+        if(l_player == null){
+            Player l_neutralPlayer = new Player("Neutral");
+            l_neutralPlayer.setD_moreOrders(false);
+            p_currentState.getD_players().add(l_neutralPlayer);
+        }
+        else{
+            return;
+        }
     }
 
 }
