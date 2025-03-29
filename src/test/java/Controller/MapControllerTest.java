@@ -9,6 +9,7 @@ import static org.junit.Assert.*;
 
 /**
  * The type Map controller test.
+ @author Taksh rana
  */
 public class MapControllerTest {
 
