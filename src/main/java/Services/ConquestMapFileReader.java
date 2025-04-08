@@ -156,4 +156,21 @@ public class ConquestMapFileReader implements Serializable {
 
         return l_continentList;
     }
+    /**
+     * Extracts the relevant metadata section (continents or countries) from the full file lines.
+     *
+     * @param p_fileLines all lines read from the file
+     * @param p_parameter "continent" or "country"
+     * @return list of lines relevant to the parameter
+     */
+    private List<String> getMetaData(List<String> p_fileLines, String p_parameter) {
+        switch (p_parameter) {
+            case "continent":
+                return p_fileLines.subList(p_fileLines.indexOf("[Continents]") + 1, p_fileLines.indexOf("[Territories]") - 1);
+            case "country":
+                return p_fileLines.subList(p_fileLines.indexOf("[Territories]") + 1, p_fileLines.size());
+            default:
+                return null;
+        }
+    }
 }
