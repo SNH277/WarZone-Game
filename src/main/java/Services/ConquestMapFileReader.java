@@ -138,4 +138,22 @@ public class ConquestMapFileReader implements Serializable {
         }
         return null;
     }
+    /**
+     * Parses the continent section of the file into Continent objects.
+     *
+     * @param p_continentData raw lines of continent data
+     * @return list of parsed Continent objects
+     */
+    private List<Continent> parseContinentMetaData(List<String> p_continentData) {
+        int l_contientId = 1;
+        List<Continent> l_continentList = new ArrayList<>();
+
+        for (String l_eachContinent : p_continentData) {
+            String[] l_continentData = l_eachContinent.split("=");
+            l_continentList.add(new Continent(l_contientId, l_continentData[0], Integer.parseInt(l_continentData[1])));
+            l_contientId++;
+        }
+
+        return l_continentList;
+    }
 }
