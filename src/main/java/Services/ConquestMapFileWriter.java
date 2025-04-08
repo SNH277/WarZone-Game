@@ -47,4 +47,33 @@ public class ConquestMapFileWriter implements Serializable {
             p_writer.write(l_eachContinent.getD_continentName() + "=" + l_eachContinent.getD_continentValue().toString() + System.lineSeparator());
         }
     }
+    /**
+     * Writes country and border data to the file under the [Territories] section.
+     *
+     * @param p_currentState The current state containing country and neighbor info.
+     * @param p_writer The FileWriter to write to the map file.
+     * @throws IOException if an I/O error occurs.
+     */
+    private void writeCountryAndBorderMetaData(CurrentState p_currentState, FileWriter p_writer) throws IOException {
+        String l_countryMetadata;
+        p_writer.write(System.lineSeparator() + "[Territories]" + System.lineSeparator());
+        for (Country l_eachCountry : p_currentState.getD_map().getD_mapCountries()) {
+            l_countryMetadata = l_eachCountry.getD_countryName()
+                    .concat(",color1,color2,")
+                    .concat(p_currentState.getD_map()
+                            .getContinentById(l_eachCountry.getD_continentID())
+                            .getD_continentName());
+
+            if (l_eachCountry.getD_neighbouringCountriesId() != null && !l_eachCountry.getD_neighbouringCountriesId().isEmpty()) {
+                for (Integer l_eachBorder : l_eachCountry.getD_neighbouringCountriesId()) {
+                    l_countryMetadata = l_countryMetadata.concat(",")
+                            .concat(p_currentState.getD_map()
+                                    .getCountryById(l_eachBorder)
+                                    .getD_countryName());
+                }
+            }
+
+            p_writer.write(l_countryMetadata + System.lineSeparator());
+        }
+    }
 }
