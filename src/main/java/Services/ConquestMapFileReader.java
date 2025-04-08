@@ -58,4 +58,33 @@ public class ConquestMapFileReader implements Serializable {
         }
         return p_continentList;
     }
+    /**
+     * Parses and adds neighboring countries for each country.
+     *
+     * @param p_countryList the list of countries to update
+     * @param p_countryData the raw country data from the file
+     * @return list of countries with neighboring country IDs set
+     */
+    private List<Country> parseNeighboursMetaData(List<Country> p_countryList, List<String> p_countryData) {
+        List<Country> l_updatedCountryList = new ArrayList<>(p_countryList);
+        String l_matchedCountry = null;
+
+        for (Country l_eachCountry : l_updatedCountryList) {
+            for (String l_eachCountryData : p_countryData) {
+                if ((l_eachCountryData.split(",")[0]).equalsIgnoreCase(l_eachCountry.getD_countryName())) {
+                    l_matchedCountry = l_eachCountryData;
+                    break;
+                }
+            }
+
+            if (l_matchedCountry.split(",").length > 4) {
+                for (int i = 4; i < l_matchedCountry.split(",").length; i++) {
+                    Country l_country = this.getCountryByName(p_countryList, l_matchedCountry.split(",")[i]);
+                    l_eachCountry.addCountryNeighbour(l_country.getD_countryID());
+                }
+            }
+        }
+
+        return l_updatedCountryList;
+    }
 }
