@@ -41,4 +41,21 @@ public class ConquestMapFileReader implements Serializable {
         p_map.setD_mapName(p_fileName);
         p_currentState.setD_map(p_map);
     }
+    /**
+     * Links countries to their respective continents.
+     *
+     * @param p_continentList list of parsed continents
+     * @param p_updatedCountryList list of countries with neighbors
+     * @return updated list of continents with country references
+     */
+    private List<Continent> linkCountryToContinent(List<Continent> p_continentList, List<Country> p_updatedCountryList) {
+        for (Country l_eachCountry : p_updatedCountryList) {
+            for (Continent l_eachContinent : p_continentList) {
+                if (l_eachContinent.getD_continentID().equals(l_eachCountry.getD_continentID())) {
+                    l_eachContinent.addCountry(l_eachCountry);
+                }
+            }
+        }
+        return p_continentList;
+    }
 }
