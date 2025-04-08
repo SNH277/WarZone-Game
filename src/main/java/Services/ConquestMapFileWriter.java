@@ -34,5 +34,17 @@ public class ConquestMapFileWriter implements Serializable {
             writeCountryAndBorderMetaData(p_currentState, p_writer);
         }
     }
-
+    /**
+     * Writes continent metadata to the file under the [Continents] section.
+     *
+     * @param p_currentState The current state containing continent data.
+     * @param p_writer The FileWriter used to write to the map file.
+     * @throws IOException if an I/O error occurs.
+     */
+    private void writeContinentMetaData(CurrentState p_currentState, FileWriter p_writer) throws IOException {
+        p_writer.write(System.lineSeparator() + "[Continents]" + System.lineSeparator());
+        for (Continent l_eachContinent : p_currentState.getD_map().getD_mapContinents()) {
+            p_writer.write(l_eachContinent.getD_continentName() + "=" + l_eachContinent.getD_continentValue().toString() + System.lineSeparator());
+        }
+    }
 }
