@@ -110,4 +110,31 @@ public class MapFileWriter implements Serializable {
             }
         }
     }
+
+    /**
+     * Writes the continent metadata section to the map file.
+     *
+     * <p>This method serializes all continents from the current map into the [Continents] section of the map file.</p>
+     *
+     * <p>Each line contains the continent's name followed by its control value, which determines
+     * the bonus armies a player receives when controlling the entire continent.</p>
+     *
+     * <p>Example format:</p>
+     * <pre>
+     * [Continents]
+     * NorthAmerica 5
+     * Asia 7
+     * Europe 3
+     * </pre>
+     *
+     * @param p_currentState the current game state containing the map data
+     * @param p_writer the FileWriter object used to write to the map file
+     * @throws IOException if an I/O error occurs while writing to the file
+     */
+    private void writeContinentMetaData(CurrentState p_currentState, FileWriter p_writer) throws IOException {
+        p_writer.write(System.lineSeparator() + "[Continents]" + System.lineSeparator());
+        for (Continent l_eachContinent : p_currentState.getD_map().getD_mapContinents()) {
+            p_writer.write(l_eachContinent.getD_continentName() + " " + l_eachContinent.getD_continentValue().toString() + System.lineSeparator());
+        }
+    }
 }
