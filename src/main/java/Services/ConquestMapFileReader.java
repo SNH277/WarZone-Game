@@ -123,4 +123,19 @@ public class ConquestMapFileReader implements Serializable {
 
         return l_countryList;
     }
+    /**
+     * Finds and returns a continent object from the list by name.
+     *
+     * @param p_continentList list of all parsed continents
+     * @param p_continentName name of the continent to find
+     * @return matching Continent object, or null if not found
+     */
+    private Continent getContinentByName(List<Continent> p_continentList, String p_continentName) {
+        for (Continent l_eachContinent : p_continentList) {
+            if (l_eachContinent.getD_continentName().equals(p_continentName)) {
+                return l_eachContinent;
+            }
+        }
+        return null;
+    }
 }
