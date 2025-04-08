@@ -87,4 +87,19 @@ public class ConquestMapFileReader implements Serializable {
 
         return l_updatedCountryList;
     }
+    /**
+     * Finds and returns a country object from the list by name.
+     *
+     * @param p_countryList list of all countries
+     * @param p_countryName name to search
+     * @return matched Country object, or null if not found
+     */
+    private Country getCountryByName(List<Country> p_countryList, String p_countryName) {
+        for (Country l_eachCountry : p_countryList) {
+            if (l_eachCountry.getD_countryName().equals(p_countryName)) {
+                return l_eachCountry;
+            }
+        }
+        return null;
+    }
 }
