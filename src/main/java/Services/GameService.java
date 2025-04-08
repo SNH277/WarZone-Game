@@ -33,5 +33,19 @@ public class GameService {
             l_e.printStackTrace();
         }
     }
-
+    /**
+     * Loads a previously saved game phase from a file.
+     *
+     * @param p_fileName The name of the file to load the game state from.
+     * @return The deserialized Phase object representing the saved game state.
+     * @throws IOException If an I/O error occurs.
+     * @throws ClassNotFoundException If the class of a serialized object cannot be found.
+     */
+    public static Phase loadGame(String p_fileName) throws IOException, ClassNotFoundException {
+        ObjectInputStream l_gameLoadFileObjectStream = new ObjectInputStream(
+                new FileInputStream("src/main/maps/" + p_fileName));
+        Phase l_phase = (Phase) l_gameLoadFileObjectStream.readObject();
+        l_gameLoadFileObjectStream.close();
+        return l_phase;
+    }
 }
