@@ -99,7 +99,20 @@ public class AggressivePlayer extends PlayerBehaviourStrategy{
 
     }
 
-    private Country calculateStrongestCountry(List<Country> lCountriesOwnedByPlayer) {
+    private Country calculateStrongestCountry(List<Country> p_countriesOwnedByPlayer) {
+        LinkedHashMap<Country,Integer> l_countryWithArmies = new LinkedHashMap<>();
+        int l_largestNoOfArmies = 0;
+        Country l_strongestCountry = null;
+        for(Country l_eachCountry : p_countriesOwnedByPlayer){
+            l_countryWithArmies.put(l_eachCountry,l_eachCountry.getD_armies());
+        }
+        l_largestNoOfArmies = Collections.max(l_countryWithArmies.values());
+        for(Map.Entry<Country,Integer> l_entry : l_countryWithArmies.entrySet()){
+            if(l_entry.getValue().equals(l_largestNoOfArmies)){
+                return l_entry.getKey();
+            }
+        }
+        return l_strongestCountry;
     }
 
 
