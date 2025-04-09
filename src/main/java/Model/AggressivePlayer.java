@@ -59,7 +59,32 @@ public class AggressivePlayer extends PlayerBehaviourStrategy{
         return l_command;
     }
 
-    private boolean checkIfArmiesDeployed(Player pPlayer) {
+    private boolean checkIfArmiesDeployed(Player p_player) {
+        return p_player.getD_currentCountries().stream().anyMatch(l_country -> l_country.getD_armies() > 0);
+    }
+
+    public String createCardOrder(Player p_player, CurrentState p_currentState, String p_cardName) {
+        Random l_random = new Random();
+        Country l_strongestSourceCountry = getStrongestCountry(p_player, p_currentState);
+        Country l_randomTargetCountry = p_currentState.getD_map().getCountryById(l_strongestSourceCountry.getD_neighbouringCountriesId().get(l_random.nextInt(l_strongestSourceCountry.getD_neighbouringCountriesId().size())));
+        int l_noOfArmiesToMove = l_strongestSourceCountry.getD_armies() > 1 ? l_strongestSourceCountry.getD_armies() : 1;
+        switch (p_cardName) {
+            case "bomb":
+                return "bomb " + l_randomTargetCountry.getD_countryName();
+            case "blockade":
+                return "blockade " + l_randomTargetCountry.getD_countryName();
+            case "airlift":
+                return "airlift " + l_strongestSourceCountry.getD_countryName() + " " + l_randomTargetCountry.getD_countryName() + " " + l_noOfArmiesToMove;
+            case "negotiate":
+                return "negotiate " + getRandomEnemyPlayer(p_player, p_currentState).getD_playerName();
+        }
+        return null;
+    }
+
+    private Player getRandomEnemyPlayer(Player pPlayer, CurrentState pCurrentState) {
+    }
+
+    private Country getStrongestCountry(Player pPlayer, CurrentState pCurrentState) {
     }
 
 
