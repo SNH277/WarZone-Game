@@ -103,10 +103,21 @@ public class BenevolentPlayer extends PlayerBehaviourStrategy{
         return null;
     }
 
-    private Player getRandomEnemyPlayer(CurrentState pCurrentState, Player pPlayer) {
+    private Player getRandomEnemyPlayer(CurrentState p_currentState, Player p_player) {
+        ArrayList<Player> l_players = new ArrayList<>();
+        Random l_random = new Random();
+        for(Player l_eachPlayer : p_currentState.getD_players()){
+            if(!l_eachPlayer.equals(p_player)){
+                l_players.add(l_eachPlayer);
+            }
+        }
+        return l_players.get(l_random.nextInt(l_players.size()));
     }
 
-    private Country getRandomCountry(List<Country> dCurrentCountries) {
+    private Country getRandomCountry(List<Country> p_deployCountries) {
+        Random l_random = new Random();
+        int l_index = l_random.nextInt(p_deployCountries.size());
+        return p_deployCountries.get(l_index);
     }
 
 }
