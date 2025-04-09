@@ -86,10 +86,34 @@ public class CheaterPlayer extends PlayerBehaviourStrategy{
         }
     }
 
-    private void conquerTargetCountry(CurrentState pCurrentState, Player lEnemyCountryOwner, Player pPlayer, Country lEnemyCountry) {
+    private void conquerTargetCountry(CurrentState p_currentState, Player p_enemyCountryOwner, Player p_player, Country p_enemyCountry) {
+        p_enemyCountryOwner.getD_currentCountries().remove(p_enemyCountry);
+        p_player.getD_currentCountries().add(p_enemyCountry);
+        updateContinents(p_player, p_enemyCountryOwner, p_currentState);
     }
 
-    private Player getCountryOwner(CurrentState pCurrentState, Integer lEnemyId) {
+    private void updateContinents(Player p_player, Player p_enemyCountryOwner, CurrentState p_currentState) {
+        List<Player> l_players = new ArrayList<>();
+        p_player.setD_currentContinents(Collections.emptySet());
+        p_enemyCountryOwner.setD_currentContinents(Collections.emptySet());
+        l_players.add(p_player);
+        l_players.add(p_enemyCountryOwner);
+
+        PlayerController l_playerController = new PlayerController();
+        l_playerController.assignContinentToPlayers(l_players, p_currentState.getD_map().getD_mapContinents());
+    }
+
+    private Player getCountryOwner(CurrentState p_currentState, Integer l_enemyId) {
+        List<Player> l_players = p_currentState.getD_players();
+        Player l_owner = null;
+        for(Player l_eachPlayer : l_players){
+            List<Integer> l_countriesOwned = l_eachPlayer.getCountryIDs();
+            if(l_countriesOwned.contains(l_enemyId)){
+                l_owner = l_eachPlayer;
+                break;
+            }
+        }
+        return l_owner;
     }
 
     private ArrayList<Integer> getEnemies(Player p_player, Country p_eachCountry) {
