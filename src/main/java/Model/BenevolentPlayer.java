@@ -120,5 +120,29 @@ public class BenevolentPlayer extends PlayerBehaviourStrategy{
         return p_deployCountries.get(l_index);
     }
 
+    @Override
+    public String createAdvanceOrder(Player p_player, CurrentState p_currentState) {
+        int l_armiesToAdvance;
+        Random l_random = new Random();
+        Country l_randomSourceCountry = getRandomCountry(d_deployCountries);
+        System.out.println("Source Country: " + l_randomSourceCountry.getD_countryName());
+        Country l_weakestTargetCountry = getWeakestNeighbour(l_randomSourceCountry, p_currentState, p_player);
+        if(l_weakestTargetCountry == null){
+            return null;
+        }
+        System.out.println("Target Country: " + l_weakestTargetCountry.getD_countryName());
+        if(l_randomSourceCountry.getD_armies() > 1){
+            l_armiesToAdvance = l_random.nextInt(l_randomSourceCountry.getD_armies() - 1) + 1;
+        }
+        else{
+            l_armiesToAdvance = 1;
+        }
+        System.out.println("advance " + l_randomSourceCountry.getD_countryName() + " " + l_weakestTargetCountry.getD_countryName() + " " + l_armiesToAdvance);
+        return String.format("advance %s %s %d", l_randomSourceCountry.getD_countryName(), l_weakestTargetCountry.getD_countryName(), l_armiesToAdvance);
+    }
+
+    private Country getWeakestNeighbour(Country lRandomSourceCountry, CurrentState pCurrentState, Player pPlayer) {
+    }
+
 }
 
