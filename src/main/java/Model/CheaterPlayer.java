@@ -44,9 +44,6 @@ public class CheaterPlayer extends PlayerBehaviourStrategy{
         return null;
     }
 
-    private Country getRandomCountry(List<Country> dCurrentCountries) {
-    }
-
     private void doubleArmyOnEnemyNeighbourCountries(Player p_player, CurrentState p_currentState) {
         List<Country> l_countriesOwned = p_player.getD_currentCountries();
 
@@ -69,8 +66,6 @@ public class CheaterPlayer extends PlayerBehaviourStrategy{
         }
     }
 
-    private ArrayList<Integer> getEnemies(Player pPlayer, Country lEachCountry) {
-    }
 
     private void conquerNeighboringEnemies(Player p_player, CurrentState p_currentState) {
         List<Country> l_countriesOwned = p_player.getD_currentCountries();
@@ -95,6 +90,23 @@ public class CheaterPlayer extends PlayerBehaviourStrategy{
     }
 
     private Player getCountryOwner(CurrentState pCurrentState, Integer lEnemyId) {
+    }
+
+    private ArrayList<Integer> getEnemies(Player p_player, Country p_eachCountry) {
+        ArrayList<Integer> l_enemyCountries = new ArrayList<>();
+
+        for(Integer l_countryId : p_eachCountry.getD_neighbouringCountriesId()){
+            if(!p_player.getCountryIDs().contains(l_countryId)){
+                l_enemyCountries.add(l_countryId);
+            }
+        }
+        return l_enemyCountries;
+    }
+
+    private Country getRandomCountry(List<Country> p_currentCountries) {
+        Random l_random = new Random();
+        int l_randomIndex = l_random.nextInt(p_currentCountries.size());
+        return p_currentCountries.get(l_randomIndex);
     }
 
 }
