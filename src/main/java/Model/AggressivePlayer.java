@@ -4,17 +4,41 @@ import java.io.IOException;
 import java.util.*;
 import java.util.Map;
 
+/**
+ * Represents the "Aggressive" strategy for a player.
+ * This player focuses on its strongest country, deploying armies to it and attacking enemies aggressively.
+ */
 public class AggressivePlayer extends PlayerBehaviourStrategy{
 
+    /**
+     * List to store countries where armies have been deployed during the turn.
+     */
     ArrayList<Country> d_deployCountries = new ArrayList<>();
 
+    /**
+     * Default constructor.
+     */
     public AggressivePlayer(){
     }
 
+    /**
+     * Returns the name of the player behavior strategy.
+     *
+     * @return "Aggressive" as the strategy name.
+     */
     public String getPlayerBehaviour() {
         return "Aggressive";
     }
 
+    /**
+     * Creates an order based on the aggressive player's strategy.
+     * Focuses on deploying and attacking from the strongest country.
+     *
+     * @param p_player        The player using this strategy.
+     * @param p_currentState  The current game state.
+     * @return A string representing the command issued.
+     * @throws IOException if an I/O error occurs.
+     */
     public String createOrder(Player p_player, CurrentState p_currentState) throws IOException {
         System.out.println("Order creation for " + p_player.getD_playerName());
         String l_command = "";
@@ -59,10 +83,24 @@ public class AggressivePlayer extends PlayerBehaviourStrategy{
         return l_command;
     }
 
+    /**
+     * Checks if the player has deployed any armies this turn.
+     *
+     * @param p_player The player.
+     * @return True if any of the player’s countries has armies deployed, otherwise false.
+     */
     private boolean checkIfArmiesDeployed(Player p_player) {
         return p_player.getD_currentCountries().stream().anyMatch(l_country -> l_country.getD_armies() > 0);
     }
 
+    /**
+     * Creates a card order using one of the available cards randomly.
+     *
+     * @param p_player       The player issuing the order.
+     * @param p_currentState The current game state.
+     * @param p_cardName     The name of the card to play.
+     * @return A string representing the card order.
+     */
     public String createCardOrder(Player p_player, CurrentState p_currentState, String p_cardName) {
         Random l_random = new Random();
         Country l_strongestSourceCountry = getStrongestCountry(p_player, p_currentState);
@@ -81,6 +119,13 @@ public class AggressivePlayer extends PlayerBehaviourStrategy{
         return null;
     }
 
+    /**
+     * Returns a random enemy player from the current game state.
+     *
+     * @param p_player      The current player.
+     * @param p_gameState   The current game state.
+     * @return A random enemy player.
+     */
     private Player getRandomEnemyPlayer(Player p_player, CurrentState p_gameState) {
         ArrayList<Player> l_playerList = new ArrayList<>();
         Random l_random = new Random();
@@ -92,6 +137,13 @@ public class AggressivePlayer extends PlayerBehaviourStrategy{
         return l_playerList.get(l_random.nextInt(l_playerList.size()));
     }
 
+    /**
+     * Retrieves the strongest country owned by the player (i.e., with the highest number of armies).
+     *
+     * @param p_player       The player.
+     * @param p_currentState The current game state.
+     * @return The strongest country.
+     */
     private Country getStrongestCountry(Player p_player, CurrentState p_currentState) {
         List<Country> l_countriesOwnedByPlayer = p_player.getD_currentCountries();
         Country l_strongestCountry = calculateStrongestCountry(l_countriesOwnedByPlayer);
@@ -99,6 +151,12 @@ public class AggressivePlayer extends PlayerBehaviourStrategy{
 
     }
 
+    /**
+     * Calculates the strongest country from a list based on number of armies.
+     *
+     * @param p_countriesOwnedByPlayer List of countries.
+     * @return The country with the highest number of armies.
+     */
     private Country calculateStrongestCountry(List<Country> p_countriesOwnedByPlayer) {
         LinkedHashMap<Country,Integer> l_countryWithArmies = new LinkedHashMap<>();
         int l_largestNoOfArmies = 0;
@@ -115,6 +173,13 @@ public class AggressivePlayer extends PlayerBehaviourStrategy{
         return l_strongestCountry;
     }
 
+    /**
+     * Creates an advance order from a previously deployed country to a random neighboring country.
+     *
+     * @param p_player       The player.
+     * @param p_currentState The current game state.
+     * @return A string representing the advance command.
+     */
     @Override
     public String createAdvanceOrder(Player p_player, CurrentState p_currentState) {
         Country l_randomSourceCountry = getRandomCountry(d_deployCountries);
@@ -126,6 +191,13 @@ public class AggressivePlayer extends PlayerBehaviourStrategy{
         return "advance " + l_randomSourceCountry.getD_countryName() + " " + l_randomTargetCountry.getD_countryName() + " " + l_noOfArmiesToMove;
     }
 
+    /**
+     * Moves armies from neighboring friendly countries into the selected source country.
+     *
+     * @param p_player             The player.
+     * @param p_randomSourceCountry The source country.
+     * @param p_currentState       The current game state.
+     */
     private void moveArmiesFromItsNeighbours(Player p_player, Country p_randomSourceCountry, CurrentState p_currentState) {
         List<Integer> l_adjacentCountryIds = p_randomSourceCountry.getD_neighbouringCountriesId();
         List<Country> l_listOfNeighbours = new ArrayList<>();
@@ -148,11 +220,24 @@ public class AggressivePlayer extends PlayerBehaviourStrategy{
         p_randomSourceCountry.setD_armies(l_armiesToMove);
     }
 
+    /**
+     * Selects a random country from the list of countries where armies were deployed.
+     *
+     * @param p_deployCountries The list of deployed countries.
+     * @return A random country from the list.
+     */
     private Country getRandomCountry(ArrayList<Country> p_deployCountries) {
         Random l_random = new Random();
         return p_deployCountries.get(l_random.nextInt(p_deployCountries.size()));
     }
 
+    /**
+     * Creates a deploy order by deploying armies to the strongest country.
+     *
+     * @param p_player       The player.
+     * @param p_currentState The current game state.
+     * @return A string representing the deploy command.
+     */
     @Override
     public String createDeployOrder(Player p_player, CurrentState p_currentState) {
         Random l_random = new Random();
