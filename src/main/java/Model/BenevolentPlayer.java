@@ -141,7 +141,35 @@ public class BenevolentPlayer extends PlayerBehaviourStrategy{
         return String.format("advance %s %s %d", l_randomSourceCountry.getD_countryName(), l_weakestTargetCountry.getD_countryName(), l_armiesToAdvance);
     }
 
-    private Country getWeakestNeighbour(Country lRandomSourceCountry, CurrentState pCurrentState, Player pPlayer) {
+    private Country getWeakestNeighbour(Country p_randomSourceCountry, CurrentState p_currentState, Player p_player) {
+        List<Integer> l_neighbourCountryIds = p_randomSourceCountry.getD_neighbouringCountriesId();
+        List<Country> l_listOfNeighbours = new ArrayList<>();
+        for(Integer l_index =0; l_index < l_neighbourCountryIds.size(); l_index++){
+            Country l_country = p_currentState.getD_map().getCountryById(p_randomSourceCountry.getD_neighbouringCountriesId().get(l_index));
+            if(p_player.getD_currentCountries().contains(l_country)){
+                l_listOfNeighbours.add(l_country);
+            }
+        }
+        if(!l_listOfNeighbours.isEmpty()){
+            return evaluateWeakestCountry(l_listOfNeighbours);
+        }
+        return null;
+    }
+
+    private Country evaluateWeakestCountry(List<Country> p_countries) {
+        LinkedHashMap<Country, Integer> l_countryArmyMap = new LinkedHashMap<>();
+        int l_smallestArmy;
+        Country l_country = null;
+        for(Country l_eachCountry : p_countries){
+            l_countryArmyMap.put(l_eachCountry, l_eachCountry.getD_armies());
+        }
+        l_smallestArmy = Collections.min(l_countryArmyMap.values());
+        for(Map.Entry<Country, Integer> l_entry : l_countryArmyMap.entrySet()){
+            if(l_entry.getValue() == l_smallestArmy){
+                return l_entry.getKey();
+            }
+        }
+        return l_country;
     }
 
 }
