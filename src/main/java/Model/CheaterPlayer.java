@@ -133,4 +133,18 @@ public class CheaterPlayer extends PlayerBehaviourStrategy{
         return p_currentCountries.get(l_randomIndex);
     }
 
+    @Override
+    public String createCardOrder(Player p_player, CurrentState p_currentState, String p_cardName) {
+        return null;
+    }
+
+    @Override
+    public String createAdvanceOrder(Player p_player, CurrentState p_currentState) {
+        return null;
+    }
+
+    @Override
+    public String createDeployOrder(Player p_player, CurrentState p_currentState) {
+        return null;
+    }
 }
