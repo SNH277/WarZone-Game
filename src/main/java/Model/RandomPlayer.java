@@ -4,6 +4,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+/**
+ * @author Taksh rana
+ *
+ */
+
 public class RandomPlayer extends PlayerBehaviourStrategy{
     ArrayList<Country> d_deployCountries =new ArrayList<>();
 

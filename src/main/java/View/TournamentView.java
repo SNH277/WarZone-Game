@@ -1,149 +1,94 @@
-package Model;
+package View;
 
-import java.util.ArrayList;
+import Model.*;
+import Constants.ProjectConstants;
+
 import java.util.List;
-import java.util.Random;
 
-public class RandomPlayer extends PlayerBehaviourStrategy{
-    ArrayList<Country> d_deployCountries =new ArrayList<>();
+/**
+ * @author Taksh rana
+ *
+ */
 
-    public RandomPlayer(){
+public class TournamentView {
+
+    Tournament d_tournament;
+    List<CurrentState> d_currentStatesObject;
+
+    public TournamentView(Tournament p_tournament) {
+        d_tournament = p_tournament;
+        d_currentStatesObject = d_tournament.getD_currentStateList();
     }
 
-    public String createOrder(Player p_player, CurrentState p_gameState) {
-        System.out.println("Creating order for : " + p_player.getD_playerName());
-        String l_command;
+    public void renderCenterString(int p_width, String p_string) {
+        String l_centeredString = String.format("%" + p_width + "s", String.format("%" + (p_string.length() + (p_width - p_string.length()) / 2) + "s", p_string));
+        System.out.format(l_centeredString+"\n");
+    }
 
-        if (!checkIfArmiesDeployed(p_player)) {
-            l_command = (p_player.getD_unallocatedArmies() > 0)
-                    ? createDeployOrder(p_player, p_gameState)
-                    : createAdvanceOrder(p_player, p_gameState);
+    public void renderSeparator() {
+        StringBuilder l_separator = new StringBuilder();
+        for (int i = 0; i < ProjectConstants.WIDTH - 2; i++) {
+            l_separator.append("-");
+        }
+        System.out.format("+%s+%n", l_separator.toString());
+    }
+
+    public void renderMapName(Integer p_index, String p_mapName) {
+        String l_formattedString = String.format("%s %s %d %s", p_mapName, "(Game Number:", p_index, ")");
+        renderSeparator();
+        renderCenterString(ProjectConstants.WIDTH, l_formattedString);
+        renderSeparator();
+    }
+
+    public void renderGames(CurrentState p_currentState) {
+        if (p_currentState == null) {
+            System.out.println("Game state is null. Cannot render results.");
+            return;
+        }
+
+        String l_winner;
+        String l_conclusion;
+
+        if (p_currentState.getD_winner() == null) {
+            l_winner = "None";
+            l_conclusion = "Draw";
         } else {
-            List<String> l_cards = p_player.getD_cardOwnedByPlayer();
-            Random l_random = new Random();
+            l_winner = p_currentState.getD_winner().getD_playerName();
+            l_conclusion = "Winner Player Strategy: " +
+                    p_currentState.getD_winner().getD_playerBehaviourStrategy().getPlayerBehaviour();
+        }
 
-            if (!l_cards.isEmpty()) {
-                int l_index = l_random.nextInt(3); // Generates 0, 1, or 2
+        String l_winnerString = "Winner: " + l_winner;
 
-                switch (l_index) {
-                    case 0:
-                        l_command = createDeployOrder(p_player, p_gameState);
-                        break;
-                    case 1:
-                        l_command = createAdvanceOrder(p_player, p_gameState);
-                        break;
-                    case 2:
-                        int l_cardIndex = l_random.nextInt(p_player.getD_cardOwnedByPlayer().size());
-                        l_command = createCardOrder(p_player, p_gameState, p_player.getD_cardOwnedByPlayer().get(l_cardIndex));
-                        break;
-                    default:
-                        l_command = createAdvanceOrder(p_player, p_gameState);
-                        break;
-                }
-            } else {
-                boolean l_randomBoolean = new Random().nextBoolean();
-                l_command = l_randomBoolean ? createDeployOrder(p_player, p_gameState) : createAdvanceOrder(p_player, p_gameState);
+        StringBuilder l_commaSeparatedPlayers = new StringBuilder();
+        List<Player> l_failedPlayers = p_currentState.getD_playersFailed();
+
+        for (int i = 0; i < l_failedPlayers.size(); i++) {
+            l_commaSeparatedPlayers.append(l_failedPlayers.get(i).getD_playerName());
+            if (i < l_failedPlayers.size() - 1) {
+                l_commaSeparatedPlayers.append(", ");
             }
         }
 
-        return l_command;
+        String l_losingPlayer = "Losing Players: " + l_commaSeparatedPlayers;
+        String l_conclusionString = "Conclusion of game: " + l_conclusion;
+
+        System.out.println(l_winnerString);
+        System.out.println(l_losingPlayer);
+        System.out.println(l_conclusionString);
     }
 
-    private boolean checkIfArmiesDeployed(Player p_player) {
-        for(Country l_eachCountry : p_player.getD_currentCountries()){
-            if(l_eachCountry.getD_armies() > 0) {
-                return true;
+
+    public void viewTournament(){
+        int l_counter = 0;
+        System.out.println();
+        if (d_tournament != null && d_currentStatesObject != null) {
+            for (CurrentState l_currentState : d_tournament.getD_currentStateList()) {
+                l_counter++;
+                renderMapName(l_counter, l_currentState.getD_map().getD_mapName());
+                renderGames(l_currentState);
             }
         }
-        return false;
-    }
-
-    @Override
-    public String getPlayerBehaviour() {
-        return "Random";
-    }
-
-    @Override
-    public String createCardOrder(Player p_player, CurrentState p_currentState, String p_cardName) {
-        Random l_random = new Random();
-        int l_armiesToSend;
-        Country l_randomOwnedCountry = getRandomCountry(p_player.getD_currentCountries());
-        Country l_randomNeighbour = p_currentState.getD_map().getCountryById(l_randomOwnedCountry.getD_neighbouringCountriesId().get(l_random.nextInt(l_randomOwnedCountry.getD_neighbouringCountriesId().size())));
-        Player l_randomPlayer = getRandomPlayer(p_currentState, p_player);
-        if(l_randomOwnedCountry.getD_armies() > 1){
-            l_armiesToSend = l_random.nextInt(l_randomOwnedCountry.getD_armies() - 1) + 1;
-        }
-        else {
-            l_armiesToSend = 1;
-        }
-        switch (p_cardName) {
-            case "bomb":
-                return "bomb " + l_randomNeighbour.getD_countryName();
-            case "blockade":
-                return "blockade " + l_randomOwnedCountry.getD_countryName();
-            case "airlift":
-                return "airlift " + l_randomOwnedCountry.getD_countryName() + " " + getRandomCountry(p_player.getD_currentCountries()) + " " + l_armiesToSend;
-            case "negotiate":
-                return "negotiate " + l_randomPlayer.getD_playerName();
-            default:
-                return null;
-        }
-    }
-
-    private Player getRandomPlayer(CurrentState p_currentState, Player p_player) {
-        ArrayList<Player> l_PlayerList = new ArrayList<Player>();
-        Random l_random = new Random();
-        for(Player l_eachPlayer : p_currentState.getD_players()){
-            if(l_eachPlayer.equals(p_player)){
-                l_PlayerList.add(l_eachPlayer);
-            }
-        }
-        return l_PlayerList.get(l_random.nextInt(l_PlayerList.size()));
-    }
-
-    @Override
-    public String createAdvanceOrder(Player p_player, CurrentState p_currentState) {
-        int l_armiesToAdvance = 1;
-        Random l_random = new Random();
-        Country l_randomOwnedCountry = getRandomCountry(d_deployCountries);
-        int l_randomIndex = l_random.nextInt(l_randomOwnedCountry.getD_neighbouringCountriesId().size());
-        Country l_randomNeighbour;
-        if(l_randomOwnedCountry.getD_neighbouringCountriesId().size() > 1){
-            l_randomNeighbour = p_currentState.getD_map().getCountryById(l_randomOwnedCountry.getD_neighbouringCountriesId().get(l_randomIndex));
-        }
-        else {
-            l_randomNeighbour = p_currentState.getD_map().getCountryById(l_randomOwnedCountry.getD_neighbouringCountriesId().get(0));
-        }
-        if(l_randomOwnedCountry.getD_armies() > 1){
-            l_armiesToAdvance = l_random.nextInt(l_randomOwnedCountry.getD_armies() - 1) + 1;
-        }
-        else {
-            l_armiesToAdvance = 1;
-        }
-        return "advance " + l_randomOwnedCountry.getD_countryName() + " " + l_randomNeighbour.getD_countryName() + " " + l_armiesToAdvance;
-    }
-
-    @Override
-    public String createDeployOrder(Player p_player, CurrentState p_currentState) {
-        if(p_player.getD_unallocatedArmies() > 0){
-            Random l_random = new Random();
-            Country l_randomCountry = getRandomCountry(p_player.getD_currentCountries());
-            d_deployCountries.add(l_randomCountry);
-            int l_armiesToDeploy = 1;
-            if(p_player.getD_unallocatedArmies() > 1){
-                l_armiesToDeploy = l_random.nextInt(p_player.getD_unallocatedArmies() - 1) + 1;
-            }
-            return String.format("deploy %s %d", l_randomCountry.getD_countryName(), l_armiesToDeploy);
-        }
-        else{
-            return createAdvanceOrder(p_player, p_currentState);
-        }
-    }
-
-    private Country getRandomCountry(List<Country> p_currentCountries) {
-        Random l_random = new Random();
-        int l_randomIndex = l_random.nextInt(p_currentCountries.size());
-        return p_currentCountries.get(l_randomIndex);
     }
 
 }
