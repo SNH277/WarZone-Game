@@ -81,10 +81,25 @@ public class AggressivePlayer extends PlayerBehaviourStrategy{
         return null;
     }
 
-    private Player getRandomEnemyPlayer(Player pPlayer, CurrentState pCurrentState) {
+    private Player getRandomEnemyPlayer(Player p_player, CurrentState p_gameState) {
+        ArrayList<Player> l_playerList = new ArrayList<>();
+        Random l_random = new Random();
+        for (Player l_eachPlayer : p_gameState.getD_players()) {
+            if (!l_eachPlayer.equals(p_player)) {
+                l_playerList.add(l_eachPlayer);
+            }
+        }
+        return l_playerList.get(l_random.nextInt(l_playerList.size()));
     }
 
-    private Country getStrongestCountry(Player pPlayer, CurrentState pCurrentState) {
+    private Country getStrongestCountry(Player p_player, CurrentState p_currentState) {
+        List<Country> l_countriesOwnedByPlayer = p_player.getD_currentCountries();
+        Country l_strongestCountry = calculateStrongestCountry(l_countriesOwnedByPlayer);
+        return l_strongestCountry;
+
+    }
+
+    private Country calculateStrongestCountry(List<Country> lCountriesOwnedByPlayer) {
     }
 
 
