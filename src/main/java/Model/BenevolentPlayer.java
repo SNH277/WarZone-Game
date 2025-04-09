@@ -4,18 +4,41 @@ import java.io.IOException;
 import java.util.*;
 import java.util.Map;
 
+/**
+ * Represents a Benevolent strategy for a player in the game.
+ * This player focuses on protecting weaker countries and avoids aggressive moves.
+ */
 public class BenevolentPlayer extends PlayerBehaviourStrategy{
 
+    /**
+     * List to keep track of countries that have received deployments.
+     */
     ArrayList<Country> d_deployCountries = new ArrayList<>();
 
+    /**
+     * Default constructor for BenevolentPlayer.
+     */
     public BenevolentPlayer(){
     }
 
+    /**
+     * Gets the type of player behavior.
+     *
+     * @return String representing the behavior type.
+     */
     @Override
     public String getPlayerBehaviour() {
         return "Benevolent";
     }
 
+    /**
+     * Creates an order for the player based on current game state and owned cards.
+     *
+     * @param p_player        The player.
+     * @param p_currentState  The current state of the game.
+     * @return The created order as a String.
+     * @throws IOException If an I/O error occurs.
+     */
     @Override
     public String createOrder(Player p_player, CurrentState p_currentState) throws IOException {
         System.out.println("Creating order for : " + p_player.getD_playerName());
@@ -69,6 +92,12 @@ public class BenevolentPlayer extends PlayerBehaviourStrategy{
         return l_command;
     }
 
+    /**
+     * Checks if any country owned by the player has armies deployed.
+     *
+     * @param p_player The player.
+     * @return true if any country has armies, otherwise false.
+     */
     private boolean checkIfArmiesDeployed(Player p_player) {
         for(Country l_country : p_player.getD_currentCountries()){
             if(l_country.getD_armies() > 0){
@@ -78,6 +107,15 @@ public class BenevolentPlayer extends PlayerBehaviourStrategy{
         return false;
     }
 
+    /**
+     * Creates a card order for the benevolent player.
+     * Ignores bomb cards as the player is peaceful.
+     *
+     * @param p_player       The player.
+     * @param p_currentState The game state.
+     * @param p_cardName     The card to be used.
+     * @return Order string.
+     */
     @Override
     public String createCardOrder(Player p_player, CurrentState p_currentState, String p_cardName) {
         int l_armiesToDeploy = 0;
@@ -103,6 +141,13 @@ public class BenevolentPlayer extends PlayerBehaviourStrategy{
         return null;
     }
 
+    /**
+     * Selects a random enemy player from the current game state.
+     *
+     * @param p_currentState The current game state.
+     * @param p_player       The current player.
+     * @return A random enemy player.
+     */
     private Player getRandomEnemyPlayer(CurrentState p_currentState, Player p_player) {
         ArrayList<Player> l_players = new ArrayList<>();
         Random l_random = new Random();
@@ -114,12 +159,26 @@ public class BenevolentPlayer extends PlayerBehaviourStrategy{
         return l_players.get(l_random.nextInt(l_players.size()));
     }
 
+    /**
+     * Selects a random country from a given list.
+     *
+     * @param p_deployCountries List of countries.
+     * @return A randomly selected country.
+     */
     private Country getRandomCountry(List<Country> p_deployCountries) {
         Random l_random = new Random();
         int l_index = l_random.nextInt(p_deployCountries.size());
         return p_deployCountries.get(l_index);
     }
 
+    /**
+     * Creates an advance order for a benevolent player.
+     * Armies are moved from stronger to weaker neighboring countries.
+     *
+     * @param p_player       The player.
+     * @param p_currentState The game state.
+     * @return The advance order string.
+     */
     @Override
     public String createAdvanceOrder(Player p_player, CurrentState p_currentState) {
         int l_armiesToAdvance;
@@ -141,6 +200,14 @@ public class BenevolentPlayer extends PlayerBehaviourStrategy{
         return String.format("advance %s %s %d", l_randomSourceCountry.getD_countryName(), l_weakestTargetCountry.getD_countryName(), l_armiesToAdvance);
     }
 
+    /**
+     * Gets the weakest neighboring country owned by the player.
+     *
+     * @param p_randomSourceCountry The source country.
+     * @param p_currentState        The game state.
+     * @param p_player              The player.
+     * @return The weakest neighboring country.
+     */
     private Country getWeakestNeighbour(Country p_randomSourceCountry, CurrentState p_currentState, Player p_player) {
         List<Integer> l_neighbourCountryIds = p_randomSourceCountry.getD_neighbouringCountriesId();
         List<Country> l_listOfNeighbours = new ArrayList<>();
@@ -156,6 +223,12 @@ public class BenevolentPlayer extends PlayerBehaviourStrategy{
         return null;
     }
 
+    /**
+     * Evaluates the weakest country (least armies) from a list.
+     *
+     * @param p_countries List of countries.
+     * @return The weakest country.
+     */
     private Country evaluateWeakestCountry(List<Country> p_countries) {
         LinkedHashMap<Country, Integer> l_countryArmyMap = new LinkedHashMap<>();
         int l_smallestArmy;
@@ -172,6 +245,13 @@ public class BenevolentPlayer extends PlayerBehaviourStrategy{
         return l_country;
     }
 
+    /**
+     * Creates a deploy order that places armies on the weakest owned country.
+     *
+     * @param p_player       The player.
+     * @param p_currentState The game state.
+     * @return The deploy order string.
+     */
     @Override
     public String createDeployOrder(Player p_player, CurrentState p_currentState) {
         if(p_player.getD_unallocatedArmies() > 0){
@@ -191,6 +271,12 @@ public class BenevolentPlayer extends PlayerBehaviourStrategy{
         }
     }
 
+    /**
+     * Gets the weakest country owned by the player.
+     *
+     * @param p_player The player.
+     * @return The weakest country.
+     */
     private Country getWeakestCountry(Player p_player) {
         List<Country> l_countries = p_player.getD_currentCountries();
         Country l_Country = evaluateWeakestCountry(l_countries);
