@@ -69,7 +69,44 @@ public class BenevolentPlayer extends PlayerBehaviourStrategy{
         return l_command;
     }
 
-    private boolean checkIfArmiesDeployed(Player pPlayer) {
+    private boolean checkIfArmiesDeployed(Player p_player) {
+        for(Country l_country : p_player.getD_currentCountries()){
+            if(l_country.getD_armies() > 0){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    @Override
+    public String createCardOrder(Player p_player, CurrentState p_currentState, String p_cardName) {
+        int l_armiesToDeploy = 0;
+        Random l_random = new Random();
+        Country l_randomOwnedCountry = getRandomCountry(p_player.getD_currentCountries());
+        if(l_randomOwnedCountry.getD_armies() > 1){
+            l_armiesToDeploy = l_random.nextInt(l_randomOwnedCountry.getD_armies() - 1) + 1;
+        }
+        else{
+            l_armiesToDeploy = 1;
+        }
+        switch (p_cardName){
+            case "bomb":
+                System.err.println("I donot hurt anyone as I am a benevolent player.");
+                return ("bomb  false");
+            case "blockade":
+                return String.format("blockade %s", l_randomOwnedCountry.getD_countryName());
+            case "airlift":
+                return String.format("airlift %s %s %d", l_randomOwnedCountry.getD_countryName(), getRandomCountry(p_player.getD_currentCountries()), l_armiesToDeploy);
+            case "negotiate":
+                return String.format("negotiate %s", getRandomEnemyPlayer(p_currentState, p_player).getD_playerName());
+        }
+        return null;
+    }
+
+    private Player getRandomEnemyPlayer(CurrentState pCurrentState, Player pPlayer) {
+    }
+
+    private Country getRandomCountry(List<Country> dCurrentCountries) {
     }
 
 }
