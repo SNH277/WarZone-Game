@@ -5,6 +5,9 @@ import Model.Map;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.io.ByteArrayInputStream;
+import java.io.InputStream;
+
 import static org.junit.Assert.*;
 
 /**
@@ -103,6 +106,7 @@ public class MapControllerTest {
      */
     @Test
     public void saveMap() {
+        InputStream originalSystemIn = System.in;
         d_map = d_mapController.loadMap(d_currentState, d_mapName);
         d_currentState.setD_map(d_map);
         assertNull(d_map.getCountryByName("Mexico"));
@@ -110,12 +114,17 @@ public class MapControllerTest {
         d_mapController.editCountry(d_currentState, "add", "Mexico NorthAmerica");
         d_mapController.editNeighbourCountry(d_currentState, "add", "9 2");
         assertEquals("Mexico", d_map.getCountryByName("Mexico").getD_countryName());
-
+        ByteArrayInputStream in = new ByteArrayInputStream("2\n".getBytes());
+        System.setIn(in);
         d_currentState.setD_map(d_map);
         d_mapController.saveMap(d_currentState, d_mapName);
         d_map = d_mapController.loadMap(d_currentState, d_mapName);
         assertEquals("Mexico", d_map.getCountryByName("Mexico").getD_countryName());
         d_mapController.editCountry(d_currentState, "remove", "Mexico");
+        in = new ByteArrayInputStream("2\n".getBytes());
+        System.setIn(in);
+        d_currentState.setD_map(d_map);
         d_mapController.saveMap(d_currentState, d_mapName);
+        System.setIn(originalSystemIn);
     }
 }

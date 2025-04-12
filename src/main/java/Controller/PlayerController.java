@@ -3,6 +3,7 @@ package Controller;
 import Constants.ProjectConstants;
 import Model.*;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -12,7 +13,12 @@ import java.util.Random;
  * distributing armies, and creating orders.
  * @author Disha Padsala,Shrey Hingu,Akhilesh Kanbarkar
  */
-public class PlayerController {
+public class PlayerController implements Serializable {
+
+    /**
+     * The D current state.
+     */
+    CurrentState d_currentState = new CurrentState();
 
     /**
      * Default constructor for PlayerController.
@@ -25,13 +31,15 @@ public class PlayerController {
      *
      * @param p_currentState The current game state containing players and the map.
      */
-    public void assignCountry(CurrentState p_currentState) {
+    public boolean assignCountry(CurrentState p_currentState) {
         if(p_currentState.getD_players() == null || p_currentState.getD_players().isEmpty()) {
             System.out.println(ProjectConstants.NO_PLAYERS);
-            return;
+            d_currentState.getD_modelLogger().setD_message(ProjectConstants.NO_PLAYERS, "effect");
+            return false;
         }
         if(p_currentState.getD_map() == null || p_currentState.getD_map().getD_mapCountries() == null) {
             System.out.println(ProjectConstants.MAP_NOT_AVAILABLE);
+            return false;
         }
 
         List<Player> l_players = p_currentState.getD_players();
@@ -53,6 +61,7 @@ public class PlayerController {
 
         if (l_playerCount > l_countryCount) {
             System.out.println(ProjectConstants.MORE_PLAYERS_THAN_COUNTRIES);
+            return false;
         }
 
         int l_countriesPerPlayer = Math.floorDiv(l_countryCount, l_playerCount);
@@ -62,6 +71,7 @@ public class PlayerController {
         displayAssignedCountries(l_players);
 
         updatePlayerContinentOwnership(l_players, p_currentState.getD_map().getD_mapContinents());
+        return true;
     }
     /**
      * Updates the player's ownership of continents based on country ownership.
@@ -114,6 +124,7 @@ public class PlayerController {
 
         if(l_unassignedCountries.isEmpty()) {
             System.out.println(ProjectConstants.NO_COUNTRIES);
+            d_currentState.getD_modelLogger().setD_message(ProjectConstants.NO_COUNTRIES,"effect");
             return;
         }
         Random rand = new Random();
@@ -162,6 +173,7 @@ public class PlayerController {
         List<Player> l_players = p_CurrentState.getD_players();
         if(l_players == null || l_players.isEmpty()) {
             System.out.println(ProjectConstants.NO_PLAYERS);
+            d_currentState.getD_modelLogger().setD_message(ProjectConstants.NO_PLAYERS,"effect");
             return;
         }
         for (Player l_player : l_players) {
@@ -293,5 +305,6 @@ public class PlayerController {
             l_eachPlayer.resetNegotiation();
         }
     }
+
 
 }
