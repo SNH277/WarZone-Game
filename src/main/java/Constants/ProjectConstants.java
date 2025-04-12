@@ -103,4 +103,50 @@ public class ProjectConstants {
 
     /** Total number of available cards, based on ALL_CARDS size. */
     public static final int NO_OF_CARDS = ALL_CARDS.size();
+
+    /** Error message for invalid tournament mode command syntax. */
+    public static final String INVALID_TOURNAMENT_MODE_COMMAND = "Invalid command for Tournament mode, Provide command in format of : tournament -M <list_of_maps> -P <list_of_player_strategies> -G <number_of_games> -D <max_turns>";
+
+    /** Error message when turn count is outside the 10–50 valid range. */
+    public static final String INVALID_TURN_COUNT = "Invalid number of turns found. Please provide 10 to 50 turns for the tournament.";
+
+    /** Standard width used for console output formatting. */
+    public static final int WIDTH = 80;
+
+    /** Error message for a missing file. */
+    public static final String FILE_NOT_FOUND = "File not Found!";
+
+    /** Error message when a file is corrupted or unreadable. */
+    public static final String CORRUPTED_FILE = "File not Found or corrupted file!";
+
+    /** List of all possible player behaviors (including Human) for standard game mode. */
+    public static final List<String> PLAYER_BEHAVIOR = Arrays.asList("Human", "Aggressive", "Random", "Benevolent", "Cheater");
+
+    /** Error message when a player name already exists. */
+    public static final String NAME_ALREADY_EXISTS = "Name already exist, try some other name!";
+
+    /** Error message for an invalid save game command. */
+    public static final String INVALID_SAVEGAME_COMMAND = "Invalid command for savegame. Please provide savegame filename";
+
+    /** Error message for an invalid load game command. */
+    public static final String INVALID_LOADGAME_COMMAND = "Invalid command for loadgame. Please provide loadgame filename";
+
+    /** Error message when the number of games in tournament is invalid (should be 1 to 5). */
+    public static final String INVALID_GAME_COUNT = "Invalid number of games found. Please provide 1 to 5 games for the tournament.";
+
+    /** Error message for invalid player strategy in tournament mode. */
+    public static final String INVALID_STRATEGY = "Invalid strategy found. Please provide valid strategy for each player from : 'Aggressive', 'Random', 'Benevolent', 'Cheater'";
+
+    /** Error message when the number of strategies is outside the valid range (2 to 4). */
+    public static final String INVALID_STRATEGY_COUNT = "Invalid number of strategies found. Please provide 2 to 4 strategies for each player.";
+
+    /** Error message for duplicate strategies provided by players in tournament mode. */
+    public static final String DUPLICATE_STRATEGY = "Duplicate strategy found. Please provide unique strategies for each player.";
+
+    /** List of valid player strategies allowed in tournament mode. */
+    public static final List<String> TOURNAMENT_PLAYER_BEHAVIOUR = Arrays.asList("Aggressive", "Random", "Benevolent", "Cheater");
+
+    /** Error message when number of map files is invalid (should be 1 to 5). */
+    public static final String INVALID_MAP_FILE_COUNT = "Invalid number of map files. Please provide 1 to 5 map files.";
+
 }
