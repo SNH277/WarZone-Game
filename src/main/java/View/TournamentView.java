@@ -9,7 +9,7 @@ import java.util.List;
  * TournamentView class is responsible for rendering and displaying tournament details, including game results and state.
  * It handles rendering map names, game winners, losing players, and game conclusions.
  * It uses information from the Tournament and CurrentState objects to present the results.
- * @ author Taksh Rana
+ * @author Taksh Rana
  */
 public class TournamentView {
 
