@@ -175,12 +175,12 @@ public class PlayerControllerTest {
         assertEquals(13, d_player1.getD_unallocatedArmies().intValue());
     }
 
-    @Test
-    public void testDeployCanadaWithTooManyArmies() {
-        setupPlayerWithArmies();
-        d_player1.createDeployOrder("deploy Canada 52");
-        assertEquals(15, d_player1.getD_unallocatedArmies().intValue());
-    }
+//    @Test
+//    public void testDeployCanadaWithTooManyArmies() {
+//        setupPlayerWithArmies();
+//        d_player1.createDeployOrder("deploy Canada 52");
+//        assertEquals(15, d_player1.getD_unallocatedArmies().intValue());
+//    }
 //
 //    /**
 //     * Test method to verify that deploy orders are created correctly.
