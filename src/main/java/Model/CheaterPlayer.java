@@ -63,7 +63,7 @@ public class CheaterPlayer extends PlayerBehaviourStrategy{
 
         doubleArmyOnEnemyNeighbourCountries(p_player, p_currentState);
 
-        //p_player.checkForMoreOrder(true);
+        p_player.checkForMoreOrder(true);
         return null;
     }
 
