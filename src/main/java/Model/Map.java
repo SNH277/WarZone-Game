@@ -2,6 +2,7 @@ package Model;
 
 import Constants.ProjectConstants;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -11,7 +12,7 @@ import java.util.Objects;
  * Represents a map containing countries and continents.
  * @author Disha Padsala,Shrey Hingu,Akhilesh Kanbarkar
  */
-public class Map {
+public class Map implements Serializable {
     /**
      * The name of the map.
      */
@@ -548,7 +549,7 @@ public class Map {
      * @param p_countryID The ID of the country to be retrieved.
      * @return The country object if found, otherwise null.
      */
-    private Country getCountryById(int p_countryID) {
+    public Country getCountryById(int p_countryID) {
         if (d_mapCountries == null || d_mapCountries.isEmpty()) {
             return null;
         }
@@ -639,5 +640,20 @@ public class Map {
             }
         }
         return "null";
+    }
+
+    /**
+     * Gets continent by id.
+     *
+     * @param p_continentID the p continent id
+     * @return the continent by id
+     */
+    public Continent getContinentById(Integer p_continentID) {
+        for(Continent l_eachContinent :d_mapContinents){
+            if(l_eachContinent.d_continentID.equals(p_continentID)){
+                return l_eachContinent;
+            }
+        }
+        return null;
     }
 }

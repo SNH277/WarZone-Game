@@ -2,6 +2,7 @@ package Model;
 
 import Constants.ProjectConstants;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -9,7 +10,7 @@ import java.util.List;
  * The {@code Country} class represents a country with an ID, name, continent ID, neighboring countries, and armies.
  * @author Yash Koladiya
  */
-public class Country {
+public class Country implements Serializable {
     /** The unique identifier for the country. */
     Integer d_countryID;
     /** The name of the country. */

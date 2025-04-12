@@ -2,13 +2,14 @@ package Model;
 
 import Constants.ProjectConstants;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 /**
  * Represents a Continent containing multiple countries with associated metadata.
  * @author Akhilesh Kanbarkar
  */
-public class Continent {
+public class Continent implements Serializable {
     /**
      * The D continent id.
      */

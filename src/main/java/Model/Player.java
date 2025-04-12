@@ -7,13 +7,14 @@ import Utils.CommandHandler;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.Serializable;
 import java.util.*;
 
 /**
  * Represents a player in the game.
  * @author Disha Padsala
  */
-public class Player {
+public class Player implements Serializable {
 
     /** The name of the player. */
     String d_playerName;
@@ -44,6 +45,12 @@ public class Player {
 
     /** Flag to determine if only one card can be used per turn. */
     boolean d_oneCardPerTurn = false;
+
+    /**
+     * The behavior strategy followed by the player during the game.
+     * This defines how the player makes decisions (e.g., aggressive, benevolent, random, cheater).
+     */
+    PlayerBehaviourStrategy d_playerBehaviourStrategy;
 
     /**
      * Constructor to initialize a new player.
@@ -261,6 +268,24 @@ public class Player {
     }
 
     /**
+     * Gets the behavior strategy followed by the player.
+     *
+     * @return the {@link PlayerBehaviourStrategy} assigned to the player.
+     */
+    public PlayerBehaviourStrategy getD_playerBehaviourStrategy() {
+        return d_playerBehaviourStrategy;
+    }
+
+    /**
+     * Sets the behavior strategy for the player.
+     *
+     * @param p_playerBehaviourStrategy the {@link PlayerBehaviourStrategy} to assign to the player.
+     */
+    public void setD_playerBehaviourStrategy(PlayerBehaviourStrategy p_playerBehaviourStrategy) {
+        d_playerBehaviourStrategy = p_playerBehaviourStrategy;
+    }
+
+    /**
      * Processes and issues an order for the player during the order phase.
      *
      * @param p_issueOrderPhase The current phase handling order issuance.
@@ -335,7 +360,7 @@ public class Player {
         d_orders.add(l_order);
 
         this.setD_unallocatedArmies(this.getD_unallocatedArmies() - l_noOfArmiesToDeploy);
-
+        d_orders.get(d_orders.size()-1).printOrder();
         this.setD_playerLog(ProjectConstants.ORDER_ADDED, "effect");
     }
 
@@ -370,23 +395,28 @@ public class Player {
      * Prompts the player to check if they want to give more orders in the next turn.
      * Reads user input from the console and sets the player's order status accordingly.
      */
-    public void checkForMoreOrder() {
-        BufferedReader l_reader = new BufferedReader(new InputStreamReader(System.in));
-        System.out.println("Do you still want to give order for player : " + this.getD_playerName() + " in the next turn?");
-        System.out.println("Press Y for Yes and N for No");
-        try {
-            String l_check = l_reader.readLine();
-            if(l_check.equalsIgnoreCase("Y") || l_check.equalsIgnoreCase("N")){
-                this.setD_moreOrders(l_check.equalsIgnoreCase("Y"));
+    public void checkForMoreOrder(boolean p_isTournamentMode) {
+        if (p_isTournamentMode || !this.getD_playerBehaviourStrategy().getPlayerBehaviour().equalsIgnoreCase("Human")) {
+            Random l_random = new Random();
+            boolean l_moreOrders = l_random.nextBoolean();
+            this.setD_moreOrders(l_moreOrders);
+        }else {
+            BufferedReader l_reader = new BufferedReader(new InputStreamReader(System.in));
+            System.out.println("Do you still want to give order for player : " + this.getD_playerName() + " in the next turn?");
+            System.out.println("Press Y for Yes and N for No");
+            try {
+                String l_check = l_reader.readLine();
+                if(l_check.equalsIgnoreCase("Y") || l_check.equalsIgnoreCase("N")){
+                    this.setD_moreOrders(l_check.equalsIgnoreCase("Y"));
+                }
+                else{
+                    System.err.println("Invalid Input Entered");
+                    this.checkForMoreOrder(p_isTournamentMode);
+                }
+            } catch (IOException e) {
+                throw new RuntimeException(e);
             }
-            else{
-                System.err.println("Invalid Input Entered");
-                this.checkForMoreOrder();
-            }
-        } catch (IOException e) {
-            throw new RuntimeException(e);
         }
-
     }
 
     /**
@@ -435,6 +465,7 @@ public class Player {
         }
 
         this.d_orders.add(new Advance(l_sourceCountry, l_targetCountry, l_noOfArmies, this));
+        d_orders.get(d_orders.size()-1).printOrder();
         this.setD_playerLog("Advance order added successfully for player " + this.getD_playerName(), "log");
     }
 
@@ -496,6 +527,7 @@ public class Player {
                 Card l_bombOrder = new CardBomb(this, l_commandParts[1]);
                 if (l_bombOrder.validOrderCheck(p_currentState)) {
                     this.d_orders.add(l_bombOrder);
+                    l_bombOrder.printOrder();
                     this.setD_playerLog("Bomb order is added for execution for player " + this.getD_playerName(), "effect");
                     p_currentState.updateLog(getD_playerLog(), "effect");
                 }
@@ -505,6 +537,7 @@ public class Player {
                 Card l_blockadeOrder = new CardBlockade(this, l_commandParts[1]);
                 if (l_blockadeOrder.validOrderCheck(p_currentState)) {
                     this.d_orders.add(l_blockadeOrder);
+                    l_blockadeOrder.printOrder();
                     this.setD_playerLog("Blockade order is added for execution for player " + this.getD_playerName(), "effect");
                     p_currentState.updateLog(getD_playerLog(), "effect");
                 }
@@ -516,6 +549,7 @@ public class Player {
                     Card l_airliftOrder = new CardAirlift(l_noOfArmies, l_commandParts[1], this, l_commandParts[2]);
                     if (l_airliftOrder.validOrderCheck(p_currentState)) {
                         this.d_orders.add(l_airliftOrder);
+                        l_airliftOrder.printOrder();
                         this.setD_playerLog("Airlift order is added for execution for player " + this.getD_playerName(), "effect");
                         p_currentState.updateLog(getD_playerLog(), "effect");
                     }
@@ -528,6 +562,7 @@ public class Player {
                 Card l_negotiateOrder = new CardNegotiate(this, l_commandParts[1]);
                 if (l_negotiateOrder.validOrderCheck(p_currentState)) {
                     this.d_orders.add(l_negotiateOrder);
+                    l_negotiateOrder.printOrder();
                     this.setD_playerLog("Negotiate order is added for execution for player " + this.getD_playerName(), "effect");
                     p_currentState.updateLog(getD_playerLog(), "effect");
                 }
@@ -654,5 +689,29 @@ public class Player {
      */
     public void resetNegotiation(){
         d_negotiatePlayer.clear();
+    }
+
+    /**
+     * Gets country i ds.
+     *
+     * @return the country i ds
+     */
+    public List<Integer> getCountryIDs() {
+        List<Integer> l_countryIDs = new ArrayList<>();
+        for (Country l_eachCountry : d_currentCountries) {
+            l_countryIDs.add(l_eachCountry.getD_countryID());
+        }
+        return l_countryIDs;
+    }
+
+    /**
+     * Gets player order.
+     *
+     * @param p_currentState the p current state
+     * @return the player order
+     * @throws IOException the io exception
+     */
+    public String getPlayerOrder(CurrentState p_currentState) throws IOException {
+        return this.d_playerBehaviourStrategy.createOrder(this, p_currentState);
     }
 }

@@ -1,13 +1,14 @@
 package Model;
 import View.GameLogger;
 
+import java.io.Serializable;
 import java.util.Observable;
 
 /**
  * The type Model logger.
  * @author Akhilesh Kanbarkar
  */
-public class ModelLogger extends Observable {
+public class ModelLogger extends Observable implements Serializable {
     /**
      * The message being logged.
      */
