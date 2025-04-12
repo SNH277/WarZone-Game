@@ -7,6 +7,10 @@ import Model.Map;
 import org.junit.Before;
 import org.junit.Test;
 
+import javax.imageio.IIOException;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 
 import static org.junit.Assert.*;
@@ -60,17 +64,19 @@ public class CurrentStateTest {
      * Add or remove game players.
      */
     @Test
-    public void addOrRemoveGamePlayers() {
-        // Initialize the players list in the current state
+    public void addOrRemoveGamePlayers() throws IOException {
+        InputStream originalSystemIn = System.in;
         d_currentState.setD_players(new ArrayList<>());
-        
+        ByteArrayInputStream in = new ByteArrayInputStream("Aggressive\n".getBytes());
+        System.setIn(in);
         // Add "Player1" to the game
         d_currentState.addOrRemovePlayer("add", "Player1");
         assertEquals(1, d_currentState.getD_players().size());  // Verify one player has been added
-        
+
         // Remove "Player1" from the game
         d_currentState.addOrRemovePlayer("remove", "Player1");
         assertEquals(0, d_currentState.getD_players().size());  // Verify no players are present
+        System.setIn(originalSystemIn);
     }
 
     /**
