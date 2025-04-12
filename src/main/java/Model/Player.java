@@ -394,6 +394,8 @@ public class Player implements Serializable {
     /**
      * Prompts the player to check if they want to give more orders in the next turn.
      * Reads user input from the console and sets the player's order status accordingly.
+     *
+     * @param p_isTournamentMode A boolean flag indicating if the game is in tournament mode.
      */
     public void checkForMoreOrder(boolean p_isTournamentMode) {
         if (p_isTournamentMode || !this.getD_playerBehaviourStrategy().getPlayerBehaviour().equalsIgnoreCase("Human")) {

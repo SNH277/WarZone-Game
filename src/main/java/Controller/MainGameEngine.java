@@ -67,12 +67,20 @@ public class MainGameEngine implements Serializable {
         this.d_currentPhase = d_currentPhase;
     }
 
-    /** Returns whether the game is in tournament mode. */
+    /**
+     * Returns whether the game is in tournament mode.
+     *
+     * @return true if the game is in tournament mode, false otherwise.
+     */
     public boolean isD_isTournamentMode() {
         return d_isTournamentMode;
     }
 
-    /** Sets the tournament mode flag for the game. */
+    /**
+     * Sets the tournament mode flag for the game.
+     *
+     * @param p_isTournamentMode The value to set for the tournament mode flag.
+     */
     public void setD_isTournamentMode(boolean p_isTournamentMode) {
         this.d_isTournamentMode = p_isTournamentMode;
     }
@@ -89,6 +97,8 @@ public class MainGameEngine implements Serializable {
     /**
      * Transitions the game to the Issue Order Phase.
      * Logs the phase change and initializes the {@link IssueOrderPhase}.
+     *
+     * @param p_isTournamentMode A flag indicating whether the game is in tournament mode.
      */
     public void setIssueOrderPhase(boolean p_isTournamentMode){
         this.setD_mainEngineLog("Issue Order Phase","phase");

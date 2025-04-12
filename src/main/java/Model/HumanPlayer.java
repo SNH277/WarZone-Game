@@ -3,12 +3,19 @@ package Model;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-/**
- * @author Taksh rana
- *
- */
 
+/**
+ * The {@code HumanPlayer} class represents a human player's behavior in the game.
+ * It extends the {@code PlayerBehaviourStrategy} class and implements the necessary methods
+ * to interact with the game by providing commands via user input.
+ * This class allows the human player to provide deployment and advancement orders through
+ * the console interface during the game. It also handles the retrieval of orders based on
+ * the player's actions and interaction with the game.
+ *
+ * @author Taksh Rana
+ */
 public class HumanPlayer extends PlayerBehaviourStrategy{
+    /** Constructs a new HumanPlayer object. */
     public HumanPlayer(){
     }
 

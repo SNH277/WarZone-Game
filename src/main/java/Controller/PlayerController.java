@@ -28,8 +28,10 @@ public class PlayerController implements Serializable {
 
     /**
      * Assigns countries to players based on the number of available players and countries.
+     * This method ensures that each player gets a country from the map.
      *
      * @param p_currentState The current game state containing players and the map.
+     * @return true if countries are successfully assigned to players, false otherwise.
      */
     public boolean assignCountry(CurrentState p_currentState) {
         if(p_currentState.getD_players() == null || p_currentState.getD_players().isEmpty()) {

@@ -18,8 +18,10 @@ public class RandomPlayer extends PlayerBehaviourStrategy{
      */
     ArrayList<Country> d_deployCountries = new ArrayList<>();
 
-
-    public RandomPlayer(){
+    /**
+     * Constructs a new RandomPlayer instance with a random behavior strategy.
+     */
+    public RandomPlayer() {
     }
 
     public String createOrder(Player p_player, CurrentState p_gameState) {

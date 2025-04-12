@@ -15,8 +15,12 @@ import java.util.List;
  * @author Yash Koladiya
  */
 public class MapFileReader implements Serializable {
+    /**
+     * Constructor for the MapFileReader class, initializes the instance of the class.
+     */
     public MapFileReader() {
     }
+
 
     /**
      * Parses the contents of a map file and updates the current game state and map object.

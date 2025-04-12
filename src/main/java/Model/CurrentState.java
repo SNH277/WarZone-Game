@@ -10,8 +10,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * The {@code CurrentState} class represents the current state of the game, including the list of players and the game map.
- * @author Disha Padsala,Shrey Hingu
+ * The {@code CurrentState} class represents the current state of the game, including the list of players,
+ * the game map, and other relevant information such as the number of turns, strategies, and tournament mode status.
+ * It manages the game data and allows updates during gameplay.
+ *
+ * @author Disha Padsala, Shrey Hingu
  */
 public class CurrentState  implements Serializable {
     /** The list of players in the game. */
@@ -92,6 +95,14 @@ public class CurrentState  implements Serializable {
      */
     public ModelLogger getD_modelLogger() {
         return d_modelLogger;
+    }
+
+    /**
+     * Constructs a new {@code CurrentState} object.
+     * This constructor initializes the current game state, including setting up the
+     * players and the map for the game.
+     */
+    public CurrentState() {
     }
 
     /**
@@ -261,9 +272,11 @@ public class CurrentState  implements Serializable {
     }
 
     /**
-     * Adds a player to the game.
+     * Adds a player to the game using the provided player name.
+     * Throws an exception if the player cannot be added.
      *
      * @param p_arguments The name of the player to add.
+     * @throws IOException If an error occurs while adding the player.
      */
     public void addPlayer(String p_arguments) throws IOException {
         if (p_arguments == null || p_arguments.trim().isEmpty()) {

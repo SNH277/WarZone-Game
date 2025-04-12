@@ -121,7 +121,10 @@ public abstract class Phase implements Serializable {
     }
 
     /**
-     * Initializes the phase. Called when the phase becomes active.
+     * Initializes the phase when it becomes active.
+     * This method is called to set up the phase-specific details and behaviors.
+     *
+     * @param p_isTournamentMode A boolean flag indicating whether the game is in tournament mode.
      */
     public abstract void initPhase(boolean p_isTournamentMode);
 

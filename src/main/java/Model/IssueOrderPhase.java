@@ -251,6 +251,12 @@ public class IssueOrderPhase extends Phase{
         }
     }
 
+    /**
+     * Extracts and returns a list of country names from the provided list of countries.
+     *
+     * @param p_countries A list of {@link Country} objects from which country names will be extracted.
+     * @return A list of country names as {@link String}.
+     */
     public static List<String> getCountryNames(List<Country> p_countries) {
         List<String> countryNames = new ArrayList<>();
 
@@ -260,6 +266,7 @@ public class IssueOrderPhase extends Phase{
 
         return countryNames;
     }
+
 
 
     /**
