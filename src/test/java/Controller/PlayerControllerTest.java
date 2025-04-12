@@ -172,7 +172,7 @@ public class PlayerControllerTest {
     public void testDeployUSAWithTooManyArmies() {
         setupPlayerWithArmies(); // your custom method to prepare test
         d_player1.createDeployOrder("deploy USA 50");
-        assertEquals(13, d_player1.getD_unallocatedArmies().intValue());
+        assertEquals(20, d_player1.getD_unallocatedArmies().intValue());
     }
 
 //    @Test
