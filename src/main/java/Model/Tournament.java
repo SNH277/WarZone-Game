@@ -11,8 +11,18 @@ import java.util.*;
 
 public class Tournament implements Serializable {
 
-    MapController d_mapController =new MapController();
+    /**
+     * Controller responsible for map-related operations such as loading,
+     * validating, and editing maps used in the game.
+     */
+    MapController d_mapController = new MapController();
+
+    /**
+     * List to hold multiple instances of {@link CurrentState},
+     * representing the state of the game at various stages or for different test cases.
+     */
     List<CurrentState> d_currentStateList = new ArrayList<>();
+
 
     public Tournament(){
 

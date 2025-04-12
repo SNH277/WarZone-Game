@@ -5,12 +5,19 @@ import java.util.List;
 import java.util.Random;
 
 /**
+ * A computer-controlled player that issues commands based on random choices.
+ * RandomPlayer selects actions like deploy, advance, or use a card randomly,
+ * making its behavior unpredictable in the game.
+ * Implements the PlayerBehaviourStrategy interface.
  * @author Taksh rana
- *
  */
-
 public class RandomPlayer extends PlayerBehaviourStrategy{
-    ArrayList<Country> d_deployCountries =new ArrayList<>();
+    /**
+     * List of {@link Country} objects where the player can deploy armies.
+     * This is used to track valid countries owned by a player during the deployment phase.
+     */
+    ArrayList<Country> d_deployCountries = new ArrayList<>();
+
 
     public RandomPlayer(){
     }

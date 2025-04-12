@@ -30,7 +30,9 @@ public abstract class Phase implements Serializable {
     /** Controller for gameplay/player-related actions. */
     PlayerController d_gameplayController;
 
+    /** Instance of the Tournament class used to manage tournament-related operations. */
     Tournament d_tournament;
+
 
     /**
      * Constructor to initialize a Phase with its core dependencies.
