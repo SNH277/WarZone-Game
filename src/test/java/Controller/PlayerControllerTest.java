@@ -92,18 +92,18 @@ public class PlayerControllerTest {
 //     * Test method to assign random countries to players.
 //     * This method ensures that players are assigned a random distribution of countries and verifies the correct number of countries.
 //     */
-//    @Test
-//    public void assignRandomCountriesToPlayers(){
-//        l_playerList.add(d_player1);
-//        l_playerList.add(d_player2);
-//        d_playerController.randomCountryDistribution(l_playerList, d_map.getD_mapCountries(), 4);
-//        assertEquals(4, d_player1.getD_currentCountries().size());
-//        assertEquals(4, d_player2.getD_currentCountries().size());
-//        List<Country> l_countryList = new ArrayList<>(d_player1.getD_currentCountries());
-//        l_countryList.remove(0);
-//        d_player1.setD_currentCountries(l_countryList);
-//        assertEquals(3, d_player1.getD_currentCountries().size());
-//    }
+    @Test
+    public void assignRandomCountriesToPlayers(){
+        l_playerList.add(d_player1);
+        l_playerList.add(d_player2);
+        d_playerController.randomCountryDistribution(l_playerList, d_map.getD_mapCountries(), 4);
+        assertEquals(4, d_player1.getD_currentCountries().size());
+        assertEquals(4, d_player2.getD_currentCountries().size());
+        List<Country> l_countryList = new ArrayList<>(d_player1.getD_currentCountries());
+        l_countryList.remove(0);
+        d_player1.setD_currentCountries(l_countryList);
+        assertEquals(3, d_player1.getD_currentCountries().size());
+    }
 
     /**
      * Test method to calculate the number of armies a player has based on their countries and continents.
@@ -147,37 +147,35 @@ public class PlayerControllerTest {
 //     * Test method to validate invalid deploy orders.
 //     * This method checks that invalid deploy orders (such as deploying more armies than available) do not allocate armies incorrectly.
 //     */
-//    @Test
-//    public void validateInvalidDeployOrder() {
-//        l_playerList.add(d_player1);
-//        d_currentState.setD_players(l_playerList);
-//        d_player1.setD_currentCountries(d_map.getD_mapCountries());
-//        d_playerController.assignCountry(d_currentState);
-//        d_playerController.assignArmies(d_currentState);
-//        d_player1.createDeployOrder("deploy USA 30");
-//        assertEquals(13, d_player1.getD_unallocatedArmies().intValue());
-//        d_player1.createDeployOrder("deploy Canada 20");
-//        assertEquals(13, d_player1.getD_unallocatedArmies().intValue());
-//    }
+    @Test
+    public void validateInvalidDeployOrder() {
+        l_playerList.add(d_player1);
+        d_currentState.setD_players(l_playerList);
+        d_player1.setD_currentCountries(d_map.getD_mapCountries());
+        d_playerController.assignCountry(d_currentState);
+        d_playerController.assignArmies(d_currentState);
+        d_player1.createDeployOrder("deploy USA 50");
+        assertEquals(20, d_player1.getD_unallocatedArmies().intValue());
+        d_player1.createDeployOrder("deploy Canada 52");
+        assertEquals(20, d_player1.getD_unallocatedArmies().intValue());
+    }
 //
 //    /**
 //     * Test method to verify that deploy orders are created correctly.
 //     * This method ensures that players can create deploy orders and that the number of unallocated armies is updated accordingly.
 //     */
-//    @Test
-//    public void createDeployOrder() {
-//        d_mapName = "editTest.map";
-//        d_map = d_mapController.loadMap(d_currentState, d_mapName);
-//        l_playerList.add(d_player1);
-//        d_currentState.setD_players(l_playerList);
-//        d_player1.setD_currentCountries(d_map.getD_mapCountries());
-//        d_playerController.assignCountry(d_currentState);
-//        d_playerController.assignArmies(d_currentState);
-//        d_player1.createDeployOrder("deploy India 10");
-//        d_player1.createDeployOrder("deploy China 8");
-//        assertEquals(3, d_player1.getD_unallocatedArmies().intValue());
-//        assertEquals(2, d_player1.getD_orders().size());
-//    }
+    @Test
+    public void createDeployOrder() {
+        l_playerList.add(d_player1);
+        d_currentState.setD_players(l_playerList);
+        d_player1.setD_currentCountries(d_map.getD_mapCountries());
+        d_playerController.assignCountry(d_currentState);
+        d_playerController.assignArmies(d_currentState);
+        d_player1.createDeployOrder("deploy USA 10");
+        d_player1.createDeployOrder("deploy Canada 8");
+        assertEquals(3, d_player1.getD_unallocatedArmies().intValue());
+        assertEquals(1, d_player1.getD_orders().size());
+    }
 
 
 }
