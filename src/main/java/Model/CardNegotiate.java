@@ -5,8 +5,13 @@ package Model;
  * @author Akhilesh Kanbarkar
  */
 public class CardNegotiate implements Card {
+    /** Represents the player who owns the card used in the order. */
     Player d_cardOwner;
+
+    /** Name of the player targeted by the order. */
     String d_targetPlayer;
+
+    /** Log message detailing the outcome of the order execution. */
     String d_logOfOrderExecution;
 
     /**
@@ -26,6 +31,15 @@ public class CardNegotiate implements Card {
                 "d_cardOwner=" + d_cardOwner +
                 ", d_targetPlayer='" + d_targetPlayer + '\'' +
                 '}';
+    }
+
+    /**
+     * Print order.
+     */
+    @Override
+    public void printOrder() {
+        this.d_logOfOrderExecution = "Negotiate Card : "+d_cardOwner.getD_playerName()+" is using negotiate card with "+d_targetPlayer;
+        System.out.println(d_logOfOrderExecution);
     }
 
     /**

@@ -3,16 +3,34 @@ package Model;
 
 import Model.Player;
 
+import java.io.Serializable;
+
 /**
  * Represents a Deploy order in the game, where a player deploys armies to a country.
  * @author Akhilesh Kanbarkar
  */
-public class Deploy implements Orders{
+public class Deploy implements Orders, Serializable {
 
-    private String d_targetCountryName;
-    private Integer d_noOfArmiesToMove;
-    private Player d_initiatingPlayer;
-    private String d_logofOrderExecution;
+    /**
+     * The name of the target country for the order.
+     */
+    String d_targetCountryName;
+
+    /**
+     * The number of armies to be moved as part of the order.
+     */
+    Integer d_noOfArmiesToMove;
+
+    /**
+     * The player who initiated the order.
+     */
+    Player d_initiatingPlayer;
+
+    /**
+     * The log of the order execution detailing the actions taken.
+     */
+    String d_logOfOrderExecution;
+
     /**
      * Instantiates a new Deploy order.
      *
@@ -37,7 +55,7 @@ public class Deploy implements Orders{
 
     @Override
     public String orderExecutionLog(){
-        return d_logofOrderExecution;
+        return d_logOfOrderExecution;
     }
 
     /**
@@ -73,13 +91,21 @@ public class Deploy implements Orders{
     }
 
     /**
+     * Print order.
+     */
+    @Override
+    public void printOrder(){
+        this.d_logOfOrderExecution = "Deploy Order : "+d_initiatingPlayer.d_playerName+" is deploying "+d_noOfArmiesToMove+" armies to "+d_targetCountryName;
+        System.out.println(d_logOfOrderExecution);
+    }
+    /**
      * Prints the order execution log message based on its type.
      *
      * @param p_orderExecutionLog the log message to be printed
      * @param p_messageType       the type of message ("error" or other)
      */
     public void setD_orderExecutionLog(String p_orderExecutionLog, String p_messageType) {
-        this.d_logofOrderExecution=p_orderExecutionLog;
+        this.d_logOfOrderExecution=p_orderExecutionLog;
         if (p_messageType.equals("error")) {
             System.err.println(p_orderExecutionLog);
         } else {

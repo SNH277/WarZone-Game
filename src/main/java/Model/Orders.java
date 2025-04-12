@@ -36,4 +36,8 @@ public interface Orders {
      * @return true if the order is valid, false otherwise
      */
     boolean valid(CurrentState p_currentState);
+
+    /** Prints the details of the order issued by a player. */
+    void printOrder();
+
 }

@@ -10,8 +10,13 @@ package Model;
  * @author Yash Koladiya
  */
 public class CardBlockade implements Card {
+    /** The player who owns the card used in the order. */
     Player d_cardOwner;
+
+    /** The name of the country targeted by the order. */
     String d_targetCountryName;
+
+    /** Log message recording the result of the order execution. */
     String d_logOfOrderExecution;
 
     /**
@@ -63,6 +68,16 @@ public class CardBlockade implements Card {
                 ", d_targetCountryName='" + d_targetCountryName + '\'' +
                 '}';
     }
+
+    /**
+     * Print order.
+     */
+    @Override
+    public void printOrder() {
+        this.d_logOfOrderExecution = "Blockade Order : " + d_cardOwner.getD_playerName() + " is using blockade card to triple the armies of " + d_targetCountryName;
+        System.out.println(d_logOfOrderExecution);
+    }
+
     /**
      * Validates whether the target country specified in the Blockade card exists
      * in the current game state. Logs an error if the country is not found.
@@ -78,6 +93,7 @@ public class CardBlockade implements Card {
         }
         return true;
     }
+
     /**
      * Executes the Blockade card action if the order is valid.
      * <p>
@@ -132,6 +148,7 @@ public class CardBlockade implements Card {
         this.setD_orderExecutionLog(logMessage, "default");
         p_currentState.updateLog(orderExecutionLog(), "effect");
     }
+
     /**
      * Validates whether the target country specified in the Blockade card
      * belongs to the player who owns the card.

@@ -3,6 +3,7 @@ package Model;
 import Controller.PlayerController;
 import Model.Player;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -13,7 +14,7 @@ import java.util.List;
  * armies to be moved.
  * @author Akhilesh Kanbarkar
  */
-public class Advance implements  Orders{
+public class Advance implements  Orders, Serializable {
 
     /**
      * The D source country.
@@ -35,6 +36,9 @@ public class Advance implements  Orders{
      */
     Player d_intitiatingPlayer;
 
+    /**
+     * The D order execution log.
+     */
     String d_logOfOrderExecution;
 
     /**
@@ -75,6 +79,15 @@ public class Advance implements  Orders{
     @Override
     public String orderExecutionLog() {
         return this.d_logOfOrderExecution;
+    }
+
+    /**
+     * Print order.
+     */
+    @Override
+    public void printOrder() {
+        this.d_logOfOrderExecution = "Advance Order : "+d_intitiatingPlayer.getD_playerName()+" is advancing "+d_noOfArmiesToPlace+" armies from "+d_sourceCountry+" to "+d_targetCountry;
+        System.out.println(d_logOfOrderExecution);
     }
 
     /**

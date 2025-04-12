@@ -10,8 +10,13 @@ package Model;
  * @author Yash Koladiya
  */
 public class CardBomb implements Card {
+    /** Represents the player who owns the card used in the order. */
     Player d_cardOwner;
+
+    /** Name of the country targeted by the order. */
     String d_targetCountryName;
+
+    /** Log message detailing the outcome of the order execution. */
     String d_logOfOrderExecution;
 
     /**
@@ -61,6 +66,15 @@ public class CardBomb implements Card {
                 "d_cardOwner=" + d_cardOwner +
                 ", d_targetCountryName='" + d_targetCountryName + '\'' +
                 '}';
+    }
+
+    /**
+     * Print order.
+     */
+    @Override
+    public void printOrder() {
+        this.d_logOfOrderExecution = "Bomb Card : "+d_cardOwner.getD_playerName()+" is using bomb card on "+d_targetCountryName;
+        System.out.println(d_logOfOrderExecution);
     }
 
     /**
