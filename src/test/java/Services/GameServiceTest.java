@@ -43,7 +43,7 @@ public class GameServiceTest {
     CurrentState d_currentState;
 
     /** Main game engine instance. */
-    MainGameEngine d_mainGameEngine;
+    MainGameEngine d_mainGameEngine = new MainGameEngine();
 
     /** Name of the map file used for testing. */
     String d_mapName;
