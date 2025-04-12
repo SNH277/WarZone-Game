@@ -23,7 +23,9 @@ import java.util.Map;
  */
 public class IssueOrderPhase extends Phase{
 
+    /** Controller responsible for handling player-related operations such as assigning countries, armies, and processing orders. */
     PlayerController d_playerController = new PlayerController();
+
 
     /**
      * Tournament mode.

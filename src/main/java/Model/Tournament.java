@@ -9,6 +9,15 @@ import Utils.CommandHandler;
 import java.io.Serializable;
 import java.util.*;
 
+/**
+ * The Tournament class handles the initialization and management of a tournament in the game.
+ * It processes tournament-related commands and operations such as setting up maps, strategies,
+ * game counts, and turn limits. The class maintains the current state of the tournament, including
+ * the players and maps involved. It also validates and applies tournament parameters using command
+ * parsing methods.
+ * This class implements the Serializable interface to allow tournament data to be saved and loaded.
+ * @author Shrey Hingu
+ */
 public class Tournament implements Serializable {
 
     /**
@@ -24,26 +33,60 @@ public class Tournament implements Serializable {
     List<CurrentState> d_currentStateList = new ArrayList<>();
 
 
+    /**
+     * Default constructor for the Tournament class.
+     */
     public Tournament(){
 
     }
 
+    /**
+     * Gets the MapController associated with this tournament.
+     *
+     * @return The MapController instance.
+     */
     public MapController getD_mapController() {
         return d_mapController;
     }
 
+    /**
+     * Sets the MapController for this tournament.
+     *
+     * @param d_mapController The MapController instance to set.
+     */
     public void setD_mapController(MapController d_mapController) {
         this.d_mapController = d_mapController;
     }
 
+    /**
+     * Gets the list of current states in the tournament.
+     *
+     * @return A list of CurrentState objects representing the current states of the tournament.
+     */
     public List<CurrentState> getD_currentStateList() {
         return d_currentStateList;
     }
 
+    /**
+     * Sets the list of current states for the tournament.
+     *
+     * @param d_currentStateList A list of CurrentState objects representing the current states of the tournament.
+     */
     public void setD_currentStateList(List<CurrentState> d_currentStateList) {
         this.d_currentStateList = d_currentStateList;
     }
 
+
+    /**
+     * Parses the tournament command and validates the given operation and argument.
+     *
+     * @param p_currentState The current state of the tournament.
+     * @param p_operation The operation to be performed.
+     * @param p_argument The argument related to the operation.
+     * @param p_maingameEngine The main game engine for logging and operations.
+     * @return True if the command was successfully parsed and executed, otherwise false.
+     * @throws CommandValidationException If the command is invalid.
+     */
     public boolean parseTournamentCommand(CurrentState p_currentState, String p_operation, String p_argument, MainGameEngine p_maingameEngine) throws CommandValidationException {
 
         if (p_operation == null || p_argument == null || p_maingameEngine == null) {
@@ -64,6 +107,13 @@ public class Tournament implements Serializable {
         }
     }
 
+    /**
+     * Parses the number of turns argument and validates it.
+     *
+     * @param p_argument The argument containing the number of turns.
+     * @param p_maingameEngine The main game engine for logging and operations.
+     * @return True if the number of turns is valid and successfully set, otherwise false.
+     */
     private boolean parseNoOfTurnArgument(String p_argument, MainGameEngine p_maingameEngine) {
         if (p_argument == null || p_argument.trim().isEmpty()) {
             p_maingameEngine.setD_mainEngineLog(ProjectConstants.INVALID_TURN_COUNT, "effect");
@@ -91,6 +141,13 @@ public class Tournament implements Serializable {
         }
     }
 
+    /**
+     * Parses the number of games argument and validates it.
+     *
+     * @param p_argument The argument containing the number of games.
+     * @param p_maingameEngine The main game engine for logging and operations.
+     * @return True if the number of games is valid and successfully set, otherwise false.
+     */
     private boolean parseNoOfGameArgument(String p_argument, MainGameEngine p_maingameEngine) {
         int l_noOfGames = Integer.parseInt(p_argument.split(" ")[0]);
         if(l_noOfGames >= 1 && l_noOfGames <= 5){
@@ -114,6 +171,14 @@ public class Tournament implements Serializable {
         }
     }
 
+    /**
+     * Parses the strategy arguments for the tournament and validates them.
+     *
+     * @param p_currentState The current state of the tournament.
+     * @param p_argument The argument containing the strategies.
+     * @param p_maingameEngine The main game engine for logging and operations.
+     * @return True if the strategy arguments are valid and successfully parsed, otherwise false.
+     */
     private boolean parseStrategyArguments(CurrentState p_currentState, String p_argument, MainGameEngine p_maingameEngine) {
         if (p_argument == null || p_argument.trim().isEmpty()) {
             p_maingameEngine.setD_mainEngineLog(ProjectConstants.INVALID_STRATEGY, "effect");
@@ -152,6 +217,14 @@ public class Tournament implements Serializable {
         return true;
     }
 
+    /**
+     * Assigns players to the tournament based on the strategies they have chosen.
+     *
+     * @param p_maingameEngine The main game engine for logging and operations.
+     * @param p_listOfStrategies The list of strategies selected for the tournament.
+     * @param p_players The list of players in the current state.
+     * @param p_playersInGame The list that will contain the players selected for the game.
+     */
     private void setTournamentPlayers(MainGameEngine p_maingameEngine, String[] p_listOfStrategies, List<Player> p_players, List<Player> p_playersInGame) {
         for(String l_strategy : p_listOfStrategies) {
             for(Player l_eachPlayer : p_players){
@@ -163,6 +236,12 @@ public class Tournament implements Serializable {
         }
     }
 
+    /**
+     * Creates new player objects to add to the game, based on the players' existing behaviour strategies.
+     *
+     * @param p_playersInGame The list of players to be added to the game.
+     * @return A list of new player objects with updated behaviour strategies.
+     */
     private List<Player> getPlayersToAdd(List<Player> p_playersInGame) {
         List<Player> l_players = new ArrayList<>();
         for(Player l_player : p_playersInGame){
@@ -182,6 +261,13 @@ public class Tournament implements Serializable {
         return l_players;
     }
 
+    /**
+     * Parses the map arguments for the tournament and loads the specified map files.
+     *
+     * @param p_argument The argument containing the map files.
+     * @param p_maingameEngine The main game engine for logging and operations.
+     * @return True if all map files are successfully loaded and valid, otherwise false.
+     */
     private boolean parseMapArguments(String p_argument, MainGameEngine p_maingameEngine) {
         if (p_argument == null || p_argument.trim().isEmpty()) {
             p_maingameEngine.setD_mainEngineLog(ProjectConstants.INVALID_MAP_FILE_COUNT, "effect");
@@ -224,6 +310,13 @@ public class Tournament implements Serializable {
         return l_allMapsLoaded;
     }
 
+    /**
+     * Checks if the required tournament arguments are present in the list of operations.
+     *
+     * @param p_operationsList The list of operations to check.
+     * @param p_commandHandler The command handler used to validate the operations.
+     * @return True if all required tournament arguments ("M", "P", "G", "D") are found, otherwise false.
+     */
     public boolean requiredTournamentArgPresent(List<java.util.Map<String, String>> p_operationsList, CommandHandler p_commandHandler) {
         if (p_operationsList == null || p_operationsList.size() != 4) {
             return false;
