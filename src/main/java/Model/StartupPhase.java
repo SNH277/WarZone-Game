@@ -4,8 +4,10 @@ import Constants.ProjectConstants;
 import Controller.MainGameEngine;
 import Controller.PlayerController;
 import Exceptions.CommandValidationException;
+import Services.GameService;
 import Utils.CommandHandler;
 import View.MapView;
+import View.TournamentView;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -21,7 +23,11 @@ import java.util.Scanner;
  * @author Shrey Hingu
  */
 public class StartupPhase extends Phase{
+    /**
+     * Creates a new instance of {@link PlayerController} to manage player actions and game logic.
+     */
     PlayerController d_playerController = new PlayerController();
+
 
     /**
      * Constructs the StartupPhase and initializes controllers.
@@ -58,9 +64,9 @@ public class StartupPhase extends Phase{
     /**
      * Starts the game and continuously listens for player commands.
      */
-    public void initPhase(){
+    public void initPhase(boolean p_isTournamentMode){
         BufferedReader l_bufferedReader = new BufferedReader(new InputStreamReader(System.in));
-        commandDescription();
+//        commandDescription();
 
         while (d_mainGameEngine.getD_currentPhase() instanceof StartupPhase) {
             System.out.print("Enter your command: ");
@@ -74,116 +80,101 @@ public class StartupPhase extends Phase{
     }
 
     /**
-     * Displays a list of available game commands and their descriptions.
+     * Load game.
+     *
+     * @param p_commandHandler the p command handler
+     * @param p_player         the p player
      */
-    private void commandDescription() {
-        System.out.println("================================== COMMAND Description ===================================");
-        System.out.println("1. Initiate the Map:");
-        System.out.println("   - Loads an existing map file into the game.");
-        System.out.println("   - Usage: 'loadmap <your_filename(.map)>'");
-        System.out.println("   - Example: 'loadmap world.map'");
-        System.out.println();
-        System.out.println("2. Edit the Map:");
-        System.out.println("   - Opens an existing map for editing or creates a new one if the file does not exist.");
-        System.out.println("   - Allows adding, modifying, or deleting continents, countries, and connections.");
-        System.out.println("   - Usage: 'editmap <filename>(.map)'");
-        System.out.println("   - Example: 'editmap mycustommap.map'");
-        System.out.println();
-        System.out.println("3. Validate the Map:");
-        System.out.println("   - Checks if the map is correctly structured.");
-        System.out.println("   - Ensures all countries are connected, continents are properly defined, and no isolated territories exist.");
-        System.out.println("   - Usage: 'validatemap'");
-        System.out.println();
-        System.out.println("4. Show the Map:");
-        System.out.println("   - Displays the current map in a structured text format on the command line.");
-        System.out.println("   - Shows continents, countries, and their neighboring connections.");
-        System.out.println("   - Usage: 'showmap'");
-        System.out.println();
-        System.out.println("5. Save the Map:");
-        System.out.println("   - Saves the current map exactly as it was edited, preserving all changes.");
-        System.out.println("   - The saved map can be reloaded later for further modifications or gameplay.");
-        System.out.println("   - Usage: 'savemap <filename>'");
-        System.out.println("   - Example: 'savemap editedworld.map'");
-        System.out.println();
-        System.out.println("6. Edit the Continent:");
-        System.out.println("   - Adds or removes a continent from the map.");
-        System.out.println("   - Adding a continent: 'editcontinent -add <continent_name> <control_value>'");
-        System.out.println("   - Removing a continent: 'editcontinent -remove <continent_name>'");
-        System.out.println("   - Example: 'editcontinent -add Europe 5'");
-        System.out.println();
-        System.out.println("7. Edit the Country:");
-        System.out.println("   - Adds or removes a country from the map.");
-        System.out.println("   - Adding a country: 'editcountry -add <country_name> <continent_name>'");
-        System.out.println("   - Removing a country: 'editcountry -remove <country_name>'");
-        System.out.println("   - Example: 'editcountry -add France Europe'");
-        System.out.println();
-        System.out.println("8. Edit the Neighbour:");
-        System.out.println("   - Manages adjacency between countries.");
-        System.out.println("   - Adding a connection: 'editneighbour -add <country_1> <country_2>'");
-        System.out.println("   - Removing a connection: 'editneighbour -remove <country_1> <country_2>'");
-        System.out.println("   - Example: 'editneighbour -add France Germany'");
-        System.out.println();
-        System.out.println("9. Add or Remove a Player:");
-        System.out.println("   - Adds or removes a player in the game.");
-        System.out.println("   - Adding: 'gameplayer -add <player_name>'");
-        System.out.println("   - Removing: 'gameplayer -remove <player_name>'");
-        System.out.println("   - Example: 'gameplayer -add Alex'");
-        System.out.println();
-        System.out.println("10. Assign Countries to Players:");
-        System.out.println("   - Distributes all countries among players and assigns initial armies.");
-        System.out.println("   - Must be done before starting the game.");
-        System.out.println("   - Usage: 'assigncountries'");
-        System.out.println();
-        System.out.println("11. Deploy Armies:");
-        System.out.println("    - Allocates reinforcement armies to a specific territory controlled by the player.");
-        System.out.println("    - Must be done before executing any attack or movement.");
-        System.out.println("    - Usage: 'deploy <territory_name> <num_armies>'");
-        System.out.println("    - Example: 'deploy Alaska 5'");
-        System.out.println();
-        System.out.println("12. Advance Armies:");
-        System.out.println("    - Moves armies between two adjacent territories.");
-        System.out.println("    - If moving to an enemy territory, an attack is initiated.");
-        System.out.println("    - Usage: 'advance <from_territory> <to_territory> <num_armies>'");
-        System.out.println("    - Example: 'advance Brazil Argentina 10'");
-        System.out.println();
-        System.out.println("13. Airlift Armies:");
-        System.out.println("    - Transfers armies between any two territories controlled by the player, regardless of adjacency.");
-        System.out.println("    - Used strategically to reinforce key areas.");
-        System.out.println("    - Usage: 'airlift <from_territory> <to_territory> <num_armies>'");
-        System.out.println("    - Example: 'airlift India Canada 15'");
-        System.out.println();
-        System.out.println("14. Bomb Enemy Territory:");
-        System.out.println("    - Reduces an enemy territory’s army count by half before an attack.");
-        System.out.println("    - Weakens a well-defended position, making it easier to conquer.");
-        System.out.println("    - Usage: 'bomb <enemy_territory>'");
-        System.out.println("    - Example: 'bomb WesternEurope'");
-        System.out.println();
-        System.out.println("15. Blockade a Territory:");
-        System.out.println("    - Triples the army count on a chosen territory and makes it neutral (no longer controlled by any player).");
-        System.out.println("    - Used for defensive purposes or to create barriers.");
-        System.out.println("    - Usage: 'blockade <territory_name>'");
-        System.out.println("    - Example: 'blockade Alaska'");
-        System.out.println();
-        System.out.println("16. Negotiate (Diplomacy):");
-        System.out.println("    - Prevents two players from attacking each other for one full turn.");
-        System.out.println("    - Can be used to form temporary truces or shift focus to other opponents.");
-        System.out.println("    - Usage: 'negotiate <player_name>'");
-        System.out.println("    - Example: 'negotiate Alex'");
-        System.out.println();
-        System.out.println("17. Exit the Game:");
-        System.out.println("   - Closes the game and ends the session.");
-        System.out.println("   - Usage: 'exit'");
-        System.out.println();
+    @Override
+    public void loadGame(CommandHandler p_commandHandler, Player p_player) {
+        List <java.util.Map<String,String>> l_operationsList = p_commandHandler.getListOfOperations();
 
-        Scanner scanner = new Scanner(System.in);
-        String userInput;
+        if (l_operationsList == null || l_operationsList.isEmpty()) {
+            System.out.println(ProjectConstants.INVALID_LOADGAME_COMMAND);
+        }
+        for (java.util.Map<String,String> l_map : l_operationsList) {
+            if (p_commandHandler.checkRequiredKey("Arguments", l_map)) {
+                String l_fileName = l_map.get("Arguments");
+                try {
+//                    System.out.println("Game loaded successfully from Filename : " + l_fileName);
+                    d_mainGameEngine.setD_mainEngineLog("Game loaded successfully from Filename : " + l_fileName, "effect");
+                    Phase l_phase = GameService.loadGame(l_fileName);
+                    this.d_mainGameEngine.loadPhase(l_phase);
+//                    System.out.println("Game loaded successfully from Filename : " + l_fileName);
+//                    d_mainGameEngine.setD_mainEngineLog("Game loaded successfully from Filename : " + l_fileName, "effect");
+                } catch (ClassNotFoundException | IOException e) {
+                    System.out.println(ProjectConstants.INVALID_LOADGAME_COMMAND);
+                }
+            }
+        }
+    }
 
-        do {
-            System.out.print("Do you understand all the commands? Press 'y' or 'Y' to continue: ");
-            userInput = scanner.nextLine().trim();
-        } while (!userInput.equalsIgnoreCase("y"));
+    /**
+     * Save game.
+     *
+     * @param p_commandHandler the p command handler
+     * @param p_player         the p player
+     * @throws CommandValidationException the command validation exception
+     */
+    @Override
+    public void saveGame(CommandHandler p_commandHandler, Player p_player) throws CommandValidationException {
+        List<java.util.Map<String,String>> l_operationsList = p_commandHandler.getListOfOperations();
+        if(l_operationsList == null || l_operationsList.isEmpty()){
+            System.out.println(ProjectConstants.INVALID_SAVEGAME_COMMAND);
+        }
+        for(java.util.Map<String,String> l_map : l_operationsList){
+            if(p_commandHandler.checkRequiredKey("Arguments", l_map)) {
+                String l_fileName = l_map.get("Arguments");
+                GameService.saveGame(this,l_fileName);
+                d_mainGameEngine.setD_mainEngineLog("Game saved successfully to Filename : " + l_fileName, "effect");
+            } else {
+                throw new CommandValidationException(ProjectConstants.INVALID_SAVEGAME_COMMAND);
+            }
 
-        System.out.println("Continuing the game...");
+        }
+    }
+
+    /**
+     * Tournament mode.
+     *
+     * @param p_commandHandler the p command handler
+     * @throws CommandValidationException the command validation exception
+     * @throws IOException                the io exception
+     */
+    @Override
+    protected void tournamentMode(CommandHandler p_commandHandler) throws CommandValidationException, IOException {
+        if(d_currentState.getD_players() != null && d_currentState.getD_players().size() > 1){
+            List<java.util.Map<String, String>> l_operationsList = p_commandHandler.getListOfOperations();
+            boolean l_parsingSuccess = false;
+            if(l_operationsList.isEmpty() && !d_tournament.requiredTournamentArgPresent(l_operationsList,p_commandHandler)){
+                throw new CommandValidationException(ProjectConstants.INVALID_TOURNAMENT_MODE_COMMAND);
+            } else{
+                for(java.util.Map<String, String> l_singleOperation : l_operationsList) {
+                    if (p_commandHandler.checkRequiredKey("Arguments", l_singleOperation) && p_commandHandler.checkRequiredKey("Operation", l_singleOperation)) {
+                        l_parsingSuccess = d_tournament.parseTournamentCommand(d_currentState, l_singleOperation.get("Operation"), l_singleOperation.get("Arguments"), d_mainGameEngine);
+                        if (!l_parsingSuccess) {
+                            break;
+                        }
+                    } else {
+                        throw new CommandValidationException(ProjectConstants.INVALID_TOURNAMENT_MODE_COMMAND);
+                    }
+                }
+            }
+            if(l_parsingSuccess){
+                for(CurrentState l_eachState : d_tournament.getD_currentStateList()){
+                    d_mainGameEngine.setD_mainEngineLog("Starting new game on the map " + l_eachState.getD_map().getD_mapName() +" ...........", "effect");
+                    assignCountries(new CommandHandler("assigncountries"), null, true , l_eachState);
+
+                    d_mainGameEngine.setD_mainEngineLog("Game completed on map : " + l_eachState.getD_map().getD_mapName() + "................\n ", "effect");
+                }
+                d_mainGameEngine.setD_mainEngineLog("******** Tournament Completed ********", "effect");
+                TournamentView l_tournamentView = new TournamentView(d_tournament);
+                l_tournamentView.viewTournament();
+                d_tournament = new Tournament();
+            }
+        } else {
+            d_mainGameEngine.setD_mainEngineLog("Please add 2 or more players to start the tournament", "effect");
+        }
     }
 
     protected void cardHandle(String p_inputCommand, Player p_player) {
@@ -248,16 +239,32 @@ public class StartupPhase extends Phase{
     /**
      * Assigns countries to players and starts the game.
      *
-     * @param p_commandHandler The command handler to process the assignment request.
-     * @throws IOException If an I/O error occurs.
+     * @param p_commandHandler   the p command handler
+     * @param p_player           the p player
+     * @param p_isTournamentMode the p is tournament mode
+     * @param p_currentState     the p current state
+     * @throws CommandValidationException the command validation exception
+     * @throws IOException                the io exception
      */
-    protected void assignCountries(CommandHandler p_commandHandler) throws CommandValidationException,IOException {
-        List<java.util.Map<String,String>> l_listOfOperations=p_commandHandler.getListOfOperations();
-        System.out.println(l_listOfOperations);
-        if (l_listOfOperations == null || l_listOfOperations.isEmpty()) {
-            d_playerController.assignCountry(d_currentState);
-            d_playerController.assignArmies(d_currentState);
-            d_mainGameEngine.setIssueOrderPhase();
+    protected void assignCountries(CommandHandler p_commandHandler, Player p_player, Boolean p_isTournamentMode, CurrentState p_currentState) throws CommandValidationException, IOException {
+        if(d_currentState != null && d_currentState.d_players != null && d_currentState.d_players.size() < 2){
+            throw new CommandValidationException("Cannot assign Countries with only 1 Player");
+        }
+        else if(p_currentState.getD_loadCommand()){
+            List<java.util.Map<String, String>> l_operationList = p_commandHandler.getListOfOperations();
+
+            if(l_operationList.isEmpty() || p_isTournamentMode) {
+                d_mainGameEngine.setD_currentGameState(p_currentState);
+                d_mainGameEngine.setD_isTournamentMode(p_isTournamentMode);
+                if(d_playerController.assignCountry(p_currentState)){
+                    d_playerController.assignArmies(p_currentState);
+                    d_mainGameEngine.setIssueOrderPhase(p_isTournamentMode);
+                }
+            } else {
+                throw new CommandValidationException("Invalid Command for assign countries");
+            }
+        }else {
+            d_mainGameEngine.setD_mainEngineLog("Please load a valid map first", "effect");
         }
     }
 
@@ -266,7 +273,7 @@ public class StartupPhase extends Phase{
      *
      * @param p_commandHandler The command handler containing player operations.
      */
-    protected void gamePlayer(CommandHandler p_commandHandler) throws CommandValidationException{
+    protected void gamePlayer(CommandHandler p_commandHandler,Player p_player) throws CommandValidationException, IOException{
         List<java.util.Map<String,String>> l_listOfOperations=p_commandHandler.getListOfOperations();
         System.out.println(l_listOfOperations);
         if (l_listOfOperations == null || l_listOfOperations.isEmpty()) {
@@ -391,7 +398,9 @@ public class StartupPhase extends Phase{
             if(l_singleOperation.containsKey("Arguments")&& l_singleOperation.get("Arguments")!=null){
                 Model.Map l_map =d_mapController.loadMap(d_currentState,l_singleOperation.get("Arguments"));
                 System.out.println(l_map);
+                System.out.println("before validate");
                 if(l_map.validateMap()){
+                    d_currentState.setD_loadCommand(true);
                     System.out.println(ProjectConstants.VALID_MAP);
                 }
                 else{

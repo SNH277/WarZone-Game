@@ -6,9 +6,9 @@ import Controller.MapController;
 import Controller.PlayerController;
 import Exceptions.CommandValidationException;
 import Utils.CommandHandler;
-import View.MapView;
 
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.Set;
 
 /**
@@ -17,7 +17,7 @@ import java.util.Set;
  * It manages command handling, controller access, and phase-specific command execution.
  * @author Shrey Hingu
  */
-public abstract class Phase {
+public abstract class Phase implements Serializable {
     /** Reference to the main game engine. */
     MainGameEngine d_mainGameEngine;
 
@@ -30,6 +30,8 @@ public abstract class Phase {
     /** Controller for gameplay/player-related actions. */
     PlayerController d_gameplayController;
 
+    Tournament d_tournament;
+
     /**
      * Constructor to initialize a Phase with its core dependencies.
      *
@@ -41,6 +43,7 @@ public abstract class Phase {
         this.d_currentState = p_currentState;
         this.d_mapController = new MapController();
         this.d_gameplayController = new PlayerController();
+        this.d_tournament = new Tournament();
     }
 
     /**
@@ -118,7 +121,7 @@ public abstract class Phase {
     /**
      * Initializes the phase. Called when the phase becomes active.
      */
-    public abstract void initPhase();
+    public abstract void initPhase(boolean p_isTournamentMode);
 
     /**
      * Handles a command entered by the user (no player context).
@@ -159,9 +162,9 @@ public abstract class Phase {
 
         Set<String> requiresMap = Set.of(
                 "editcountry", "editcontinent", "editneighbour",
-                "showmap", "gameplayer", "assigncountries",
+                "showmap", "assigncountries",
                 "validatemap", "savemap", "deploy", "advance",
-                "bomb", "blockade", "airlift"
+                "bomb", "blockade", "airlift","savegame"
         );
 
         if (requiresMap.contains(l_mainCommand) && !l_isMapAvailable) {
@@ -189,10 +192,10 @@ public abstract class Phase {
                 showMap();
                 break;
             case "gameplayer":
-                gamePlayer(l_commandHandler);
+                gamePlayer(l_commandHandler,p_player);
                 break;
             case "assigncountries":
-                assignCountries(l_commandHandler);
+                assignCountries(l_commandHandler,p_player,false,d_currentState);
                 break;
             case "validatemap":
                 validateMap(l_commandHandler);
@@ -216,6 +219,15 @@ public abstract class Phase {
                     d_currentState.getD_modelLogger().setD_message("Command 'negotiate' failed: Map is not available.","effect");
                 else
                     cardHandle(p_inputCommand,p_player);
+            case "loadgame":
+                loadGame(l_commandHandler,p_player);
+                break;
+            case "savegame":
+                saveGame(l_commandHandler,p_player);
+                break;
+            case "tournament":
+                tournamentMode(l_commandHandler);
+                break;
             case "exit":
                 d_currentState.getD_modelLogger().setD_message("------------Game Session Terminated. All progress saved.------------","effect");
                 System.out.println("Closing game... Thank you for playing");
@@ -229,6 +241,31 @@ public abstract class Phase {
     }
 
     // Abstract methods to be implemented in subclasses for specific phase behavior
+    /**
+     * Tournament mode.
+     *
+     * @param p_commandHandler the p command handler
+     * @throws CommandValidationException the command validation exception
+     * @throws IOException                the io exception
+     */
+    protected abstract void tournamentMode(CommandHandler p_commandHandler) throws CommandValidationException, IOException;
+
+    /**
+     * Save game.
+     *
+     * @param p_commandHandler the p command handler
+     * @param p_player         the p player
+     * @throws CommandValidationException the command validation exception
+     */
+    protected abstract void saveGame(CommandHandler p_commandHandler, Player p_player) throws CommandValidationException;
+
+    /**
+     * Load game.
+     *
+     * @param p_commandHandler the p command handler
+     * @param p_player         the p player
+     */
+    public abstract void loadGame(CommandHandler p_commandHandler, Player p_player);
 
     /**
      * Handles execution of card-based commands such as bomb, blockade, airlift, and negotiate.
@@ -271,21 +308,26 @@ public abstract class Phase {
     protected abstract void validateMap(CommandHandler p_commandHandler) throws CommandValidationException;
 
     /**
-     * Assigns countries to players randomly at the beginning of the game.
+     * Assign countries.
      *
-     * @param p_commandHandler the command handler used for input parameters (if any)
-     * @throws CommandValidationException if the command is invalid
-     * @throws IOException if an I/O error occurs during assignment
+     * @param p_commandHandler   the l command handler
+     * @param p_player           the p player
+     * @param p_isTournamentMode the p is tournament mode
+     * @param p_currentState     the p current state
+     * @throws CommandValidationException the command validation exception
+     * @throws IOException                the io exception
      */
-    protected abstract void assignCountries(CommandHandler p_commandHandler) throws CommandValidationException, IOException;
+    protected abstract void assignCountries(CommandHandler p_commandHandler, Player p_player, Boolean p_isTournamentMode, CurrentState p_currentState) throws CommandValidationException, IOException;
 
     /**
      * Adds or removes players from the game setup.
      *
      * @param p_commandHandler the command handler containing player setup instructions
+     * @param p_player         the p player
      * @throws CommandValidationException if the command is invalid
+     * @throws IOException                the io exception
      */
-    protected abstract void gamePlayer(CommandHandler p_commandHandler) throws CommandValidationException;
+    protected abstract void gamePlayer(CommandHandler p_commandHandler,Player p_player) throws CommandValidationException, IOException;
 
     /**
      * Displays the current state of the map including continents and countries.

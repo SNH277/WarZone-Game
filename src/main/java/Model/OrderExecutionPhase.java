@@ -1,13 +1,17 @@
 package Model;
 
+import Constants.ProjectConstants;
 import Controller.MainGameEngine;
 import Exceptions.CommandValidationException;
+import Services.GameService;
 import Utils.CommandHandler;
 import View.MapView;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Represents the Order Execution Phase in the game.
@@ -32,40 +36,58 @@ public class OrderExecutionPhase extends Phase {
      * executes player orders, displays the map, checks for game end,
      * and transitions to the next phase based on user input.
      */
-    public void initPhase() {
+    @Override
+    public void initPhase(boolean p_isTournamentMode) {
         while(d_mainGameEngine.getD_currentPhase() instanceof OrderExecutionPhase){
-//            System.out.println("Entering");
             executeOrders();
-//            System.out.println("Exiting");
+
             MapView l_mapView = new MapView(d_currentState);
             l_mapView.showMap();
 
             if(this.checkEndOfGame(d_currentState)){
                 System.exit(0);
             }
-
-            while(d_currentState.getD_players() != null){
-                System.out.println("Press Y/y if you want to continue for next turn or else press N/n");
-                BufferedReader l_reader = new BufferedReader(new InputStreamReader(System.in));
-
-                try{
-                    String l_continue = l_reader.readLine();
-                    if(l_continue.equalsIgnoreCase("N")){
-                        System.exit(0);
-                    }
-                    else if(l_continue.equalsIgnoreCase("Y")){
-                        d_gameplayController.assignArmies(d_currentState);
-                        d_mainGameEngine.setIssueOrderPhase();
-                    }
-                    else{
-                        System.out.println("Invalid Input");
-                    }
+            try{
+                String l_continue = this.continueForNextTurn(p_isTournamentMode);
+                if(l_continue.equalsIgnoreCase("N") && p_isTournamentMode){
+                    d_mainGameEngine.setD_mainEngineLog("Startup Phase", "phase");
+                    d_mainGameEngine.setD_currentPhase(new StartupPhase(d_mainGameEngine,d_currentState));
                 }
-                catch (IOException l_e){
+                else if(l_continue.equalsIgnoreCase("N") && !p_isTournamentMode){
+                    d_mainGameEngine.setStartupPhase();
+                }
+                else if(l_continue.equalsIgnoreCase("Y")){
+                    d_gameplayController.assignArmies(d_currentState);
+                    d_mainGameEngine.setIssueOrderPhase(p_isTournamentMode);
+                }
+                else{
                     System.out.println("Invalid Input");
                 }
             }
+            catch (IOException l_e){
+                System.out.println("Invalid Input");
+            }
         }
+    }
+
+    /**
+     * Continue for next turn string.
+     *
+     * @param pIsTournamentMode the p is tournament mode
+     * @return the string
+     * @throws IOException the io exception
+     */
+    private String continueForNextTurn(boolean pIsTournamentMode) throws IOException {
+        String l_continue;
+        if(pIsTournamentMode){
+            d_currentState.setD_noOfTurnsLeft(d_currentState.getD_noOfTurnsLeft() - 1);
+            l_continue = d_currentState.getD_noOfTurnsLeft() == 0 ? "N" : "Y";
+        }else {
+            System.out.println("Do you want to continue to next turn? (Y/N)");
+            BufferedReader l_bufferedReader = new BufferedReader(new InputStreamReader(System.in));
+            l_continue = l_bufferedReader.readLine();
+        }
+        return l_continue;
     }
 
     /**
@@ -94,6 +116,27 @@ public class OrderExecutionPhase extends Phase {
         }
 
         return false;
+    }
+
+    /**
+     * Tournament mode.
+     *
+     * @param lCommandHandler the l command handler
+     */
+    @Override
+    protected void tournamentMode(CommandHandler lCommandHandler) {
+        printInvalidCommandInPhase();
+    }
+
+    /**
+     * Load game.
+     *
+     * @param p_commandHandler the p command handler
+     * @param p_player         the p player
+     */
+    @Override
+    public void loadGame(CommandHandler p_commandHandler, Player p_player) {
+        printInvalidCommandInPhase();
     }
 
     /**
@@ -199,23 +242,27 @@ public class OrderExecutionPhase extends Phase {
     /**
      * Handles the 'gameplayer' command, which is not valid during the Order Execution Phase.
      *
-     * @param lCommandHandler the command handler instance.
-     * @throws CommandValidationException always thrown as this command is invalid in this phase.
+     * @param p_ommandHandler the p ommand handler
+     * @param p_player        the p player
+     * @throws CommandValidationException the command validation exception
      */
     @Override
-    protected void gamePlayer(CommandHandler lCommandHandler) throws CommandValidationException {
+    protected void gamePlayer(CommandHandler p_ommandHandler, Player p_player) throws CommandValidationException {
         printInvalidCommandInPhase();
     }
 
     /**
      * Handles the 'assigncountries' command, which is not valid during the Order Execution Phase.
      *
-     * @param lCommandHandler the command handler instance.
-     * @throws CommandValidationException always thrown as this command is invalid in this phase.
-     * @throws IOException                 if an I/O error occurs (though unlikely here).
+     * @param lCommandHandler    the l command handler
+     * @param p_player           the p player
+     * @param p_isTournamentMode the p is tournament mode
+     * @param p_currentState     the p current state
+     * @throws CommandValidationException the command validation exception
+     * @throws IOException                the io exception
      */
     @Override
-    protected void assignCountries(CommandHandler lCommandHandler) throws CommandValidationException, IOException {
+    protected void assignCountries(CommandHandler lCommandHandler, Player p_player, Boolean p_isTournamentMode, CurrentState p_currentState) throws CommandValidationException, IOException {
         printInvalidCommandInPhase();
     }
 
@@ -253,6 +300,7 @@ public class OrderExecutionPhase extends Phase {
             for(Player l_eachPlayer : d_currentState.getD_players()){
                 Orders l_orderToExecute = l_eachPlayer.nextOrder();
                 if(l_orderToExecute != null){
+                    l_orderToExecute.printOrder();
                     l_orderToExecute.execute(d_currentState);
                 }
             }
@@ -281,6 +329,31 @@ public class OrderExecutionPhase extends Phase {
         }
         else{
             return;
+        }
+    }
+
+    /**
+     * Save game.
+     *
+     * @param p_commandHandler the p command handler
+     * @param p_player         the p player
+     * @throws CommandValidationException the command validation exception
+     */
+    @Override
+    protected void saveGame(CommandHandler p_commandHandler, Player p_player) throws CommandValidationException {
+        List<Map<String,String>> l_operationsList = p_commandHandler.getListOfOperations();
+        if(l_operationsList == null || l_operationsList.isEmpty()){
+            System.out.println(ProjectConstants.INVALID_SAVEGAME_COMMAND);
+        }
+        for(java.util.Map<String,String> l_map :l_operationsList){
+            if(p_commandHandler.checkRequiredKey("Arguments", l_map)) {
+                String l_fileName = l_map.get("Arguments");
+                GameService.saveGame(this,l_fileName);
+                d_mainGameEngine.setD_mainEngineLog("Game saved successfully to Filename : " + l_fileName, "effect");
+            } else {
+                throw new CommandValidationException(ProjectConstants.INVALID_SAVEGAME_COMMAND);
+            }
+
         }
     }
 
